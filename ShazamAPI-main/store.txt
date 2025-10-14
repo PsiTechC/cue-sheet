@@ -1,0 +1,238 @@
+FROM python:3.9-bullseye AS builder
+
+WORKDIR /app
+
+# Install system dependencies and build tools
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libgl1-mesa-dev \
+    qtbase5-dev \
+    qttools5-dev-tools \
+    python3-pyqt5 \
+    python3-pyqt5.qtwebengine \
+    ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set Python path explicitly for system packages
+ENV PYTHONPATH="/usr/lib/python3/dist-packages"
+
+# Upgrade pip, setuptools, and wheel
+RUN pip install --no-cache-dir -U pip setuptools wheel
+
+# Install Python dependencies
+RUN pip install --no-cache-dir Flask requests werkzeug mutagen ShazamAPI flask-cors python-dotenv pydub whisper
+
+# Copy project files
+COPY . /app
+
+# Expose Flask port
+EXPOSE 5003
+
+CMD ["python3", "app.py"]
+
+
+
+
+
+
+https://celticmobile.co.uk
+
+
+docker run -d -p 3011:3011 --name telefe-app rajivtomer/telefe:v1
+
+sudo nano /etc/nginx/sites-available/celticmobile.co.uk
+sudo certbot --nginx -d api.celticmobile.co.uk
+
+
+
+
+server {
+    listen 80;
+    server_name newsletter.rankscape.in;
+
+    location / {
+        proxy_pass http://127.0.0.1:7070;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+
+https://api.celticmobile.co.uk
+
+
+
+
+
+
+
+
+
+
+server {
+    listen 443 ssl;
+    server_name api.MEDai.psitechconsultancy.com;
+
+    ssl_certificate /etc/letsencrypt/live/api.MEDai.psitechconsultancy.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/api.MEDai.psitechconsultancy.com/privkey.pem;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+
+    location / {
+        proxy_pass http://127.0.0.1:8000; 
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_set_header Cookie $http_cookie;  
+        proxy_pass_header Set-Cookie;  
+
+        proxy_read_timeout 3600s;     
+        proxy_connect_timeout 3600s; 
+        proxy_send_timeout 3600s;
+
+        # Increase client body size for uploads
+        client_max_body_size 0; 
+    }
+}
+
+
+
+
+server {
+    listen 443 ssl;
+    server_name eg.MEDai.psitechconsultancy.com;
+
+    ssl_certificate /etc/letsencrypt/live/eg.medai.psitechconsultancy.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/eg.medai.psitechconsultancy.com/privkey.pem;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+    location / {
+        proxy_pass http://127.0.0.1:6006;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_set_header Cookie $http_cookie;  
+        proxy_pass_header Set-Cookie;  
+
+        proxy_read_timeout 3600s;     
+        proxy_connect_timeout 3600s; 
+        proxy_send_timeout 3600s;
+
+        client_max_body_size 0; 
+    }
+}
+
+
+
+
+
+
+
+server {
+    listen 443 ssl;
+    server_name convis.ai;
+    ssl_certificate /etc/letsencrypt/live/convis.ai/fullchain.pem; 
+    ssl_certificate_key /etc/letsencrypt/live/convis.ai/privkey.pem; 
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+
+    location / {
+        proxy_pass http://localhost:8090;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_set_header Cookie $http_cookie;
+        proxy_pass_header Set-Cookie;
+
+        proxy_read_timeout 3600s;
+        proxy_connect_timeout 3600s;
+        proxy_send_timeout 3600s;
+
+        # Increase client body size for uploads
+        client_max_body_size 0;
+    }
+
+}
+
+
+#convis
+server {
+    listen 443 ssl;
+    server_name webapp.atithi.org;
+    ssl_certificate /etc/letsencrypt/live/webapp.atithi.org/fullchain.pem; 
+    ssl_certificate_key /etc/letsencrypt/live/webapp.atithi.org/privkey.pem; 
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+
+    location / {
+        proxy_pass http://127.0.0.1:3020;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_set_header Cookie $http_cookie;
+        proxy_pass_header Set-Cookie;
+
+        proxy_read_timeout 3600s;
+        proxy_connect_timeout 3600s;
+        proxy_send_timeout 3600s;
+
+        client_max_body_size 0;
+    }
+
+
+}
+
+
+
+
+docker run -d \
+  -p 8000:8000 \
+  -e AUDD_API_KEY="7edca807001a9e700b4a69800f548d8c" \
+  -e REACT_FE_P="https://medai.psitechconsultancy.com" \
+psittech/pbe:v0-1
+
+
+
+docker run -d \
+  -p 6006:6006 \
+  -e MONGO_URI="mongodb+srv://psitech:Psitech123@pms.ijqbdmu.mongodb.net/Cue-Sheet" \
+  -e JWT_SECRET="your_super_jwt_secret.PSITECH_2024.Cue_Sheet.SK" \
+  -e EMAIL_USER="connect@psitechconsultancy.com" \
+  -e EMAIL_PASS="Connect@2024" \
+  -e GOOGLE_CLOUD_API_KEY="AIzaSyBuZGV_qCaDZyxe4kQ-OGK3qFcVS5H-QNw" \
+  -e ENCRYPTION_KEY="1server$Secret*Key__%&secret.PSITECH_2024!25.CuE_Sheett.SK" \
+  -e REACT_FE="https://medai.psitechconsultancy.com" \
+  -e RAZORPAY_KEY_ID="rzp_live_vQxvneWhnlPNSa" \
+  -e RAZORPAY_KEY_SECRET="I16GPPIcRA4dUXQjg6quY6TM" \
+  -e CALLBACK_URL="https://medai.psitechconsultancy.com/dashboard/account" \
+  -e admin="a@a.com" \
+  -e pass="222222" \
+psittech/ebe:v0-1
+
+
+
+
+SMTP_HOST=smtpout.secureserver.net
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=admin@global-cybertech.in
+SMTP_PASS=Globaladmin@3768

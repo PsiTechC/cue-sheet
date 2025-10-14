@@ -1,0 +1,36 @@
+/* Alert.css */
+.alert {
+  position: fixed;
+  top: 20px;
+  left: -300px;
+  width: 300px;
+  padding: 15px;
+  color: rgb(255, 255, 255);
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out; 
+  z-index: 1000;
+}
+
+.alert.show {
+  left: 20px; /* Slide in from the left */
+}
+
+.alert.hide {
+  left: -300px; 
+}
+
+.alert.success {
+  color: #2A562A;
+  background-color: #D9ECDB; 
+}
+.alert.warning {
+  color: #806520;
+  background-color: #FDF3D1; 
+}
+
+.alert.error {
+  color: #692326;
+  background-color: #F3D8DA; 
+}

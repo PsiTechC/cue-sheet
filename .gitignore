@@ -1,0 +1,41 @@
+# General
+.DS_Store
+.env
+*.log
+*.tmp
+*.temp
+
+# Node.js (frontend, express-api)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python (TS-backend, ShazamAPI-main)
+env/
+venv/
+tsvenv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Large / temporary files
+*.mp3
+*.wav
+*.zip
+*.tar
+*.tar.gz
+
+# Build & dist
+dist/
+build/
+
+# IDEs & editors
+.vscode/
+.idea/
+*.code-workspace
+
+# Ignore any uploaded media or datasets
+public/FMS/
+ShazamAPI-main/eps/

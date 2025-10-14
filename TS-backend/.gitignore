@@ -1,0 +1,10 @@
+tsvenv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.mp3
+*.wav
+*.zip
+*.tar
+*.tar.gz
