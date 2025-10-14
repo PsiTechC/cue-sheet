@@ -1192,7 +1192,7 @@ const mergeDetectedSongs = (songs, gapTolerance = 1.0) => {
                     <span className='pl-6'>If any of the fields are not available, type "NA" in its place.</span>
                   </p>
 
-                  <label className="block mb-3" htmlFor="file">Upload MP3 File:</label>
+                  <label className="block mb-3" htmlFor="file">Upload MP3 or MP4 File:</label>
 
                   <div className="flex items-center mb-3 justify-center relative">
                     <input
@@ -1200,7 +1200,7 @@ const mergeDetectedSongs = (songs, gapTolerance = 1.0) => {
                       type="file"
                       id="file"
                       name="file"
-                      accept=".mp3"
+                      accept=".mp3,.mp4"
                       required
                     />
                     <span className="absolute mx-10 text-center">OR</span>
