@@ -816,25 +816,32 @@ const mergeDetectedSongs = (songs, gapTolerance = 1.0) => {
 
   const handleSave = async () => {
     try {
-      const tableData = detectedSongs.map((song) => ({
+      // Use the contiguous merge for saving (same logic as your table/CSV)
+      const mergedForSave = mergeDetectedSongs(detectedSongs);
+  
+      const tableData = mergedForSave.map((song) => ({
         'TV Channel': formData.tvChannel || '',
         'Program Name': formData.programName || '',
         'Episode Number': formData.episodeNumber || '',
         'On-Air Date': formData.onAirDate || '',
-        'Track Title': song.title,
-        'Artist 1': song.artist1,
-        'Copyright Link': shortenedUrls[song.title],
+        'Track Title': song.title === 'May contain music' ? 'May contain music' : song.title,
+        // keep the original column name you were sending; fall back to `artist`
+        'Artist 1': song.artist1 || song.artist || '-',
+        // prefer any shortened link you might have; fall back to song_link
+        'Copyright Link': shortenedUrls[song.title] || song.song_link || '-',
         'Video File Name': fileName,
-        'Video Duration': song.videoDuration,
-        'TC In': new Date(song.start_time * 1000).toISOString().substr(11, 8),
-        'TC Out': new Date(song.end_time * 1000).toISOString().substr(11, 8),
-        'Movie / Album Name': formData.movieAlbum || ''
+        'Video Duration': `${videoDuration}sec`,
+        'TC In': formatTime(song.start_time),
+        'TC Out': formatTime(song.end_time),
+        'Movie / Album Name': formData.movieAlbum || '',
       }));
-
-      const response = await axios.post(`${API_BASE_URL}/save-table`, { tableData }, {
-        withCredentials: true,
-      });
-
+  
+      await axios.post(
+        `${API_BASE_URL}/save-table`,
+        { tableData },
+        { withCredentials: true }
+      );
+  
       setAlertMessage('Table saved successfully!');
       setAlertType('success');
       setAlertVisible(true);
