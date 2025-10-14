@@ -5,11 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import Alert from './Alert';
 import eLogo from '../Assets/e-logo.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSliders, faCircleInfo } from '@fortawesome/free-solid-svg-icons'
+import { faSliders, faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import FolderExplorer from './FolderExplorer';
 import Modal from 'react-modal';
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
+import PageHeader from './PageHeader';
 
 
 
@@ -299,10 +300,15 @@ const CueSheetGenerator = () => {
       localStorage.setItem('formData', JSON.stringify(updatedFormData));
     } else {
       console.warn('File name format does not match the expected pattern.');
-      setAlertMessage('Invalid file name format. Ensure it follows the correct pattern.');
+      setAlertMessage(`Invalid file name format. Expected format: TvChannel_ProgramName_EpisodeNumber_OnAirDate_MovieAlbum
+
+Your file: "${fileInput.name}"
+Found ${fileParts.length} parts, expected 5 parts separated by underscores.
+
+Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
       setAlertType('warning');
       setAlertVisible(true);
-      setTimeout(() => setAlertVisible(false), 5000);
+      setTimeout(() => setAlertVisible(false), 10000);
       return;
     }
 
@@ -835,16 +841,14 @@ const CueSheetGenerator = () => {
   };
 
   return (
-    <div id="modalBlur" className="bg-[#171717]  text-gray-300 min-h-screen">
-      <div className="p-5 flex justify-between items-center border-b border-[#2E2E2E] bg-[#1E1E1E]">
-        <h2 className="text-xl font-normal text-center flex-grow text-white">Create Cue-Sheet</h2>
-      </div>
+    <div id="modalBlur" className="bg-gradient-to-br from-[#f0f4f8] via-[#e8f0f7] to-[#dce8f5] text-gray-800 min-h-screen">
+      <PageHeader title="Create Cue-Sheet" />
 
-      <div className="mt-5 flex justify-between items-center text-white ml-5 text-sm">
+      <div className="mt-6 flex justify-between items-center ml-6 mr-6 text-sm">
         <div className="flex space-x-4">
           <button
             onClick={() => setIsModalOpen(true)}
-            className={`py-2 px-4 rounded-md transition-all transform ${disableButtons ? 'bg-[#3d3d3d] text-white cursor-not-allowed' : 'bg-[#28603D] hover:bg-[#417155] hover:scale-102'
+            className={`py-2.5 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md ${disableButtons ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white hover:shadow-lg'
               }`}
             disabled={disableButtons}
           >
@@ -870,9 +874,9 @@ const CueSheetGenerator = () => {
                 setTimeout(() => setAlertVisible(false), 5000);
               }
             }}
-            className={`py-2 px-4 rounded-md transition-all transform ${disableButtons
-              ? 'bg-[#3d3d3d] text-white cursor-not-allowed'
-              : 'bg-[#28603D] hover:bg-[#417155] hover:scale-102'
+            className={`py-2.5 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md ${disableButtons
+              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              : 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white hover:shadow-lg'
               }`}
             disabled={disableButtons}
           >
@@ -883,7 +887,7 @@ const CueSheetGenerator = () => {
           {isS3Detection && detectionResultss3 && Object.keys(detectionResultss3).length > 0 && (
             <button
               onClick={() => downloadDetectedSongsAsZip(Object.values(detectionResultss3))}
-              className="py-2 px-4 rounded-md transition-all transform bg-[#28603D] hover:bg-[#417155] hover:scale-102"
+              className="py-2.5 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white hover:shadow-lg"
             >
               Download ZIP
             </button>
@@ -893,7 +897,7 @@ const CueSheetGenerator = () => {
 
         <button
           onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-          className="py-2 px-4 rounded-md text-white hover:scale-105 shadow-md transition-all flex items-center justify-center"
+          className="py-2.5 px-4 rounded-xl text-gray-700 hover:text-[#4CAF50] hover:bg-white/80 shadow-md transition-all flex items-center justify-center bg-white"
           style={{ minWidth: '40px', height: '40px' }}
         >
           <FontAwesomeIcon icon={faSliders} size="lg" />
@@ -921,10 +925,10 @@ const CueSheetGenerator = () => {
       )} */}
 
       {processingMessageVisible ? (
-        <div id="loadingContainer" className="loading-container mt-20 opacity-100 mx-4">
-          <div className="loading-text text-lg text-center mb-2">{loadingText}</div>
-          <div className="progress-bar bg-gray-700 rounded-lg w-full mx-4 h-4">
-            <div className="progress-bar-fill bg-[#417155] h-full rounded-lg" style={{ width: `${progress}%`, transition: 'width 1s ease' }}></div>
+        <div id="loadingContainer" className="loading-container mt-20 opacity-100 mx-6">
+          <div className="loading-text text-lg text-center mb-4 text-gray-800 font-semibold">{loadingText}</div>
+          <div className="progress-bar bg-gray-200 rounded-xl w-full h-4 shadow-inner">
+            <div className="progress-bar-fill bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] h-full rounded-xl" style={{ width: `${progress}%`, transition: 'width 1s ease' }}></div>
           </div>
         </div>
       ) : (
@@ -933,18 +937,18 @@ const CueSheetGenerator = () => {
             <>
               {renderTable()}
               {showButtons && (
-                <div className="flex justify-center items-center mt-5 space-x-4">
+                <div className="flex justify-center items-center mt-6 space-x-4">
                   <CSVLink
                     data={csvData}
                     filename={csvFileName}
-                    className="bg-[#28603D] hover:bg-[#417155] py-2 px-4 rounded-md transition-all transform flex items-center justify-center"
+                    className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] py-2.5 px-6 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg text-white font-semibold flex items-center space-x-2"
                   >
                     <img src={eLogo} alt="Download CSV" className="h-5 w-5" />
                   </CSVLink>
 
                   <button
                     onClick={handleSave}
-                    className="bg-[#669de3] hover:bg-[#9dc1f5] text-white py-1.5 px-4 rounded-md ml-4 transition-all transform"
+                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-2.5 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
                   >
                     Save
                   </button>
@@ -954,7 +958,7 @@ const CueSheetGenerator = () => {
           )}
 
           {showFileList && (
-            <div className="p-5 relative mt-5">
+            <div className="p-6 relative mt-6">
               <div className="absolute top-0 right-5"></div>
               {renderFileList()}
             </div>
@@ -967,19 +971,18 @@ const CueSheetGenerator = () => {
       <Modal
         isOpen={isModalOpens3}
         onRequestClose={closeModal}
-        className="bg-gray-800 p-5 rounded-md max-w-3xl sm:max-w-2xl lg:max-w-4xl mx-auto "
-        overlayClassName="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-40"
+        className="bg-white p-8 rounded-3xl max-w-6xl mx-auto border border-gray-200 shadow-2xl"
+        overlayClassName="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50"
       >
-
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-white font-normal">Table Data</h2>
+        <div className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] -m-8 mb-6 p-6 rounded-t-3xl">
+          <h2 className="text-2xl font-bold text-white">Table Data</h2>
         </div>
-        <div className="overflow-auto max-h-96">
-          <table className="min-w-full text-white border-collapse border border-gray-600">
-            <thead className="bg-gray-700">
+        <div className="overflow-auto max-h-[32rem]">
+          <table className="min-w-full text-gray-800 border-collapse">
+            <thead className="bg-gradient-to-r from-gray-100 to-gray-200 sticky top-0">
               <tr>
                 {Object.keys(viewedTableData[0] || {}).map((key, index) => (
-                  <th key={index} className="border border-gray-600 px-2 py-1">
+                  <th key={index} className="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-800">
                     {key}
                   </th>
                 ))}
@@ -987,9 +990,9 @@ const CueSheetGenerator = () => {
             </thead>
             <tbody>
               {viewedTableData.map((row, rowIndex) => (
-                <tr key={rowIndex}>
+                <tr key={rowIndex} className="hover:bg-gray-50 transition-colors">
                   {Object.values(row).map((value, colIndex) => (
-                    <td key={colIndex} className="border border-gray-600 px-2 py-1">
+                    <td key={colIndex} className="border border-gray-300 px-4 py-2 text-sm">
                       {value || 'N/A'}
                     </td>
                   ))}
@@ -1000,7 +1003,7 @@ const CueSheetGenerator = () => {
         </div>
         <button
           onClick={closeModal}
-          className="mt-4 bg-red-500 hover:bg-red-400 text-white py-1 px-4 rounded-md text-sm"
+          className="mt-6 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-2.5 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
         >
           Close
         </button>

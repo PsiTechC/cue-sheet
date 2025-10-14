@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Alert from './Alert'; 
-import LoadingPlaceholder from './LoadingPlaceholder'
-import RateCard from './RateCard'
+import Alert from './Alert';
+import LoadingPlaceholder from './LoadingPlaceholder';
+import RateCard from './RateCard';
+import PageHeader from './PageHeader';
 
 const Account = () => {
   const [email, setEmail] = useState('');
@@ -96,50 +97,55 @@ const Account = () => {
   };
 
   return (
-<div className='text-white'>
-  <div className="p-5 flex justify-between items-center border-b border-[#2E2E2E] bg-[#1E1E1E]">
-    <h2 className="text-xl font-normal text-center flex-grow ml-30">Account</h2>
-  </div>
+<div className='text-gray-800 min-h-screen bg-gradient-to-br from-[#f0f4f8] via-[#e8f0f7] to-[#dce8f5]'>
+  <PageHeader title="Account" />
   {!isRateCardVisible ? (
-    <div className='font-thin pt-4 pl-5'>
-      <h2 className='text-xl font-normal mb-1'>Hi there, </h2>
-      <p>
-        {error
-          ? error
-          : email
-            ? email
-            : <LoadingPlaceholder width={300} height={23} />}
-      </p>
-      <br />
-      <h3 className='font-normal'>
-        Your Current Balance is {userMinutes < 1 ? userMinutes * 60 : userMinutes} {userMinutes < 1 ? 'seconds' : 'minutes'}
-      </h3>
+    <div className='p-8 m-6 bg-white/50 backdrop-blur-sm rounded-2xl'>
+      <div className='bg-white p-8 rounded-2xl shadow-md border border-gray-100'>
+        <h2 className='text-2xl font-bold mb-2 text-gray-800'>Hi there, </h2>
+        <p className='text-lg text-gray-600 mb-6'>
+          {error
+            ? error
+            : email
+              ? email
+              : <LoadingPlaceholder width={300} height={23} />}
+        </p>
 
-      <div className="flex justify-start mt-4 space-x-2">
-      <button
-          onClick={() => {
-            handleForgotPassword();
-            setIsModalOpen(true);
-          }} 
-          className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
-        >
-          Change Password
-        </button>
+        <div className='bg-gradient-to-r from-[#f0f4f8] to-[#e8f0f7] p-6 rounded-xl mb-6'>
+          <h3 className='text-lg font-semibold text-gray-800'>
+            Your Current Balance:
+            <span className='text-[#4CAF50] text-2xl font-bold ml-2'>
+              {userMinutes < 1 ? userMinutes * 60 : userMinutes} {userMinutes < 1 ? 'seconds' : 'minutes'}
+            </span>
+          </h3>
+        </div>
 
-        <button
-          onClick={toggleRateCard}  
-          className="mt-4 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700"
-        >
-          Top Up
-        </button>
+        <div className="flex justify-start space-x-4">
+          <button
+            onClick={() => {
+              handleForgotPassword();
+              setIsModalOpen(true);
+            }}
+            className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-3 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
+          >
+            Change Password
+          </button>
+
+          <button
+            onClick={toggleRateCard}
+            className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white py-3 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
+          >
+            Top Up
+          </button>
+        </div>
       </div>
     </div>
   ) : (
-    <div className='p-4'>
+    <div className='p-8 m-6 bg-white/50 backdrop-blur-sm rounded-2xl'>
       <RateCard />
       <button
         onClick={toggleRateCard}
-        className="mt-4 bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
+        className="mt-6 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-3 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
       >
         Close
       </button>
@@ -147,51 +153,51 @@ const Account = () => {
   )}
 
   {isModalOpen && (
-    <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50'>
-<div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50'>
-  <div className="bg-white p-6 rounded-lg max-w-md w-full relative">
-    {/* Close Button */}
-    <button
-      onClick={() => setIsModalOpen(false)}
-      className="absolute top-2 right-4 text-black hover:text-red-600 text-2xl"
-    >
-      &times;
-    </button>
+    <div className='fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-md z-50'>
+      <div className="bg-white p-8 rounded-3xl max-w-md w-full relative border border-gray-200 shadow-2xl">
+        <button
+          onClick={() => setIsModalOpen(false)}
+          className="absolute top-4 right-4 text-gray-600 hover:text-red-600 text-3xl font-light transition-colors"
+        >
+          &times;
+        </button>
 
-    <h2 className='text-xl font-normal mb-4 text-black'>Reset Your Password</h2>
-    
-    <form>
-      <div>
-        <input
-          type="text"
-          placeholder="Enter OTP"
-          value={otp}
-          onChange={(e) => setOtp(e.target.value)}
-          className="w-full px-4 py-3 border text-black border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition mb-4"
-          required
-        />
-      </div>
-      <div>
-        <input
-          type="password"
-          placeholder="Enter New Password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          className="w-full px-4 py-3 border text-black border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition mb-4"
-          required
-        />
-      </div>
-      <button
-        onClick={handleResetPassword}
-        className="w-full bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700"
-      >
-        Reset Password
-      </button>
-      {resetError && <p className="text-red-500 mt-4">{resetError}</p>}
-    </form>
-  </div>
-</div>
+        <div className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] -m-8 mb-6 p-6 rounded-t-3xl">
+          <h2 className='text-2xl font-bold text-white'>Reset Your Password</h2>
+        </div>
 
+        <form>
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">OTP Code</label>
+            <input
+              type="text"
+              placeholder="Enter OTP"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              className="w-full px-4 py-3 border text-gray-800 border-gray-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition shadow-sm"
+              required
+            />
+          </div>
+          <div className="mb-6">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">New Password</label>
+            <input
+              type="password"
+              placeholder="Enter New Password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              className="w-full px-4 py-3 border text-gray-800 border-gray-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition shadow-sm"
+              required
+            />
+          </div>
+          <button
+            onClick={handleResetPassword}
+            className="w-full bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white py-3 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
+          >
+            Reset Password
+          </button>
+          {resetError && <p className="text-red-600 mt-4 text-sm font-medium">{resetError}</p>}
+        </form>
+      </div>
     </div>
   )}
   <Alert message={alertMessage} type={alertType} visible={alertVisible} setVisible={setAlertVisible} />

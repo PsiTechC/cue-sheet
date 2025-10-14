@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Alert from "./Alert";
+import PageHeader from "./PageHeader";
 
 const AutoSubtitling = () => {
   const [file, setFile] = useState(null);
@@ -94,22 +95,20 @@ const AutoSubtitling = () => {
   };
 
   return (
-    <div className="text-white" style={{ fontFamily: "Helvetica Neue, Arial, sans-serif" }}>
-      <div className="p-5 flex justify-between items-center border-b border-[#2E2E2E] bg-[#1E1E1E]">
-        <h2 className="text-xl font-normal text-center flex-grow">Auto Subtitling</h2>
-      </div>
-      <div className="p-4">
-        <div className="mb-4 flex space-x-4">
+    <div className="text-gray-800 min-h-screen bg-gradient-to-br from-[#f0f4f8] via-[#e8f0f7] to-[#dce8f5]" style={{ fontFamily: "Helvetica Neue, Arial, sans-serif" }}>
+      <PageHeader title="Auto Subtitling" />
+      <div className="p-6">
+        <div className="mb-6 flex space-x-4">
           <button
             onClick={() => setIsModalOpen(true)}
-            className="bg-[#28603D] hover:bg-[#417155] text-white py-2 px-4 rounded-md text-sm"
+            className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white py-2.5 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
           >
             Upload Audio
           </button>
           <button
             onClick={handleStartProcessing}
             disabled={isProcessing}
-            className="bg-[#28603D] hover:bg-[#417155] text-white py-2 px-4 rounded-md text-sm"
+            className={`py-2.5 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md ${isProcessing ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white hover:shadow-lg'}`}
           >
             Start Process
           </button>

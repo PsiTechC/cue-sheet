@@ -4,8 +4,9 @@ import Modal from 'react-modal';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
-import { CSVLink } from 'react-csv'; 
-import Alert from './Alert'; 
+import { CSVLink } from 'react-csv';
+import Alert from './Alert';
+import PageHeader from './PageHeader'; 
 
 Modal.setAppElement('#root');
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -58,11 +59,43 @@ const Folder = () => {
   };
 
   useEffect(() => {
-    fetchFolders();  
-    fetchAssignedSheets();  
+    fetchFolders();
+    fetchAssignedSheets();
   }, [workspaceName]);
 
-   
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showDropdown !== null) {
+        const dropdowns = document.querySelectorAll('.dropdown-menu');
+        let clickedInside = false;
+
+        dropdowns.forEach((dropdown) => {
+          if (dropdown.contains(event.target)) {
+            clickedInside = true;
+          }
+        });
+
+        const dropdownButtons = document.querySelectorAll('.dropdown-button');
+        dropdownButtons.forEach((button) => {
+          if (button.contains(event.target)) {
+            clickedInside = true;
+          }
+        });
+
+        if (!clickedInside) {
+          setShowDropdown(null);
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showDropdown]);
+
+
   const filteredFolders = folders.filter(folder =>
     folder.folderName.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -124,18 +157,20 @@ const Folder = () => {
           withCredentials: true,
         }
       );
-      fetchFolders();  
+      fetchFolders();
+      fetchAssignedSheets();
       closeSheetModal();
+      setSelectedSheets([]);
       setAlertMessage('Sheets added to project successfully!');
       setAlertType('success');
       setAlertVisible(true);
-      setTimeout(() => setAlertVisible(false), 5000);  
+      setTimeout(() => setAlertVisible(false), 5000);
     } catch (error) {
       console.error('Error adding sheets to project:', error);
       setAlertMessage('Error adding sheets to project.');
       setAlertType('error');
       setAlertVisible(true);
-      setTimeout(() => setAlertVisible(false), 5000);  
+      setTimeout(() => setAlertVisible(false), 5000);
     }
   };
 
@@ -147,9 +182,7 @@ const Folder = () => {
           `${API_BASE_URL}/api/project/${workspaceName}/add-folder`,
           { folderName: newFolderName },
           {
-            headers: {
-              Authorization: localStorage.getItem('token'),
-            },
+            withCredentials: true,
           }
         );
         setFolders([...folders, response.data]);
@@ -176,9 +209,7 @@ const handleRenameFolder = async () => {
         `${API_BASE_URL}/api/project/${workspaceName}/rename-folder/${selectedFolder}`,
         { newFolderName: newFolderNameForRename },
         {
-          headers: {
-            Authorization: localStorage.getItem('token'),
-          },
+          withCredentials: true,
         }
       );
       fetchFolders();  
@@ -202,9 +233,7 @@ const handleRenameFolder = async () => {
 const handleDeleteFolder = async (folderId) => {
   try {
     await axios.delete(`${API_BASE_URL}/api/project/${workspaceName}/delete-folder/${folderId}`, {
-      headers: {
-        Authorization: localStorage.getItem('token'),
-      },
+      withCredentials: true,
     });
     fetchFolders();  
     setAlertMessage('Folder deleted successfully!');
@@ -255,35 +284,35 @@ const handleDeleteFolder = async (folderId) => {
   };
 
   return (
-    <div className='text-white' style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
-       
-      <div className="p-5 flex justify-between items-center border-b border-[#2E2E2E]">
-        <h2 className="text-xl font-normal text-center flex-grow ml-30">
-          <span
-            className="underline cursor-pointer"
-            style={{ color: 'grey' }}
-            onClick={() => navigate('/dashboard/project')}
-          >
-            Projects
-          </span>
-          {' > '}{workspaceName}
-        </h2>
+    <div className='text-gray-800 min-h-screen bg-gradient-to-br from-[#f0f4f8] via-[#e8f0f7] to-[#dce8f5]' style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
 
-      
-      </div>
+      <PageHeader
+        title={
+          <>
+            <span
+              className="text-gray-500 hover:text-[#4CAF50] cursor-pointer transition-colors"
+              onClick={() => navigate('/dashboard/project')}
+            >
+              Projects
+            </span>
+            <span className="text-gray-400 mx-2">›</span>
+            <span className="text-gray-800">{workspaceName}</span>
+          </>
+        }
+      />
 
-    
-      <div className="p-5 flex justify-between items-center">
-  <div className="flex gap-4">
+
+      <div className="p-[22px] flex justify-between items-center bg-white/50 backdrop-blur-sm">
+  <div className="flex gap-3">
     <button
       onClick={openModal}
-      className="bg-[#28603D] hover:bg-[#417155] text-white py-2 px-6 rounded-md text-sm"
+      className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white py-2.5 px-6 rounded-xl text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
     >
       Create Folder
     </button>
     <button
       onClick={openSheetModal}
-      className="bg-[#669de3] hover:bg-[#9dc1f5] text-white py-2 px-6 rounded-md text-sm"
+      className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-2.5 px-6 rounded-xl text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
     >
       Assign Sheets
     </button>
@@ -293,85 +322,119 @@ const handleDeleteFolder = async (folderId) => {
     placeholder="Search..."
     value={searchQuery}
     onChange={(e) => setSearchQuery(e.target.value)}
-    className="ml-2 p-0.5 w-[7rem] rounded-md bg-gray-800 text-white border border-gray-600 text-sm"
+    className="ml-2 px-4 py-2 w-48 rounded-xl bg-white text-gray-800 border border-gray-200 focus:border-[#4CAF50] focus:outline-none focus:ring-2 focus:ring-[#4CAF50]/30 text-sm shadow-sm"
   />
 </div>
 
 
-       
-      <div className="p-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+
+
+      <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredFolders.length > 0 ? (
           filteredFolders.map((folder, index) => (
             <div
               key={index}
-              className="bg-gray-200 text-black p-4 rounded-md flex justify-between items-center shadow-md border relative cursor-pointer"
-              onClick={() => handleDoubleClick(folder.folderName)}  
+              className="group bg-white p-6 rounded-2xl shadow-md border border-gray-100 hover:border-[#4CAF50] transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-xl relative overflow-hidden"
+              onClick={() => handleDoubleClick(folder.folderName)}
             >
-              <div className="flex items-center">
-                <div className="bg-gray-500 text-white p-2 rounded-full mr-4"></div>
-                <div className="font-normal">{folder.folderName}</div>
-              </div>
-              <div className="relative">
-                <FontAwesomeIcon icon={faEllipsisV} className="cursor-pointer" onClick={() => toggleDropdown(index)} />
-                {showDropdown === index && (
-                  <div className="absolute right-0 top-10 bg-white shadow-lg rounded-md z-10">
-                    <button
-                      className="block px-4 py-2 text-sm text-black hover:bg-gray-100"
-                      onClick={() => {
-                        openRenameModal(folder._id, folder.folderName);
-                        setShowDropdown(null);  
-                      }}
-                    >
-                      Rename
-                    </button>
-                    <button
-                      className="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
-                      onClick={() => {
-                        handleDeleteFolder(folder._id);
-                        setShowDropdown(null);  
-                      }}
-                    >
-                      Delete
-                    </button>
+              <div className="absolute inset-0 bg-gradient-to-br from-[#4CAF50]/0 to-[#66BB6A]/0 group-hover:from-[#4CAF50]/5 group-hover:to-[#66BB6A]/5 transition-all duration-300 rounded-2xl"></div>
+
+              <div className="relative z-10 flex flex-col h-full">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#4CAF50] to-[#66BB6A] rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
+                    <FontAwesomeIcon icon={faEllipsisV} className="text-white text-lg" />
                   </div>
-                )}
+                  <div
+                    className="dropdown-button p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleDropdown(index);
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faEllipsisV} className="text-gray-400 hover:text-gray-700 cursor-pointer" />
+                  </div>
+                </div>
+
+                <div className="flex-grow">
+                  <h3 className="text-lg font-bold text-gray-800 mb-2 truncate group-hover:text-[#4CAF50] transition-colors">
+                    {folder.folderName}
+                  </h3>
+                  <p className="text-sm text-gray-500 font-medium">
+                    Click to open
+                  </p>
+                </div>
+
+                <div className="mt-4 h-1.5 w-0 bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] group-hover:w-full transition-all duration-500 rounded-full"></div>
               </div>
+
+              {showDropdown === index && (
+                <div className="dropdown-menu absolute right-2 top-16 bg-white border border-gray-200 shadow-xl rounded-xl z-20 overflow-hidden min-w-[150px]">
+                  <button
+                    className="w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors text-left flex items-center gap-2 font-medium"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openRenameModal(folder._id, folder.folderName);
+                      setShowDropdown(null);
+                    }}
+                  >
+                    Rename
+                  </button>
+                  <div className="border-t border-gray-100"></div>
+                  <button
+                    className="w-full px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors text-left flex items-center gap-2 font-medium"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteFolder(folder._id);
+                      setShowDropdown(null);
+                    }}
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
             </div>
           ))
         ) : (
-          <h3 className="text-gray-400 text-lg">No folder or sheet assigned</h3>
+          <div className="col-span-full flex flex-col items-center justify-center py-16">
+            <div className="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-4 shadow-inner">
+              <span className="text-4xl">📁</span>
+            </div>
+            <h3 className="text-gray-700 text-xl font-semibold">No folders found</h3>
+            <p className="text-gray-500 text-sm mt-2">Create your first folder to get started</p>
+          </div>
         )}
       </div>
 
-       
-      <div className="p-5">
-        <h3 className="text-xl font-normal mb-4">Assigned Sheets</h3>
+
+
+      <div className="p-6 bg-white/50 backdrop-blur-sm mx-6 rounded-2xl">
+        <h3 className="text-2xl font-bold text-gray-800 mb-6">Assigned Sheets</h3>
         {filteredAssignedSheets.length > 0 ? (
           filteredAssignedSheets.map((sheet, index) => (
-            <div key={index} className="mb-2 flex justify-between items-center text-sm">
-              <div className="flex items-center space-x-2 w-1/3">
-                <span>{index + 1}. </span>
-                <h3 className="font-normal">
+            <div key={index} className="mb-3 p-4 bg-white rounded-xl shadow-sm border border-gray-100 hover:border-[#4CAF50] transition-all flex justify-between items-center">
+              <div className="flex items-center space-x-3 w-1/3">
+                <span className="w-8 h-8 bg-gradient-to-br from-[#4CAF50] to-[#66BB6A] rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                  {index + 1}
+                </span>
+                <h3 className="font-semibold text-gray-800">
                   {sheet.tableData[0]?.['Program Name'] || 'N/A'}
                 </h3>
               </div>
 
-              <div className="w-1/3 text-gray-400 text-center ">
-                {new Date(sheet.savedAt).toLocaleString()}
+              <div className="w-1/3 text-gray-500 text-center text-sm">
+                {new Date(sheet.savedAt).toLocaleDateString()}
               </div>
 
               <div className="w-1/3 flex justify-end space-x-2">
-                 
                 <button
                   onClick={() => handleViewTable(sheet.tableData)}
-                  className="text-blue-500 hover:underline"
+                  className="text-blue-600 hover:text-blue-700 font-medium text-sm hover:underline"
                 >
                   View
                 </button>
 
-                 
                 <CSVLink data={sheet.tableData} filename={`${sheet.tableData[0]['Program Name'] || 'unknown'}_cue-sheet.csv`}>
-                  <button className="bg-[#28603D] hover:bg-[#417155] text-white py-1 px-3 rounded-md text-sm font-normal">
+                  <button className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white py-2 px-4 rounded-lg text-sm font-semibold shadow-sm hover:shadow-md transition-all">
                     Download CSV
                   </button>
                 </CSVLink>
@@ -379,108 +442,113 @@ const handleDeleteFolder = async (folderId) => {
             </div>
           ))
         ) : (
-          <p>No assigned sheets.</p>
+          <p className="text-gray-500 text-center py-8">No assigned sheets.</p>
         )}
       </div>
 
-       
+
+
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         contentLabel="Create Folder"
-        className="bg-white p-6 rounded-md max-w-lg mx-auto"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+        className="bg-white p-8 rounded-3xl max-w-md mx-auto border border-gray-200 shadow-2xl"
+        overlayClassName="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50"
       >
-        <h2 className="text-lg font-bold mb-4">New Folder</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">New Folder</h2>
         <input
           type="text"
           value={newFolderName}
           onChange={(e) => setNewFolderName(e.target.value)}
-          className="w-full p-2 border rounded mb-4"
+          className="w-full p-3 rounded-xl bg-gray-50 text-gray-800 border border-gray-200 focus:border-[#4CAF50] focus:outline-none focus:ring-2 focus:ring-[#4CAF50]/30 mb-6"
+          placeholder="Enter folder name..."
         />
-        <div className="flex justify-end gap-4">
+        <div className="flex justify-end gap-3">
           <button
             onClick={closeModal}
-            className="text-blue-500 hover:text-blue-600"
+            className="px-6 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold transition-all"
           >
             Cancel
           </button>
           <button
             onClick={handleCreateFolder}
-            className="text-blue-500 hover:text-blue-600"
+            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white text-sm font-semibold transition-all shadow-md hover:shadow-lg"
           >
             Create
           </button>
         </div>
       </Modal>
 
-       
+
+
       <Modal
         isOpen={isSheetModalOpen}
         onRequestClose={closeSheetModal}
         contentLabel="Add Sheets"
-        className="bg-white p-6 rounded-md max-w-lg mx-auto"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-40"
+        className="bg-white p-8 rounded-3xl max-w-lg mx-auto border border-gray-200 shadow-2xl"
+        overlayClassName="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50"
       >
-        <h2 className="text-lg font-bold mb-4">Add Sheets</h2>
-        
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Add Sheets</h2>
+
         {sheets.length > 0 ? (
-          <ul className="mb-4">
+          <ul className="mb-6 max-h-96 overflow-y-auto">
             {sheets.map((sheet, index) => (
-              <li key={index} className="flex items-center justify-between mb-2">
-                <span>{sheet.tableData[0]?.['Program Name'] || 'Untitled Program'}</span>
+              <li key={index} className="flex items-center justify-between p-3 mb-2 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+                <span className="text-gray-800 font-medium">{sheet.tableData[0]?.['Program Name'] || 'Untitled Program'}</span>
                 <input
                   type="checkbox"
                   checked={selectedSheets.includes(sheet._id)}
                   onChange={() => handleSheetSelection(sheet._id)}
+                  className="w-5 h-5 text-[#4CAF50] rounded focus:ring-[#4CAF50] cursor-pointer"
                 />
               </li>
             ))}
           </ul>
         ) : (
-          <p>No sheets available.</p>
+          <p className="text-gray-500 text-center py-8">No sheets available.</p>
         )}
-        <div className="flex justify-end gap-4">
+        <div className="flex justify-end gap-3">
           <button
             onClick={closeSheetModal}
-            className="text-blue-500 hover:text-blue-600"
+            className="px-6 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold transition-all"
           >
             Cancel
           </button>
           <button
             onClick={handleSubmitSheets}
-            className="text-blue-500 hover:text-blue-600"
+            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-sm font-semibold transition-all shadow-md hover:shadow-lg"
           >
             Add Sheets
           </button>
         </div>
       </Modal>
 
-       
+
+
       <Modal
-        isOpen={viewedTableData !== null}  
+        isOpen={viewedTableData !== null}
         onRequestClose={closeModalView}
-        className="bg-gray-900 p-5 rounded-md max-w-4xl mx-auto"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-40"
+        className="bg-white p-6 rounded-3xl max-w-6xl mx-auto border border-gray-200 shadow-2xl"
+        overlayClassName="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50"
       >
-        <h2 className="text-xl font-semibold mb-4 text-white">Table Data</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Table Data</h2>
         {viewedTableData && viewedTableData.length > 0 ? (
-          <div className="overflow-auto max-h-96">  
-            <table className="min-w-full text-white border-collapse border border-gray-600">
-              <thead className="bg-gray-700">
+          <div className="overflow-auto max-h-[500px] rounded-xl border border-gray-200">
+            <table className="min-w-full text-gray-800 border-collapse">
+              <thead className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] sticky top-0">
                 <tr>
                   {Object.keys(viewedTableData[0]).map((key, index) => (
-                    <th key={index} className="border border-gray-600 px-2 py-1">
+                    <th key={index} className="border-b border-white/20 px-4 py-3 text-white font-semibold text-left">
                       {key}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="bg-white">
                 {viewedTableData.map((row, rowIndex) => (
-                  <tr key={rowIndex}>
+                  <tr key={rowIndex} className="hover:bg-gray-50 transition-colors">
                     {Object.values(row).map((value, colIndex) => (
-                      <td key={colIndex} className="border border-gray-600 px-2 py-1">
+                      <td key={colIndex} className="border-b border-gray-100 px-4 py-3 text-sm">
                         {value || 'N/A'}
                       </td>
                     ))}
@@ -490,42 +558,43 @@ const handleDeleteFolder = async (folderId) => {
             </table>
           </div>
         ) : (
-          <p>No data available to display.</p>
+          <p className="text-gray-500 text-center py-8">No data available to display.</p>
         )}
-         
+
         <button
           onClick={closeModalView}
-          className="mt-4 bg-red-500 hover:bg-red-400 text-white py-1 px-4 rounded-md"
+          className="mt-6 px-6 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold transition-all"
         >
           Close
         </button>
       </Modal>
 
- 
+
 <Modal
   isOpen={renameModalOpen}
-  onRequestClose={() => setRenameModalOpen(false)}  
+  onRequestClose={() => setRenameModalOpen(false)}
   contentLabel="Rename Folder"
-  className="bg-white p-6 rounded-md max-w-lg mx-auto"
-  overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+  className="bg-white p-8 rounded-3xl max-w-md mx-auto border border-gray-200 shadow-2xl"
+  overlayClassName="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50"
 >
-  <h2 className="text-lg font-bold mb-4">Rename Folder</h2>
+  <h2 className="text-2xl font-bold text-gray-800 mb-6">Rename Folder</h2>
   <input
     type="text"
     value={newFolderNameForRename}
     onChange={(e) => setNewFolderNameForRename(e.target.value)}
-    className="w-full p-2 border rounded mb-4"
+    className="w-full p-3 rounded-xl bg-gray-50 text-gray-800 border border-gray-200 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 mb-6"
+    placeholder="Enter new folder name..."
   />
-  <div className="flex justify-end gap-4">
+  <div className="flex justify-end gap-3">
     <button
       onClick={() => setRenameModalOpen(false)}
-      className="text-blue-500 hover:text-blue-600"
+      className="px-6 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold transition-all"
     >
       Cancel
     </button>
     <button
       onClick={handleRenameFolder}
-      className="text-blue-500 hover:text-blue-600"
+      className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-sm font-semibold transition-all shadow-md hover:shadow-lg"
     >
       Rename
     </button>

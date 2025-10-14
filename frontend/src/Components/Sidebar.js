@@ -36,171 +36,191 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
   return (
     <>
       <div
-        className={`h-screen bg-[#1E1E1E] text-white w-64 flex flex-col fixed top-0 left-0 z-40 transform ${
+        className={`h-screen bg-white text-gray-800 w-64 flex flex-col fixed top-0 left-0 z-40 transform ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } transition-transform duration-300 md:relative md:translate-x-0`}
-        style={{ borderRight: '0.01px solid grey', fontFamily: 'Helvetica Neue, Arial, sans-serif' }}  
+        } transition-transform duration-300 md:relative md:translate-x-0 shadow-lg`}
+        style={{ borderRight: '1px solid #e5e7eb', fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
       >
-        <div className="p-5 flex justify-between items-center border-b border-[#2E2E2E]">
-          <h1 className="text-xl font-normal ">Dashboard</h1>
-          <button onClick={toggleSidebar} className="md:hidden">
+        <div className="p-[22px] flex justify-between items-center border-b border-gray-200 bg-gradient-to-r from-[#f0f4f8] to-[#e8f0f7]">
+          <h1 className="text-xl font-semibold text-gray-800">Dashboard</h1>
+          <button onClick={toggleSidebar} className="md:hidden text-gray-600 hover:text-gray-800 transition-colors">
             <FontAwesomeIcon icon={faXmark} size="1x" />
           </button>
         </div>
 
         <nav className="px-4 mt-2 flex-grow font-normal">
-          <ul className="space-y-4 text-sm">
+          <ul className="space-y-2 text-sm">
             <li>
               <NavLink
                 to="/dashboard/project"
-                onClick={handleMenuClick}  // Close sidebar on click
+                onClick={handleMenuClick}
                 className={({ isActive }) =>
-                  `p-2 rounded-lg flex items-center transition-colors duration-200 ${
-                    isActive ? 'text-white text-base' : 'text-[#B4B4B4] hover:text-white'
+                  `p-3 rounded-xl flex items-center transition-all duration-200 ${
+                    isActive
+                      ? 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] text-white font-semibold shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#4CAF50]'
                   }`
                 }
               >
-                <FontAwesomeIcon icon={faFolder} className="mr-2" />  
+                <FontAwesomeIcon icon={faFolder} className="mr-3" />
                 Projects
               </NavLink>
             </li>
             <li>
               <NavLink
                 to="/dashboard/mysheet"
-                onClick={handleMenuClick}  // Close sidebar on click
+                onClick={handleMenuClick}
                 className={({ isActive }) =>
-                  `p-2 rounded-lg flex items-center transition-colors duration-200 ${
-                    isActive ? 'text-white text-base' : 'text-[#B4B4B4] hover:text-white'
+                  `p-3 rounded-xl flex items-center transition-all duration-200 ${
+                    isActive
+                      ? 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] text-white font-semibold shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#4CAF50]'
                   }`
                 }
               >
-                <FontAwesomeIcon icon={faSheetPlastic} className="mr-2" />  
+                <FontAwesomeIcon icon={faSheetPlastic} className="mr-3" />
                 Saved Sheets
               </NavLink>
             </li>
             <li>
               <NavLink
                 to="/dashboard/CueSheetGenerator"
-                onClick={handleMenuClick}  // Close sidebar on click
+                onClick={handleMenuClick}
                 className={({ isActive }) =>
-                  `p-2 rounded-lg flex items-center transition-colors duration-200 ${
-                    isActive ? 'text-white text-base' : 'text-[#B4B4B4] hover:text-white'
+                  `p-3 rounded-xl flex items-center transition-all duration-200 ${
+                    isActive
+                      ? 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] text-white font-semibold shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#4CAF50]'
                   }`
                 }
               >
-                <FontAwesomeIcon icon={faTable} className="mr-2" />  
+                <FontAwesomeIcon icon={faTable} className="mr-3" />
                 Create Cue-Sheet
               </NavLink>
             </li>
             <li>
               <NavLink
                 to="/dashboard/metadatacreation"
-                onClick={handleMenuClick}  // Close sidebar on click
+                onClick={handleMenuClick}
                 className={({ isActive }) =>
-                  `p-2 rounded-lg flex items-center transition-colors duration-200 ${
-                    isActive ? 'text-white text-base' : 'text-[#B4B4B4] hover:text-white'
+                  `p-3 rounded-xl flex items-center transition-all duration-200 ${
+                    isActive
+                      ? 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] text-white font-semibold shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#4CAF50]'
                   }`
                 }
               >
-                <FontAwesomeIcon icon={faObjectUngroup} className="mr-2" />  
+                <FontAwesomeIcon icon={faObjectUngroup} className="mr-3" />
                 Metadata Creation
               </NavLink>
             </li>
             <li>
               <NavLink
                 to="/dashboard/autosubtitling"
-                onClick={handleMenuClick}  // Close sidebar on click
+                onClick={handleMenuClick}
                 className={({ isActive }) =>
-                  `p-2 rounded-lg flex items-center transition-colors duration-200 ${
-                    isActive ? 'text-white text-base' : 'text-[#B4B4B4] hover:text-white'
+                  `p-3 rounded-xl flex items-center transition-all duration-200 ${
+                    isActive
+                      ? 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] text-white font-semibold shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#4CAF50]'
                   }`
                 }
               >
-                <FontAwesomeIcon icon={faClosedCaptioning} className="mr-2" />  
+                <FontAwesomeIcon icon={faClosedCaptioning} className="mr-3" />
                 Auto Subtitling
               </NavLink>
             </li>
             <li>
               <NavLink
                 to="/dashboard/aivoiceover"
-                onClick={handleMenuClick}  // Close sidebar on click
+                onClick={handleMenuClick}
                 className={({ isActive }) =>
-                  `p-2 rounded-lg flex items-center transition-colors duration-200 ${
-                    isActive ? 'text-white text-base' : 'text-[#B4B4B4] hover:text-white'
+                  `p-3 rounded-xl flex items-center transition-all duration-200 ${
+                    isActive
+                      ? 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] text-white font-semibold shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#4CAF50]'
                   }`
                 }
               >
-                <FontAwesomeIcon icon={faFileAudio} className="mr-2" />  
+                <FontAwesomeIcon icon={faFileAudio} className="mr-3" />
                 AI Voiceover
               </NavLink>
             </li>
             <li>
               <NavLink
                 to="/dashboard/metamorphosis"
-                onClick={handleMenuClick}  // Close sidebar on click
+                onClick={handleMenuClick}
                 className={({ isActive }) =>
-                  `p-2 rounded-lg flex items-center transition-colors duration-200 ${
-                    isActive ? 'text-white text-base' : 'text-[#B4B4B4] hover:text-white'
+                  `p-3 rounded-xl flex items-center transition-all duration-200 ${
+                    isActive
+                      ? 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] text-white font-semibold shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#4CAF50]'
                   }`
                 }
               >
-                <FontAwesomeIcon icon={faFolderTree} className="mr-2" />  
+                <FontAwesomeIcon icon={faFolderTree} className="mr-3" />
                 Metamorphosis
               </NavLink>
             </li>
             <li>
               <NavLink
                 to="/dashboard/genreidentification"
-                onClick={handleMenuClick}  // Close sidebar on click
+                onClick={handleMenuClick}
                 className={({ isActive }) =>
-                  `p-2 rounded-lg flex items-center transition-colors duration-200 ${
-                    isActive ? 'text-white text-base' : 'text-[#B4B4B4] hover:text-white'
+                  `p-3 rounded-xl flex items-center transition-all duration-200 ${
+                    isActive
+                      ? 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] text-white font-semibold shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#4CAF50]'
                   }`
                 }
               >
-                <FontAwesomeIcon icon={faIcons} className="mr-2" />  
+                <FontAwesomeIcon icon={faIcons} className="mr-3" />
                 Genre Identification
               </NavLink>
             </li>
             <li>
               <NavLink
                 to="/dashboard/autodubbing"
-                onClick={handleMenuClick}  // Close sidebar on click
+                onClick={handleMenuClick}
                 className={({ isActive }) =>
-                  `p-2 rounded-lg flex items-center transition-colors duration-200 ${
-                    isActive ? 'text-white text-base' : 'text-[#B4B4B4] hover:text-white'
+                  `p-3 rounded-xl flex items-center transition-all duration-200 ${
+                    isActive
+                      ? 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] text-white font-semibold shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#4CAF50]'
                   }`
                 }
               >
-                <FontAwesomeIcon icon={faBlog} className="mr-2" />  
+                <FontAwesomeIcon icon={faBlog} className="mr-3" />
                 Auto Dubbing
               </NavLink>
             </li>
             <li>
               <NavLink
                 to="/dashboard/account"
-                onClick={handleMenuClick}  // Close sidebar on click
+                onClick={handleMenuClick}
                 className={({ isActive }) =>
-                  `p-2 rounded-lg flex items-center transition-colors duration-200 ${
-                    isActive ? 'text-white text-base' : 'text-[#B4B4B4] hover:text-white'
+                  `p-3 rounded-xl flex items-center transition-all duration-200 ${
+                    isActive
+                      ? 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] text-white font-semibold shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#4CAF50]'
                   }`
                 }
               >
-                <FontAwesomeIcon icon={faUserTie} className="mr-2" />  
+                <FontAwesomeIcon icon={faUserTie} className="mr-3" />
                 Account
               </NavLink>
             </li>
           </ul>
         </nav>
 
-        <div className="p-5 border-t border-[#2E2E2E]">
-          <ul className="space-y-4">
-            <li className="transition-all duration-300 hover:text-base">
+        <div className="p-5 border-t border-gray-200 bg-gradient-to-r from-[#f0f4f8] to-[#e8f0f7]">
+          <ul>
+            <li>
               <button
                 onClick={handleLogout}
-                className="flex items-center text-[#B4B4B4] hover:text-white transition-colors duration-200"
+                className="flex items-center w-full p-3 rounded-xl text-gray-600 hover:bg-red-50 hover:text-red-600 transition-all duration-200 font-medium"
               >
-                <FontAwesomeIcon icon={faArrowRightFromBracket} className="mr-2" />
+                <FontAwesomeIcon icon={faArrowRightFromBracket} className="mr-3" />
                 Log Out
               </button>
             </li>
@@ -210,7 +230,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
 
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black opacity-50 z-30 md:hidden"
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-30 md:hidden"
           onClick={toggleSidebar}
         ></div>
       )}

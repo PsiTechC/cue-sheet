@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
 import axios from 'axios';
-import { CSVLink } from 'react-csv';  
-import Alert from './Alert';  
+import { CSVLink } from 'react-csv';
+import Alert from './Alert';
+import PageHeader from './PageHeader';  
 
 Modal.setAppElement('#root');  
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -120,37 +121,35 @@ const SubFolder = () => {
   );
 
   return (
-    <div className='text-white' style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
-      
-      <div className="p-5 flex justify-between items-center border-b border-[#2E2E2E]">
-        <h2 className="text-xl font-normal text-center flex-grow ml-30">
-          
-          <span
-            className="underline cursor-pointer"
-            style={{ color: 'grey' }}
-            onClick={() => handleNavigation('/dashboard/project')}
-          >
-            Projects
-          </span>
-          {' > '}
-          <span
-            className="underline cursor-pointer"
-            style={{ color: 'grey' }}
-            onClick={() => handleNavigation(`/dashboard/project/${workspaceName}`)}
-          >
-            {workspaceName}
-          </span>
-          {' > '}
-          {folderName} 
-        </h2>
+    <div className='text-gray-800 min-h-screen bg-gradient-to-br from-[#f0f4f8] via-[#e8f0f7] to-[#dce8f5]' style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
 
-      </div>
+      <PageHeader
+        title={
+          <>
+            <span
+              className="text-gray-500 hover:text-[#4CAF50] cursor-pointer transition-colors"
+              onClick={() => handleNavigation('/dashboard/project')}
+            >
+              Projects
+            </span>
+            <span className="text-gray-400 mx-2">›</span>
+            <span
+              className="text-gray-500 hover:text-[#4CAF50] cursor-pointer transition-colors"
+              onClick={() => handleNavigation(`/dashboard/project/${workspaceName}`)}
+            >
+              {workspaceName}
+            </span>
+            <span className="text-gray-400 mx-2">›</span>
+            <span className="text-gray-800">{folderName}</span>
+          </>
+        }
+      />
 
-      
-      <div className="p-5 flex justify-between">
+
+      <div className="p-[22px] flex justify-between items-center">
         <button
           onClick={openSheetModal}
-          className="bg-[#669de3] hover:bg-[#9dc1f5] text-white py-2 px-6 rounded-md text-sm"
+          className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-2.5 px-6 rounded-xl text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
         >
           Add Sheets
         </button>
@@ -159,83 +158,97 @@ const SubFolder = () => {
           placeholder="Search sheets..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="ml-2 p-0.5 w-[7rem] rounded-md bg-gray-800 text-white border border-gray-600 text-sm"
+          className="p-2.5 w-48 rounded-xl bg-white text-gray-800 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent shadow-sm"
         />
       </div>
 
-      
-      <div className="p-5">
-        <h3 className="text-xl font-normal mb-4">Assigned Sheets</h3>
+
+      <div className="p-6 bg-white/50 backdrop-blur-sm mx-6 rounded-2xl">
+        <h3 className="text-2xl font-bold text-gray-800 mb-6">Assigned Sheets</h3>
         {filteredAssignedSheets.length > 0 ? (
-          <ul className="mb-4">
+          <div className="space-y-3">
             {filteredAssignedSheets.map((sheet, index) => (
-              <div key={index} className="mb-2 flex justify-between items-center text-sm">
-                <div className="flex items-center space-x-2 w-1/3">
-                  <span>{index + 1}. </span>
-                  <h3 className="font-normal">
-                    {sheet.tableData[0]?.['Program Name'] || 'N/A'}
-                  </h3>
-                </div>
-                <div className="w-1/3 text-gray-400 text-center ">
-                  Saved on: {new Date(sheet.savedAt).toLocaleString()}
-                </div>
-                <div className="w-1/3 flex justify-end space-x-2">
-                  <button
-                    onClick={() => handleViewTable(sheet.tableData)}
-                    className="text-blue-500 hover:underline"
-                  >
-                    View
-                  </button>
-                  <CSVLink data={sheet.tableData} filename={`${sheet.tableData[0]["Program Name"] || "unknown"}_cue-sheet.csv`}>
-                    <button className="bg-[#28603D] hover:bg-[#417155] text-white py-1 px-3 rounded-md text-sm font-normal">
-                      Download CSV
+              <div key={index} className="p-4 bg-white rounded-xl shadow-sm border border-gray-100 hover:border-[#4CAF50] transition-all">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center space-x-4 flex-1">
+                    <span className="w-8 h-8 bg-gradient-to-br from-[#4CAF50] to-[#66BB6A] rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                      {index + 1}
+                    </span>
+                    <div>
+                      <h3 className="font-semibold text-gray-800">
+                        {sheet.tableData[0]?.['Program Name'] || 'N/A'}
+                      </h3>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Saved on: {new Date(sheet.savedAt).toLocaleString()}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex space-x-3">
+                    <button
+                      onClick={() => handleViewTable(sheet.tableData)}
+                      className="text-blue-500 hover:text-blue-700 font-medium transition-colors"
+                    >
+                      View
                     </button>
-                  </CSVLink>
+                    <CSVLink data={sheet.tableData} filename={`${sheet.tableData[0]["Program Name"] || "unknown"}_cue-sheet.csv`}>
+                      <button className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white py-2 px-4 rounded-lg text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg">
+                        Download CSV
+                      </button>
+                    </CSVLink>
+                  </div>
                 </div>
               </div>
             ))}
-          </ul>
+          </div>
         ) : (
-          <p>No sheets assigned to this folder.</p>
+          <p className="text-gray-500 text-center py-8">No sheets assigned to this folder.</p>
         )}
       </div>
 
-       
+
       <Modal
-        isOpen={isSheetModalOpen}
+        isOpen={isSheetModalOpen && !viewedTableData}
         onRequestClose={closeSheetModal}
         contentLabel="Add Sheets"
-        className="bg-white p-6 rounded-md max-w-lg mx-auto"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+        className="bg-white p-8 rounded-3xl max-w-2xl mx-auto border border-gray-200 shadow-2xl"
+        overlayClassName="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50"
       >
-        <h2 className="text-lg font-bold mb-4">Add Sheets</h2>
-         
+        <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b border-gray-200 pb-4">Add Sheets</h2>
+
         {sheets.length > 0 ? (
-          <ul className="mb-4">
-            {sheets.map((sheet, index) => (
-              <li key={index} className="flex items-center justify-between mb-2">
-                <span>{sheet.tableData[0]?.['Program Name'] || 'Untitled Program'}</span>
-                <input
-                  type="checkbox"
-                  checked={selectedSheets.includes(sheet._id)}
-                  onChange={() => handleSheetSelection(sheet._id)}
-                />
-              </li>
-            ))}
-          </ul>
+          <div className="mb-6 max-h-96 overflow-y-auto pr-2">
+            <div className="space-y-2">
+              {sheets.map((sheet, index) => (
+                <label
+                  key={index}
+                  className="flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 rounded-xl cursor-pointer transition-all border border-gray-200 hover:border-[#4CAF50]"
+                >
+                  <span className="text-gray-800 font-medium">
+                    {sheet.tableData[0]?.['Program Name'] || 'Untitled Program'}
+                  </span>
+                  <input
+                    type="checkbox"
+                    checked={selectedSheets.includes(sheet._id)}
+                    onChange={() => handleSheetSelection(sheet._id)}
+                    className="w-5 h-5 text-[#4CAF50] rounded focus:ring-[#4CAF50] cursor-pointer"
+                  />
+                </label>
+              ))}
+            </div>
+          </div>
         ) : (
-          <p>No sheets available.</p>
+          <p className="text-gray-500 text-center py-8">No sheets available.</p>
         )}
-        <div className="flex justify-end gap-4">
+        <div className="flex justify-end gap-4 border-t border-gray-200 pt-4">
           <button
             onClick={closeSheetModal}
-            className="text-blue-500 hover:text-blue-600"
+            className="px-6 py-2.5 text-gray-600 hover:text-gray-800 font-semibold rounded-xl hover:bg-gray-100 transition-all"
           >
             Cancel
           </button>
           <button
             onClick={handleSubmitSheets}
-            className="text-blue-500 hover:text-blue-600"
+            className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white px-6 py-2.5 rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
           >
             Add Sheets
           </button>
@@ -247,21 +260,23 @@ const SubFolder = () => {
         <Alert message={alertMessage} type={alertType} visible={alertVisible} setVisible={setAlertVisible} />
       )}
 
-      
-      {viewedTableData && (  
+
+      {viewedTableData && (
         <Modal
-          isOpen={isSheetModalOpen}
+          isOpen={isSheetModalOpen && viewedTableData}
           onRequestClose={closeSheetModal}
-          className="bg-gray-900 p-5 rounded-md max-w-4xl mx-auto"
-          overlayClassName="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-40"
+          className="bg-white p-8 rounded-3xl max-w-6xl mx-auto border border-gray-200 shadow-2xl"
+          overlayClassName="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50"
         >
-          <h2 className="text-xl font-semibold mb-4 text-white">Table Data</h2>
-          <div className="overflow-auto max-h-96">  
-            <table className="min-w-full text-white border-collapse border border-gray-600">
-              <thead className="bg-gray-700">
+          <div className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] -m-8 mb-6 p-6 rounded-t-3xl">
+            <h2 className="text-2xl font-bold text-white">Table Data</h2>
+          </div>
+          <div className="overflow-auto max-h-[32rem]">
+            <table className="min-w-full text-gray-800 border-collapse">
+              <thead className="bg-gradient-to-r from-gray-100 to-gray-200 sticky top-0">
                 <tr>
                   {Object.keys(viewedTableData[0]).map((key, index) => (
-                    <th key={index} className="border border-gray-600 px-2 py-1">
+                    <th key={index} className="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-800">
                       {key}
                     </th>
                   ))}
@@ -269,9 +284,9 @@ const SubFolder = () => {
               </thead>
               <tbody>
                 {viewedTableData.map((row, rowIndex) => (
-                  <tr key={rowIndex}>
+                  <tr key={rowIndex} className="hover:bg-gray-50 transition-colors">
                     {Object.values(row).map((value, colIndex) => (
-                      <td key={colIndex} className="border border-gray-600 px-2 py-1">
+                      <td key={colIndex} className="border border-gray-300 px-4 py-2 text-sm">
                         {value || 'N/A'}
                       </td>
                     ))}
@@ -280,10 +295,10 @@ const SubFolder = () => {
               </tbody>
             </table>
           </div>
-           
+
           <button
             onClick={closeSheetModal}
-            className="mt-4 bg-red-500 hover:bg-red-400 text-white py-1 px-4 rounded-md"
+            className="mt-6 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-2.5 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
           >
             Close
           </button>

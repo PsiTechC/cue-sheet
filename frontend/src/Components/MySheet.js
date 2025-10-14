@@ -5,7 +5,8 @@ import Modal from 'react-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import eLogo from '../Assets/e-logo.svg';
-import LoadingPlaceholder from './LoadingPlaceholder'
+import LoadingPlaceholder from './LoadingPlaceholder';
+import PageHeader from './PageHeader';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -53,15 +54,24 @@ const MySheets = () => {
   useEffect(() => {
     // Close the search input when clicked outside of it
     const handleClickOutside = (event) => {
-      if (searchInputRef.current && !searchInputRef.current.contains(event.target)) {
+      // Check if the click is outside both the search input and the search icon
+      if (
+        searchInputRef.current &&
+        !searchInputRef.current.contains(event.target) &&
+        !event.target.closest('.search-icon')
+      ) {
         setIsSearchActive(false);  // Close search input when clicking outside
       }
     };
-    document.addEventListener('click', handleClickOutside);
+
+    if (isSearchActive) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [isSearchActive]);
 
   const handleViewTable = (tableData) => {
     setViewedTableData(tableData);
@@ -85,122 +95,116 @@ const MySheets = () => {
   };
 
   return (
-    <div className="text-white" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
-      <div className="p-5 flex justify-between items-center border-b border-[#2E2E2E] bg-[#1E1E1E]">
-        <div className="flex justify-between w-full items-center">
-          {isMobile ? (
-            // On mobile, show search icon and hamburger menu
-            <>
-              <h2 className="text-xl font-normal text-center flex-grow">Saved Sheets</h2>
-              <FontAwesomeIcon
-                icon={faSearch}
-                className="text-white text-xl"
-                onClick={() => setIsSearchActive(!isSearchActive)}  // Toggle search active state
-              />
-            </>
-          ) : (
-            <>
-              <h2 className="text-xl font-normal text-center flex-grow ml-40">Saved Sheets</h2>
-              <input
-                type="text"
-                placeholder="Search sheets..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="ml-2 p-0.5 rounded-md bg-gray-800 text-white border border-gray-600 text-sm"
-              />
-            </>
-          )}
-        </div>
-      </div>
+    <div className="text-gray-800 min-h-screen bg-gradient-to-br from-[#f0f4f8] via-[#e8f0f7] to-[#dce8f5]" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
+      <PageHeader
+        title="Saved Sheets"
+        rightContent={
+          !isMobile && (
+            <input
+              type="text"
+              placeholder="Search sheets..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="p-2.5 w-64 rounded-xl bg-white text-gray-800 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent shadow-sm"
+            />
+          )
+        }
+      >
+        {isMobile && (
+          <FontAwesomeIcon
+            icon={faSearch}
+            className="search-icon text-gray-600 hover:text-[#4CAF50] text-xl cursor-pointer transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsSearchActive(!isSearchActive);
+            }}
+          />
+        )}
+      </PageHeader>
 
-      {/* Show search input only on mobile when active */}
       {isSearchActive && isMobile && (
-        <div className="p-4">
+        <div className="p-4 bg-white/50 backdrop-blur-sm">
           <input
-            ref={searchInputRef} // Attach the ref to the search input
+            ref={searchInputRef}
             type="text"
             placeholder="Search sheets..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="ml-2 p-0.5 rounded-md bg-gray-800 text-white border border-gray-600 text-sm w-full"
+            className="p-2.5 rounded-xl bg-white text-gray-800 border border-gray-200 text-sm w-full focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent shadow-sm"
           />
         </div>
       )}
 
-      <div className="p-4">
+      <div className="p-4 md:p-6 bg-white/50 backdrop-blur-sm mx-4 md:mx-6 rounded-2xl mt-4 md:mt-6">
         {loading ? (
-          // Render loading placeholders
-          Array.from({ length: 16 }).map((_, index) => (
-            <div
-              key={index}
-              className="mb-1.5 flex justify-between animate-pulse -mt-2 p-0.5 "
-            >
-              <div className="flex items-center space-x-1 w-1/4">
-                <LoadingPlaceholder width={20} height={22} />
-                <LoadingPlaceholder width={200} height={22} />
+          <div className="space-y-3">
+            {Array.from({ length: 16 }).map((_, index) => (
+              <div
+                key={index}
+                className="p-3 md:p-4 bg-white rounded-xl shadow-sm border border-gray-100 animate-pulse"
+              >
+                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
+                  <div className="flex items-center space-x-3 min-w-0 flex-1">
+                    <LoadingPlaceholder width={32} height={32} />
+                    <LoadingPlaceholder width="100%" height={22} />
+                  </div>
+                  <div className="flex justify-end">
+                    <LoadingPlaceholder width={120} height={38} />
+                  </div>
+                </div>
               </div>
-              {/* Placeholder for date */}
-              <div className="text-gray-400 flex justify-end mt-1 -mr-20">
-                <LoadingPlaceholder width={150} height={22} />
-              </div>
-              {/* Placeholder for buttons */}
-              <div className="w-1/3 flex justify-end -mr-4">
-                <LoadingPlaceholder width={40} height={22} />
-                <LoadingPlaceholder width={60} height={30} />
-              </div>
-            </div>
-
-          ))
+            ))}
+          </div>
         ) : filteredTables.length > 0 ? (
-          // Render actual data
-          filteredTables.map((table, index) => (
-            <div key={index} className="mb-2 flex justify-between items-center text-sm">
-              {/* Index and file name */}
-              <div className="flex items-center space-x-2 w-1/3">
-                <span>{index + 1}</span>
-                <h3
-                  className="font-normal break-words"
-                  title={table.tableData[0]?.["Program Name"] || "N/A"}
-                  style={{
-                    maxWidth: "200px",
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {truncateTableName(table.tableData[0]?.["Program Name"] || "N/A")}
-                </h3>
+          <div className="space-y-3">
+            {filteredTables.map((table, index) => (
+              <div key={index} className="p-3 md:p-4 bg-white rounded-xl shadow-sm border border-gray-100 hover:border-[#4CAF50] transition-all">
+                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
+                  {/* Left section - Number and Title */}
+                  <div className="flex items-center space-x-3 min-w-0 flex-1">
+                    <span className="w-8 h-8 bg-gradient-to-br from-[#4CAF50] to-[#66BB6A] rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                      {index + 1}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <h3
+                        className="font-semibold text-gray-800 text-sm md:text-base truncate"
+                        title={table.tableData[0]?.["Program Name"] || "N/A"}
+                      >
+                        {table.tableData[0]?.["Program Name"] || "N/A"}
+                      </h3>
+                      <p className="text-xs text-gray-500 mt-1">
+                        {new Date(table.savedAt).toLocaleString()}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Right section - Buttons */}
+                  <div className="flex space-x-2 md:space-x-3 flex-shrink-0 self-end md:self-center">
+                    {!isMobile && (
+                      <button
+                        onClick={() => handleViewTable(table.tableData)}
+                        className="text-blue-500 hover:text-blue-700 font-medium transition-colors text-sm whitespace-nowrap"
+                      >
+                        View
+                      </button>
+                    )}
+                    <CSVLink
+                      data={table.tableData}
+                      filename={`${table.tableData[0]["Program Name"] || "unknown"}_cue-sheet.csv`}
+                    >
+                      <button className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white py-2 px-3 md:px-4 rounded-lg text-xs md:text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg flex items-center space-x-2 whitespace-nowrap">
+                        <img src={eLogo} alt="Download Icon" className="h-3 w-3 md:h-4 md:w-4" />
+                        <span>Download</span>
+                      </button>
+                    </CSVLink>
+                  </div>
+                </div>
               </div>
-              {/* Saved date */}
-              <div className="w-1/3 text-gray-400 text-center">
-                {new Date(table.savedAt).toLocaleString()}
-              </div>
-              {/* Action buttons */}
-              <div className="w-1/3 flex justify-end space-x-2">
-                {!isMobile && (
-                  <button
-                    onClick={() => handleViewTable(table.tableData)}
-                    className="text-blue-500 hover:underline"
-                  >
-                    View
-                  </button>
-                )}
-                <CSVLink
-                  data={table.tableData}
-                  filename={`${table.tableData[0]["Program Name"] || "unknown"
-                    }_cue-sheet.csv`}
-                >
-                  <button className="bg-[#152e1e] hover:bg-[#1d402a] text-white py-1 px-4 rounded-md text-sm font-normal flex items-center">
-                    <img src={eLogo} alt="Download Icon" className="h-4 w-4" />
-                  </button>
-                </CSVLink>
-              </div>
-            </div>
-          ))
+            ))}
+          </div>
         ) : (
-          // Render message if no data
-          <div className="flex items-center justify-center min-h-screen -mt-10">
-            <p className="text-gray-400">No sheets saved yet.</p>
+          <div className="flex items-center justify-center py-20">
+            <p className="text-gray-500 text-base md:text-lg">No sheets saved yet.</p>
           </div>
         )}
       </div>
@@ -211,26 +215,26 @@ const MySheets = () => {
         <Modal
           isOpen={isModalOpen}
           onRequestClose={closeModal}
-          className="bg-gray-800 p-5 rounded-md max-w-3xl sm:max-w-2xl lg:max-w-4xl mx-auto"
-          overlayClassName="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-40"
+          className="bg-white p-6 rounded-3xl max-w-6xl mx-auto border border-gray-200 shadow-2xl"
+          overlayClassName="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50"
         >
-          <h2 className="text-xl font-semibold mb-4 text-white font-normal">Table Data</h2>
-          <div className="overflow-auto max-h-96">
-            <table className="min-w-full text-white border-collapse border border-gray-600">
-              <thead className="bg-gray-700">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">Table Data</h2>
+          <div className="overflow-auto max-h-[500px] rounded-xl border border-gray-200">
+            <table className="min-w-full text-gray-800 border-collapse">
+              <thead className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] sticky top-0">
                 <tr>
                   {Object.keys(viewedTableData[0]).map((key, index) => (
-                    <th key={index} className="border border-gray-600 px-2 py-1">
+                    <th key={index} className="border-b border-white/20 px-4 py-3 text-white font-semibold text-left">
                       {key}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="bg-white">
                 {viewedTableData.map((row, rowIndex) => (
-                  <tr key={rowIndex}>
+                  <tr key={rowIndex} className="hover:bg-gray-50 transition-colors">
                     {Object.values(row).map((value, colIndex) => (
-                      <td key={colIndex} className="border border-gray-600 px-2 py-1">
+                      <td key={colIndex} className="border-b border-gray-100 px-4 py-3 text-sm">
                         {value || 'N/A'}
                       </td>
                     ))}
@@ -242,7 +246,7 @@ const MySheets = () => {
 
           <button
             onClick={closeModal}
-            className="mt-4 bg-red-500 hover:bg-red-400 text-white py-1 px-4 rounded-md text-sm"
+            className="mt-6 px-6 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold transition-all"
           >
             Close
           </button>

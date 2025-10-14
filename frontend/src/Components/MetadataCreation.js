@@ -236,6 +236,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Alert from './Alert';
+import PageHeader from './PageHeader';
 
 const MetadataCreation = () => {
   const [metadata, setMetadata] = useState(null);
@@ -381,11 +382,9 @@ const MetadataCreation = () => {
   );
 
   return (
-<div className="text-white" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
-  <div className="p-5 flex justify-between items-center border-b border-[#2E2E2E] bg-[#1E1E1E]">
-    <h2 className="text-xl font-normal text-center flex-grow">Metadata Creation</h2>
-  </div>
-  <div className="p-4">
+<div className="text-gray-800 min-h-screen bg-gradient-to-br from-[#f0f4f8] via-[#e8f0f7] to-[#dce8f5]" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
+  <PageHeader title="Metadata Creation" />
+  <div className="p-[22px]">
     <p className="text-center text-gray-400 text-lg mt-20">Access Restricted by Admin</p>
   </div>
 </div>
