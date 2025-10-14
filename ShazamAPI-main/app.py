@@ -70,22 +70,41 @@ def extract_chunk_number(filename):
     match = re.search(r'chunk(\d+)', filename)
     return int(match.group(1)) if match else float('inf')  
 
+import subprocess
+from pathlib import Path
+
+ALLOWED_EXTS = {".mp3", ".mp4"}
+
+def allowed_file(filename: str) -> bool:
+    return Path(filename).suffix.lower() in ALLOWED_EXTS
+
+def convert_mp4_to_mp3(src_path: str, dst_path: str) -> None:
+    """
+    Uses ffmpeg to extract audio to MP3.
+    Requires ffmpeg to be available on PATH.
+    """
+    cmd = [
+        "ffmpeg", "-y", "-i", src_path,
+        "-vn",                   # no video
+        "-acodec", "libmp3lame", # mp3 encoder
+        "-q:a", "2",             # good quality VBR
+        dst_path
+    ]
+    # Raise on failure so the caller can return 500
+    completed = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if completed.returncode != 0:
+        raise RuntimeError(completed.stderr.decode("utf-8", errors="ignore"))
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
     global total_chunks, processed_chunks, video_duration
 
-    user_id = str(uuid.uuid4())  
+    user_id = str(uuid.uuid4())
     user_chunks_folder = os.path.join(app.config['CHUNKS_FOLDER'], user_id)
     user_eps_folder = os.path.join(app.config['UPLOAD_FOLDER'], user_id)
 
     print(f"Creating user-specific folder: {user_chunks_folder}")
     print(f"Creating user-specific eps folder: {user_eps_folder}")
-
-    tv_channel = request.form.get('tvChannel')
-    episode_number = request.form.get('episodeNumber')
-    on_air_date = request.form.get('onAirDate')
-    movie_album = request.form.get('movieAlbum')
 
     if 'file' not in request.files:
         print("No file part found in the request")
@@ -96,45 +115,76 @@ def upload_file():
         print("No file selected")
         return jsonify({"error": "No selected file"}), 400
 
-    if file:
-        filename = secure_filename(file.filename)
-        if not os.path.exists(user_eps_folder):
-            os.makedirs(user_eps_folder)  
-        filepath = os.path.join(user_eps_folder, filename)
-        file.save(filepath)
+    filename = secure_filename(file.filename)
 
-        print(f"File saved at: {filepath}")
+    # Validate extension
+    if not allowed_file(filename):
+        return jsonify({"error": "Unsupported file type. Please upload .mp3 or .mp4"}), 400
 
-        try:
-            audio = MP3(filepath)
-            video_duration_in_seconds = audio.info.length
-            video_duration_in_seconds = round(video_duration_in_seconds)
-            print(f"File duration: {video_duration_in_seconds} seconds")
-        except Exception as e:
-            print(f"Error processing MP3 file: {e}")
-            return jsonify({"error": "Error processing MP3 file"}), 500
+    # Ensure folders exist
+    os.makedirs(user_eps_folder, exist_ok=True)
+    os.makedirs(user_chunks_folder, exist_ok=True)
 
-        minutes, seconds = divmod(int(video_duration_in_seconds), 60)
-        hours, minutes = divmod(minutes, 60)
-        video_duration = f"{str(hours).zfill(2)}:{str(minutes).zfill(2)}:{str(seconds).zfill(2)}"
+    # Save original upload
+    upload_path = os.path.join(user_eps_folder, filename)
+    file.save(upload_path)
+    print(f"File saved at: {upload_path}")
 
-        if not os.path.exists(user_chunks_folder):
-            os.makedirs(user_chunks_folder)
-            print(f"Created directory for chunks: {user_chunks_folder}")
+    # If MP4, convert to MP3
+    ext = Path(filename).suffix.lower()
+    audio_path = upload_path
+    try:
+        if ext == ".mp4":
+            base = Path(filename).stem
+            mp3_name = f"{base}.mp3"
+            mp3_path = os.path.join(user_eps_folder, mp3_name)
+            print("Converting MP4 -> MP3...")
+            convert_mp4_to_mp3(upload_path, mp3_path)
+            audio_path = mp3_path
+            # Optional: remove original MP4 to save space
+            try:
+                os.remove(upload_path)
+            except OSError:
+                pass
+            print(f"Converted and using audio path: {audio_path}")
+    except Exception as e:
+        print(f"Error converting MP4 to MP3: {e}")
+        return jsonify({"error": "Error converting MP4 to MP3"}), 500
 
-        try:
-            split_audio_file(filepath, user_chunks_folder)  
-            print(f"Audio file split into chunks in: {user_chunks_folder}")
-        except Exception as e:
-            print(f"Error splitting audio file: {e}")
-            return jsonify({"error": "Error splitting audio file"}), 500
+    # Read duration from the MP3 we will process
+    try:
+        audio = MP3(audio_path)
+        video_duration_in_seconds = round(audio.info.length)
+        print(f"Audio duration: {video_duration_in_seconds} seconds")
+    except Exception as e:
+        print(f"Error processing MP3 file: {e}")
+        return jsonify({"error": "Error processing MP3 file"}), 500
 
-        total_chunks = len([f for f in os.listdir(user_chunks_folder) if f.endswith('.mp3')])
-        processed_chunks = 0  
+    # HH:MM:SS string
+    minutes, seconds = divmod(int(video_duration_in_seconds), 60)
+    hours, minutes = divmod(minutes, 60)
+    video_duration = f"{str(hours).zfill(2)}:{str(minutes).zfill(2)}:{str(seconds).zfill(2)}"
 
-        print(f"Total chunks created: {total_chunks}, {video_duration}")
+    # Split into chunks (uses the MP3 path, regardless of original filetype)
+    try:
+        split_audio_file(audio_path, user_chunks_folder)
+        print(f"Audio file split into chunks in: {user_chunks_folder}")
+    except Exception as e:
+        print(f"Error splitting audio file: {e}")
+        return jsonify({"error": "Error splitting audio file"}), 500
 
-        return jsonify({"fileName": filename, "videoDuration": video_duration, "userId": user_id, "Duration_seconds": video_duration_in_seconds})
+    total_chunks = len([f for f in os.listdir(user_chunks_folder) if f.endswith('.mp3')])
+    processed_chunks = 0
+    print(f"Total chunks created: {total_chunks}, {video_duration}")
+
+    # Return the MP3 filename we actually processed (useful for downstream display)
+    returned_name = os.path.basename(audio_path)
+    return jsonify({
+        "fileName": returned_name,
+        "videoDuration": video_duration,
+        "userId": user_id,
+        "Duration_seconds": video_duration_in_seconds
+    })
     
 
 from test import download_s3_folder
