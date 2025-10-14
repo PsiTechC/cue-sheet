@@ -57,8 +57,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                 className={({ isActive }) =>
                   `p-3 rounded-xl flex items-center transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] text-white font-semibold shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#4CAF50]'
+                      ? 'bg-gradient-to-r from-[#10B981] to-[#14B8A6] text-white font-semibold shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#10B981]'
                   }`
                 }
               >
@@ -73,8 +73,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                 className={({ isActive }) =>
                   `p-3 rounded-xl flex items-center transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] text-white font-semibold shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#4CAF50]'
+                      ? 'bg-gradient-to-r from-[#10B981] to-[#14B8A6] text-white font-semibold shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#10B981]'
                   }`
                 }
               >
@@ -89,8 +89,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                 className={({ isActive }) =>
                   `p-3 rounded-xl flex items-center transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] text-white font-semibold shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#4CAF50]'
+                      ? 'bg-gradient-to-r from-[#10B981] to-[#14B8A6] text-white font-semibold shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#10B981]'
                   }`
                 }
               >
@@ -105,8 +105,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                 className={({ isActive }) =>
                   `p-3 rounded-xl flex items-center transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] text-white font-semibold shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#4CAF50]'
+                      ? 'bg-gradient-to-r from-[#10B981] to-[#14B8A6] text-white font-semibold shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#10B981]'
                   }`
                 }
               >
@@ -121,8 +121,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                 className={({ isActive }) =>
                   `p-3 rounded-xl flex items-center transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] text-white font-semibold shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#4CAF50]'
+                      ? 'bg-gradient-to-r from-[#10B981] to-[#14B8A6] text-white font-semibold shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#10B981]'
                   }`
                 }
               >
@@ -137,8 +137,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                 className={({ isActive }) =>
                   `p-3 rounded-xl flex items-center transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] text-white font-semibold shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#4CAF50]'
+                      ? 'bg-gradient-to-r from-[#10B981] to-[#14B8A6] text-white font-semibold shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#10B981]'
                   }`
                 }
               >
@@ -153,8 +153,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                 className={({ isActive }) =>
                   `p-3 rounded-xl flex items-center transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] text-white font-semibold shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#4CAF50]'
+                      ? 'bg-gradient-to-r from-[#10B981] to-[#14B8A6] text-white font-semibold shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#10B981]'
                   }`
                 }
               >
@@ -169,8 +169,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                 className={({ isActive }) =>
                   `p-3 rounded-xl flex items-center transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] text-white font-semibold shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#4CAF50]'
+                      ? 'bg-gradient-to-r from-[#10B981] to-[#14B8A6] text-white font-semibold shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#10B981]'
                   }`
                 }
               >
@@ -185,8 +185,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                 className={({ isActive }) =>
                   `p-3 rounded-xl flex items-center transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] text-white font-semibold shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#4CAF50]'
+                      ? 'bg-gradient-to-r from-[#10B981] to-[#14B8A6] text-white font-semibold shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#10B981]'
                   }`
                 }
               >
@@ -201,8 +201,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                 className={({ isActive }) =>
                   `p-3 rounded-xl flex items-center transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] text-white font-semibold shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#4CAF50]'
+                      ? 'bg-gradient-to-r from-[#10B981] to-[#14B8A6] text-white font-semibold shadow-md'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#10B981]'
                   }`
                 }
               >

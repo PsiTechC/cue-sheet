@@ -72,12 +72,12 @@ const Dashboard = () => {
 
   
   return (
-    <div className="flex h-screen bg-gradient-to-br from-[#f0f4f8] via-[#e8f0f7] to-[#dce8f5]">
+    <div className="flex h-screen bg-gradient-to-br from-surface-50 via-surface-100 to-surface-200">
       {/* Conditionally render the toggle button */}
       {!isSidebarOpen && (
         <button
           onClick={toggleSidebar}
-          className="md:hidden p-4 text-gray-700 z-50 fixed top-2 left-1 bg-white rounded-lg shadow-md"
+          className="md:hidden p-4 text-surface-700 hover:text-secondary-700 z-50 fixed top-2 left-1 bg-white rounded-lg shadow-material-2 hover:shadow-material-3 transition-all"
         >
           <FontAwesomeIcon icon={faBars} size="1x" />
         </button>
@@ -86,12 +86,12 @@ const Dashboard = () => {
       <div
         className={`transition-all duration-300 ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } md:translate-x-0 md:w-64 bg-white border-r border-gray-200 h-full fixed z-40 shadow-lg`}
+        } md:translate-x-0 md:w-64 bg-white border-r border-surface-200 h-full fixed z-40 shadow-material-3`}
       >
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       </div>
 
-      <div className="flex-grow md:ml-64 bg-gradient-to-br from-[#f0f4f8] via-[#e8f0f7] to-[#dce8f5] overflow-y-auto">
+      <div className="flex-grow md:ml-64 bg-gradient-to-br from-surface-50 via-surface-100 to-surface-200 overflow-y-auto">
         <Routes>
           <Route index element={<Project />} />
           <Route path="project" element={<Project />} />
@@ -105,7 +105,7 @@ const Dashboard = () => {
           <Route path="metamorphosis" element={<Metamorphosis/>} />
           <Route path="genreidentification" element={<GenreIdentification/>} />
           <Route path="autodubbing" element={<AutoDubbing/>} />
-          <Route path="/account" element={<Account />} />
+          <Route path="account" element={<Account />} />
         </Routes>
       </div>
     </div>

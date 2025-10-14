@@ -97,105 +97,173 @@ const Account = () => {
   };
 
   return (
-<div className='text-gray-800 min-h-screen bg-gradient-to-br from-[#f0f4f8] via-[#e8f0f7] to-[#dce8f5]'>
+<div className='min-h-screen bg-surface-50'>
   <PageHeader title="Account" />
   {!isRateCardVisible ? (
-    <div className='p-8 m-6 bg-white/50 backdrop-blur-sm rounded-2xl'>
-      <div className='bg-white p-8 rounded-2xl shadow-md border border-gray-100'>
-        <h2 className='text-2xl font-bold mb-2 text-gray-800'>Hi there, </h2>
-        <p className='text-lg text-gray-600 mb-6'>
-          {error
-            ? error
-            : email
-              ? email
-              : <LoadingPlaceholder width={300} height={23} />}
-        </p>
-
-        <div className='bg-gradient-to-r from-[#f0f4f8] to-[#e8f0f7] p-6 rounded-xl mb-6'>
-          <h3 className='text-lg font-semibold text-gray-800'>
-            Your Current Balance:
-            <span className='text-[#4CAF50] text-2xl font-bold ml-2'>
-              {userMinutes < 1 ? userMinutes * 60 : userMinutes} {userMinutes < 1 ? 'seconds' : 'minutes'}
-            </span>
-          </h3>
+    <div className='max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6 md:py-8'>
+      {/* Account Info Card */}
+      <div className='bg-white border border-surface-200 rounded-lg shadow-sm mb-4 sm:mb-6'>
+        <div className='border-b border-surface-200 px-4 sm:px-6 py-3 sm:py-4 bg-surface-50'>
+          <h2 className='text-base sm:text-lg font-semibold text-surface-900'>Account Information</h2>
         </div>
+        <div className='p-4 sm:p-6'>
+          <div className='grid gap-4 sm:gap-6 md:grid-cols-2'>
+            <div>
+              <label className='text-xs font-medium text-surface-500 uppercase tracking-wide mb-2 block'>Email Address</label>
+              <p className='text-sm sm:text-base text-surface-900 font-medium break-all'>
+                {error
+                  ? error
+                  : email
+                    ? email
+                    : <LoadingPlaceholder width={250} height={20} />}
+              </p>
+            </div>
+            <div>
+              <label className='text-xs font-medium text-surface-500 uppercase tracking-wide mb-2 block'>Account Status</label>
+              <span className='inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-success-50 text-success-700 border border-success-200'>
+                <span className='w-1.5 h-1.5 bg-success-500 rounded-full mr-2'></span>
+                Active
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        <div className="flex justify-start space-x-4">
-          <button
-            onClick={() => {
-              handleForgotPassword();
-              setIsModalOpen(true);
-            }}
-            className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-3 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
-          >
-            Change Password
-          </button>
+      {/* Balance Card */}
+      <div className='bg-white border border-surface-200 rounded-lg shadow-sm mb-4 sm:mb-6'>
+        <div className='border-b border-surface-200 px-4 sm:px-6 py-3 sm:py-4 bg-surface-50'>
+          <h2 className='text-base sm:text-lg font-semibold text-surface-900'>Usage Balance</h2>
+        </div>
+        <div className='p-4 sm:p-6'>
+          <div className='flex flex-col gap-4'>
+            <div>
+              <p className='text-xs sm:text-sm text-surface-500 mb-2'>Available Minutes</p>
+              <div className='flex items-baseline flex-wrap gap-2'>
+                <p className='text-2xl sm:text-3xl md:text-4xl font-bold text-surface-900 break-all'>
+                  {userMinutes < 1
+                    ? (userMinutes * 60).toFixed(2)
+                    : Number(userMinutes).toFixed(2)}
+                </p>
+                <span className='text-base sm:text-lg md:text-xl font-normal text-surface-500'>
+                  {userMinutes < 1 ? 'sec' : 'min'}
+                </span>
+              </div>
+            </div>
+            <div>
+              <button
+                onClick={toggleRateCard}
+                className="w-full bg-secondary-600 hover:bg-secondary-700 text-white py-2.5 px-5 rounded font-medium text-sm transition-colors uppercase tracking-wide"
+              >
+                Add Balance
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-          <button
-            onClick={toggleRateCard}
-            className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white py-3 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
-          >
-            Top Up
-          </button>
+      {/* Security Settings */}
+      <div className='bg-white border border-surface-200 rounded-lg shadow-sm'>
+        <div className='border-b border-surface-200 px-4 sm:px-6 py-3 sm:py-4 bg-surface-50'>
+          <h2 className='text-base sm:text-lg font-semibold text-surface-900'>Security Settings</h2>
+        </div>
+        <div className='p-4 sm:p-6'>
+          <div className='flex flex-col gap-4'>
+            <div>
+              <p className='font-medium text-surface-900 mb-1 text-sm sm:text-base'>Password</p>
+              <p className='text-xs sm:text-sm text-surface-500'>Manage your account password</p>
+            </div>
+            <button
+              onClick={() => {
+                handleForgotPassword();
+                setIsModalOpen(true);
+              }}
+              className="w-full border border-surface-300 hover:border-surface-400 hover:bg-surface-50 text-surface-700 py-2.5 px-4 rounded font-medium text-sm transition-colors"
+            >
+              Change Password
+            </button>
+          </div>
         </div>
       </div>
     </div>
   ) : (
-    <div className='p-8 m-6 bg-white/50 backdrop-blur-sm rounded-2xl'>
-      <RateCard />
-      <button
-        onClick={toggleRateCard}
-        className="mt-6 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-3 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
-      >
-        Close
-      </button>
+    <div className='max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6 md:py-8'>
+      <div className='mb-4'>
+        <button
+          onClick={toggleRateCard}
+          className="inline-flex items-center text-sm text-surface-600 hover:text-surface-900 font-medium"
+        >
+          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to Account
+        </button>
+      </div>
+      <div className='bg-white border border-surface-200 rounded-lg shadow-sm overflow-hidden'>
+        <RateCard />
+      </div>
     </div>
   )}
 
   {isModalOpen && (
-    <div className='fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-md z-50'>
-      <div className="bg-white p-8 rounded-3xl max-w-md w-full relative border border-gray-200 shadow-2xl">
-        <button
-          onClick={() => setIsModalOpen(false)}
-          className="absolute top-4 right-4 text-gray-600 hover:text-red-600 text-3xl font-light transition-colors"
-        >
-          &times;
-        </button>
-
-        <div className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] -m-8 mb-6 p-6 rounded-t-3xl">
-          <h2 className='text-2xl font-bold text-white'>Reset Your Password</h2>
+    <div className='fixed inset-0 flex items-center justify-center bg-black/40 z-50 p-4'>
+      <div className="bg-white rounded-lg max-w-md w-full border border-surface-200 shadow-xl">
+        <div className="border-b border-surface-200 px-6 py-4 flex items-center justify-between bg-surface-50">
+          <h2 className='text-lg font-semibold text-surface-900'>Reset Password</h2>
+          <button
+            onClick={() => setIsModalOpen(false)}
+            className="text-surface-400 hover:text-surface-600 transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
 
-        <form>
-          <div className="mb-4">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">OTP Code</label>
+        <form className="p-6">
+          <div className="mb-5">
+            <label className="block text-xs font-medium text-surface-700 mb-2 uppercase tracking-wide">OTP Code</label>
             <input
               type="text"
-              placeholder="Enter OTP"
+              placeholder="Enter OTP sent to your email"
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
-              className="w-full px-4 py-3 border text-gray-800 border-gray-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition shadow-sm"
+              className="w-full px-4 py-2.5 border text-surface-900 border-surface-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-secondary-500 focus:border-secondary-500 transition bg-white"
               required
             />
           </div>
           <div className="mb-6">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">New Password</label>
+            <label className="block text-xs font-medium text-surface-700 mb-2 uppercase tracking-wide">New Password</label>
             <input
               type="password"
-              placeholder="Enter New Password"
+              placeholder="Enter new password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              className="w-full px-4 py-3 border text-gray-800 border-gray-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent transition shadow-sm"
+              className="w-full px-4 py-2.5 border text-surface-900 border-surface-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-secondary-500 focus:border-secondary-500 transition bg-white"
               required
             />
           </div>
-          <button
-            onClick={handleResetPassword}
-            className="w-full bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white py-3 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
-          >
-            Reset Password
-          </button>
-          {resetError && <p className="text-red-600 mt-4 text-sm font-medium">{resetError}</p>}
+
+          {resetError && (
+            <div className="mb-4 p-3 bg-error-50 border border-error-200 rounded text-sm text-error-700">
+              {resetError}
+            </div>
+          )}
+
+          <div className="flex gap-3">
+            <button
+              type="button"
+              onClick={() => setIsModalOpen(false)}
+              className="flex-1 border border-surface-300 hover:bg-surface-50 text-surface-700 py-2.5 px-4 rounded font-medium text-sm transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleResetPassword}
+              className="flex-1 bg-secondary-600 hover:bg-secondary-700 text-white py-2.5 px-4 rounded font-medium text-sm transition-colors uppercase tracking-wide"
+            >
+              Update Password
+            </button>
+          </div>
         </form>
       </div>
     </div>

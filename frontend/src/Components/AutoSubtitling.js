@@ -95,80 +95,166 @@ const AutoSubtitling = () => {
   };
 
   return (
-    <div className="text-gray-800 min-h-screen bg-gradient-to-br from-[#f0f4f8] via-[#e8f0f7] to-[#dce8f5]" style={{ fontFamily: "Helvetica Neue, Arial, sans-serif" }}>
+    <div className="min-h-screen bg-surface-50">
       <PageHeader title="Auto Subtitling" />
-      <div className="p-6">
-        <div className="mb-6 flex space-x-4">
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white py-2.5 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
-          >
-            Upload Audio
-          </button>
-          <button
-            onClick={handleStartProcessing}
-            disabled={isProcessing}
-            className={`py-2.5 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md ${isProcessing ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white hover:shadow-lg'}`}
-          >
-            Start Process
-          </button>
-        </div>
-        <div className="mb-4">
-          <textarea
-            value={transcription}
-            onChange={(e) => setTranscription(e.target.value)}
-            placeholder="Subtitles will appear here..."
-            rows="10"
-            className="w-full bg-[#fcfcfc] text-black p-2 rounded"
-          ></textarea>
-        </div>
-        <div>
-          <button
-            onClick={handleDownload}
-            disabled={!transcription}
-            className="bg-[#669de3] hover:bg-[#9dc1f5] text-white py-2 px-4 rounded-md transition-all transform text-sm"
-          >
-            Download Transcription (VTT)
-          </button>
+      <div className="max-w-6xl mx-auto p-6 md:p-8">
+        {/* Main Content Card */}
+        <div className="bg-white border border-surface-200 rounded-lg shadow-sm">
+          {/* Header */}
+          <div className="border-b border-surface-200 px-6 py-4 bg-surface-50">
+            <h2 className="text-lg font-semibold text-surface-900">Audio Transcription</h2>
+            <p className="text-sm text-surface-600 mt-1">Upload an audio file to generate automatic subtitles</p>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="p-6 border-b border-surface-200">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="bg-secondary-600 hover:bg-secondary-700 text-white py-2.5 px-6 rounded font-medium text-sm transition-colors uppercase tracking-wide flex items-center justify-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+                Upload Audio
+              </button>
+              <button
+                onClick={handleStartProcessing}
+                disabled={isProcessing || !filePath}
+                className={`py-2.5 px-6 rounded font-medium text-sm transition-colors uppercase tracking-wide flex items-center justify-center gap-2 ${
+                  isProcessing || !filePath
+                    ? 'bg-surface-200 text-surface-400 cursor-not-allowed'
+                    : 'border border-surface-300 hover:bg-surface-50 text-surface-700'
+                }`}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                {isProcessing ? 'Processing...' : 'Start Process'}
+              </button>
+            </div>
+          </div>
+
+          {/* Transcription Area */}
+          <div className="p-6">
+            <label className="block text-xs font-medium text-surface-700 mb-2 uppercase tracking-wide">
+              Transcription Output
+            </label>
+            <textarea
+              value={transcription}
+              onChange={(e) => setTranscription(e.target.value)}
+              placeholder="Subtitles will appear here after processing..."
+              rows="12"
+              className="w-full px-4 py-3 border border-surface-300 rounded text-surface-900 text-sm focus:outline-none focus:ring-1 focus:ring-secondary-500 focus:border-secondary-500 transition bg-white font-mono resize-none"
+            ></textarea>
+
+            {/* Download Button */}
+            {transcription && (
+              <div className="mt-4 flex justify-end">
+                <button
+                  onClick={handleDownload}
+                  className="bg-primary-600 hover:bg-primary-700 text-white py-2.5 px-5 rounded font-medium text-sm transition-colors uppercase tracking-wide flex items-center gap-2"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  Download VTT File
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
+
+      {/* Processing Loader */}
       {isProcessing && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-5 fixed-loader-container">
-          <div className="loader"></div>
+        <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+          <div className="bg-white rounded-lg p-8 shadow-xl text-center">
+            <div className="loader mb-4"></div>
+            <p className="text-surface-700 font-medium">Processing audio file...</p>
+            <p className="text-sm text-surface-500 mt-2">This may take a few moments</p>
+          </div>
         </div>
       )}
+
+      {/* Upload Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-gray-800 p-6 rounded-md max-w-sm w-full">
-            <h2 className="text-xl font-semibold text-white mb-4">Upload Audio</h2>
-            <input type="file" accept=".mp3,.wav" onChange={handleFileChange} className="w-full mb-4 text-gray-300" />
-            <label className="text-white block mb-2">Select Language:</label>
-            <select
-              value={language}
-              onChange={(e) => setLanguage(e.target.value)}
-              className="w-full mb-4 bg-gray-900 text-white py-2 px-3 rounded"
-            >
-              <option value="en-US">English (US)</option>
-              <option value="hi-IN">Hindi (India)</option>
-              <option value="es">Spanish (Spain)</option>
-            </select>
-            <div className="flex justify-end">
-              <button
-                onClick={handleUpload}
-                className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded mr-2 text-sm"
-              >
-                Upload
-              </button>
+        <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-md w-full border border-surface-200 shadow-xl">
+            {/* Modal Header */}
+            <div className="border-b border-surface-200 px-6 py-4 flex items-center justify-between bg-surface-50">
+              <h2 className="text-lg font-semibold text-surface-900">Upload Audio File</h2>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="bg-red-600 hover:bg-red-700 text-white py-2 px-3 rounded text-sm"
+                className="text-surface-400 hover:text-surface-600 transition-colors"
               >
-                Cancel
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
               </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6">
+              <div className="mb-5">
+                <label className="block text-xs font-medium text-surface-700 mb-2 uppercase tracking-wide">
+                  Audio File <span className="text-error-500">*</span>
+                </label>
+                <div className="relative">
+                  <input
+                    type="file"
+                    accept=".mp3,.wav"
+                    onChange={handleFileChange}
+                    className="w-full px-4 py-2.5 border border-surface-300 rounded text-surface-900 text-sm focus:outline-none focus:ring-1 focus:ring-secondary-500 focus:border-secondary-500 transition bg-white file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-medium file:bg-secondary-50 file:text-secondary-700 hover:file:bg-secondary-100"
+                  />
+                </div>
+                <p className="text-xs text-surface-500 mt-1">Supported formats: MP3, WAV</p>
+                {file && (
+                  <p className="text-xs text-secondary-600 mt-2 font-medium">Selected: {file.name}</p>
+                )}
+              </div>
+
+              <div className="mb-6">
+                <label className="block text-xs font-medium text-surface-700 mb-2 uppercase tracking-wide">
+                  Language <span className="text-error-500">*</span>
+                </label>
+                <select
+                  value={language}
+                  onChange={(e) => setLanguage(e.target.value)}
+                  className="w-full px-4 py-2.5 border border-surface-300 rounded text-surface-900 text-sm focus:outline-none focus:ring-1 focus:ring-secondary-500 focus:border-secondary-500 transition bg-white"
+                >
+                  <option value="en-US">English (US)</option>
+                  <option value="hi-IN">Hindi (India)</option>
+                  <option value="es">Spanish (Spain)</option>
+                </select>
+              </div>
+
+              {/* Modal Actions */}
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="flex-1 border border-surface-300 hover:bg-surface-50 text-surface-700 py-2.5 px-4 rounded font-medium text-sm transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleUpload}
+                  disabled={!file}
+                  className={`flex-1 py-2.5 px-4 rounded font-medium text-sm transition-colors uppercase tracking-wide ${
+                    !file
+                      ? 'bg-surface-200 text-surface-400 cursor-not-allowed'
+                      : 'bg-secondary-600 hover:bg-secondary-700 text-white'
+                  }`}
+                >
+                  Upload
+                </button>
+              </div>
             </div>
           </div>
         </div>
       )}
+
       <Alert message={alertMessage} type={alertType} visible={alertVisible} setVisible={setAlertVisible} />
     </div>
   );

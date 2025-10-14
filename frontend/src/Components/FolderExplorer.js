@@ -5,7 +5,7 @@ import Alert from './Alert';
 
 const PYTHON_API_BASE = process.env.REACT_APP_API_BASE_URL_P;
 
-const S3FileExplorer = ({ accessKey, secretKey, bucketName, onUUIDsGenerated, onVidDur }) => {
+const S3FileExplorer = ({ accessKey, secretKey, bucketName, onUUIDsGenerated, onVidDur, onUploadComplete }) => {
     const [items, setItems] = useState([]); // Holds files and folders in the current path
     const [currentPath, setCurrentPath] = useState(''); // Current folder path
     const [loading, setLoading] = useState(false);
@@ -46,8 +46,11 @@ const S3FileExplorer = ({ accessKey, secretKey, bucketName, onUUIDsGenerated, on
     };
 
     useEffect(() => {
-        fetchS3Data(currentPath);
-    }, [currentPath]);
+        // Only fetch S3 data if we have valid credentials
+        if (accessKey && secretKey && bucketName) {
+            fetchS3Data(currentPath);
+        }
+    }, [currentPath, accessKey, secretKey, bucketName]);
 
     const handleBreadcrumbClick = (path) => {
         setCurrentPath(path);
@@ -121,6 +124,11 @@ const S3FileExplorer = ({ accessKey, secretKey, bucketName, onUUIDsGenerated, on
                 onUUIDsGenerated(allParentUUIDs);
                 onVidDur(totalVideoDuration)
             }
+
+            // Close modal after successful upload
+            if (onUploadComplete) {
+                onUploadComplete(selectedItems.length, totalVideoDuration);
+            }
         } catch (error) {
             console.error('Error uploading files to S3:', error);
             setAlertMessage('An error occurred while uploading files');
@@ -135,20 +143,34 @@ const S3FileExplorer = ({ accessKey, secretKey, bucketName, onUUIDsGenerated, on
 
     return (
 <div>
-    <Breadcrumb>
-        <Breadcrumb.Item>
-            <a onClick={() => setCurrentPath('')}>{bucketName}</a>
-        </Breadcrumb.Item>
-        {currentPath.split('/').filter(Boolean).map((part, index, arr) => {
-            const path = arr.slice(0, index + 1).join('/') + '/';
-            return (
-                <Breadcrumb.Item key={path}>
-                    <a onClick={() => handleBreadcrumbClick(path)}>{part}</a>
+    {!accessKey || !secretKey || !bucketName ? (
+        <div style={{
+            padding: '20px',
+            backgroundColor: '#fff3cd',
+            border: '1px solid #ffc107',
+            borderRadius: '8px',
+            marginBottom: '20px'
+        }}>
+            <p style={{ margin: 0, color: '#856404' }}>
+                <strong>S3 credentials not configured.</strong> Please configure your AWS Access Key, Secret Key, and Bucket Name in the settings (gear icon) before browsing S3 folders.
+            </p>
+        </div>
+    ) : (
+        <>
+            <Breadcrumb>
+                <Breadcrumb.Item>
+                    <a onClick={() => setCurrentPath('')}>{bucketName}</a>
                 </Breadcrumb.Item>
-            );
-        })}
-    </Breadcrumb>
-    <Spin spinning={loading}>
+                {currentPath.split('/').filter(Boolean).map((part, index, arr) => {
+                    const path = arr.slice(0, index + 1).join('/') + '/';
+                    return (
+                        <Breadcrumb.Item key={path}>
+                            <a onClick={() => handleBreadcrumbClick(path)}>{part}</a>
+                        </Breadcrumb.Item>
+                    );
+                })}
+            </Breadcrumb>
+            <Spin spinning={loading}>
         <div
             style={{
                 display: 'flex',
@@ -187,35 +209,37 @@ const S3FileExplorer = ({ accessKey, secretKey, bucketName, onUUIDsGenerated, on
                 </div>
             ))}
         </div>
-    </Spin>
+            </Spin>
 
-    {/* Dark overlay and centered loader */}
-    {isUploading && (
-        <div
-            style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                backgroundColor: 'rgba(0, 0, 0, 0.6)', // Slightly darken the screen
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                zIndex: 1000, // Ensure it's above other content
-            }}
-        >
-            <div
-                className="loader"
-            ></div>
-        </div>
+            {/* Dark overlay and centered loader */}
+            {isUploading && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'rgba(0, 0, 0, 0.6)', // Slightly darken the screen
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: 1000, // Ensure it's above other content
+                    }}
+                >
+                    <div
+                        className="loader"
+                    ></div>
+                </div>
+            )}
+
+            <div style={{ marginTop: '20px' }}>
+                <Button type="primary" onClick={handleFileUploadS3} loading={isUploading}>
+                    Upload Selected
+                </Button>
+            </div>
+        </>
     )}
-
-    <div style={{ marginTop: '20px' }}>
-        <Button type="primary" onClick={handleFileUploadS3} loading={isUploading}>
-            Upload Selected
-        </Button>
-    </div>
     <Alert
         message={alertMessage}
         type={alertType}

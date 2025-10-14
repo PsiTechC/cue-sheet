@@ -212,7 +212,7 @@ const Project = () => {
       {/* Action Bar */}
       <div className="p-4 md:p-6 flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 bg-white/50 backdrop-blur-sm">
         <button
-          className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white py-3 md:py-2.5 px-6 rounded-xl text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2 transform hover:scale-105 w-full sm:w-auto"
+          className="bg-gradient-to-r from-[#10B981] to-[#14B8A6] hover:from-[#059669] hover:to-[#0d9488] text-white py-3 md:py-2.5 px-6 rounded-xl text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2 transform hover:scale-105 w-full sm:w-auto"
           onClick={openModal}
         >
           <FontAwesomeIcon icon={faPlus} className="text-sm" />
@@ -226,7 +226,7 @@ const Project = () => {
             placeholder="Search projects..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 pr-4 py-3 md:py-2 w-full sm:w-64 rounded-xl bg-white text-gray-800 border border-gray-200 focus:border-[#4CAF50] focus:outline-none focus:ring-2 focus:ring-[#4CAF50]/30 text-sm transition-all shadow-sm"
+            className="pl-10 pr-4 py-3 md:py-2 w-full sm:w-64 rounded-xl bg-white text-gray-800 border border-gray-200 focus:border-[#10B981] focus:outline-none focus:ring-2 focus:ring-[#10B981]/30 text-sm transition-all shadow-sm"
           />
         </div>
       </div>
@@ -248,16 +248,16 @@ const Project = () => {
           filteredWorkspaces.map((workspace, index) => (
             <div
               key={index}
-              className="group bg-white p-4 md:p-6 rounded-2xl shadow-md border border-gray-100 hover:border-[#4CAF50] transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-xl relative overflow-hidden min-h-[140px] md:min-h-[160px]"
+              className="group bg-white p-4 md:p-6 rounded-2xl shadow-md border border-gray-100 hover:border-[#10B981] transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-xl relative overflow-hidden min-h-[140px] md:min-h-[160px]"
               onClick={() => handleWorkspaceOpen(workspace.workspaceName)}
             >
               {/* Gradient overlay on hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#4CAF50]/0 to-[#66BB6A]/0 group-hover:from-[#4CAF50]/5 group-hover:to-[#66BB6A]/5 transition-all duration-300 rounded-2xl"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-[#10B981]/0 to-[#14B8A6]/0 group-hover:from-[#10B981]/5 group-hover:to-[#14B8A6]/5 transition-all duration-300 rounded-2xl"></div>
 
               <div className="relative z-10 flex flex-col h-full">
                 <div className="flex items-start justify-between mb-3 md:mb-4">
                   <div className="flex items-center gap-2 md:gap-3">
-                    <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-[#4CAF50] to-[#66BB6A] rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
+                    <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-[#10B981] to-[#14B8A6] rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
                       <FontAwesomeIcon icon={faFolder} className="text-white text-xl md:text-2xl" />
                     </div>
                   </div>
@@ -273,7 +273,7 @@ const Project = () => {
                 </div>
 
                 <div className="flex-grow">
-                  <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-1 md:mb-2 truncate group-hover:text-[#4CAF50] transition-colors">
+                  <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-1 md:mb-2 truncate group-hover:text-[#10B981] transition-colors">
                     {workspace.workspaceName}
                   </h3>
                   <p className="text-xs md:text-sm text-gray-500 font-medium">
@@ -282,7 +282,7 @@ const Project = () => {
                 </div>
 
                 {/* Bottom accent line */}
-                <div className="mt-3 md:mt-4 h-1 md:h-1.5 w-0 bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] group-hover:w-full transition-all duration-500 rounded-full"></div>
+                <div className="mt-3 md:mt-4 h-1 md:h-1.5 w-0 bg-gradient-to-r from-[#10B981] to-[#14B8A6] group-hover:w-full transition-all duration-500 rounded-full"></div>
               </div>
 
               {showDropdown === index && (
@@ -336,7 +336,7 @@ const Project = () => {
         overlayClassName="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50 px-4"
       >
         <div className="flex items-center gap-3 mb-4 md:mb-6">
-          <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-[#4CAF50] to-[#66BB6A] rounded-2xl flex items-center justify-center shadow-lg">
+          <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-[#10B981] to-[#14B8A6] rounded-2xl flex items-center justify-center shadow-lg">
             <FontAwesomeIcon icon={faPlus} className="text-white text-base md:text-lg" />
           </div>
           <h2 className="text-xl md:text-2xl font-bold text-gray-800">Create New Project</h2>
@@ -348,7 +348,7 @@ const Project = () => {
             type="text"
             value={workspaceName}
             onChange={(e) => setWorkspaceName(e.target.value)}
-            className="w-full p-3 mb-4 md:mb-6 rounded-xl bg-gray-50 text-gray-800 border border-gray-200 focus:border-[#4CAF50] focus:outline-none focus:ring-2 focus:ring-[#4CAF50]/30 transition-all text-base"
+            className="w-full p-3 mb-4 md:mb-6 rounded-xl bg-gray-50 text-gray-800 border border-gray-200 focus:border-[#10B981] focus:outline-none focus:ring-2 focus:ring-[#10B981]/30 transition-all text-base"
             placeholder="Enter project name..."
             required
           />
@@ -363,7 +363,7 @@ const Project = () => {
             </button>
             <button
               type="submit"
-              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white text-sm font-semibold transition-all shadow-md hover:shadow-lg order-1 sm:order-2"
+              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#10B981] to-[#14B8A6] hover:from-[#059669] hover:to-[#0d9488] text-white text-sm font-semibold transition-all shadow-md hover:shadow-lg order-1 sm:order-2"
             >
               Create Project
             </button>
@@ -387,7 +387,7 @@ const Project = () => {
             type="text"
             value={newWorkspaceName}
             onChange={(e) => setNewWorkspaceName(e.target.value)}
-            className="w-full p-3 mb-4 md:mb-6 rounded-xl bg-gray-50 text-gray-800 border border-gray-200 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all text-base"
+            className="w-full p-3 mb-4 md:mb-6 rounded-xl bg-gray-50 text-gray-800 border border-gray-200 focus:border-[#10B981] focus:outline-none focus:ring-2 focus:ring-[#10B981]/30 transition-all text-base"
             placeholder="Enter new project name..."
             required
           />
@@ -402,7 +402,7 @@ const Project = () => {
             </button>
             <button
               type="submit"
-              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-sm font-semibold transition-all shadow-md hover:shadow-lg order-1 sm:order-2"
+              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#10B981] to-[#14B8A6] hover:from-[#059669] hover:to-[#0d9488] text-white text-sm font-semibold transition-all shadow-md hover:shadow-lg order-1 sm:order-2"
             >
               Save Changes
             </button>

@@ -55,6 +55,7 @@ const CueSheetGenerator = () => {
 
 
   const [parentUUIDs, setParentUUIDs] = useState([]);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
 
   const handleParentUUIDs = (uuids) => {
     setParentUUIDs(uuids);
@@ -62,6 +63,19 @@ const CueSheetGenerator = () => {
 
   const handleVidDur = (totalVideoDuration) => {
     setVideoDurationInSecFE(totalVideoDuration);
+  };
+
+  const handleS3Upload = (fileCount, totalDuration) => {
+    const newFile = {
+      id: Date.now(),
+      fileName: `${fileCount} file(s) from S3`,
+      userId: null,
+      duration: totalDuration,
+      uploadType: 's3',
+      uploadTime: new Date().toISOString(),
+      fileCount: fileCount
+    };
+    setUploadedFiles(prev => [...prev, newFile]);
   };
 
   const [formData, setFormData] = useState(() => {
@@ -322,6 +336,18 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
       });
 
       const { fileName, userId } = response.data;
+
+      // Add file to uploaded files list
+      const newFile = {
+        id: Date.now(), // Unique ID for each file
+        fileName: fileName,
+        userId: userId,
+        duration: response.data.Duration_seconds,
+        uploadType: 'direct',
+        uploadTime: new Date().toISOString()
+      };
+
+      setUploadedFiles(prev => [...prev, newFile]);
       setFileName(fileName);
       setUserId(userId);
       setVideoDurationInSec(response.data.Duration_seconds)
@@ -329,6 +355,11 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
       setAlertType('success');
       setAlertVisible(true);
       setTimeout(() => setAlertVisible(false), 1500);
+
+      // Close modal after successful upload
+      setIsModalOpen(false);
+      setIsS3Upload(false);
+
       // setIsFileUploadedUsingHandle(true);
     } catch (error) {
       console.error('Error uploading file:', error);
@@ -638,7 +669,7 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => openModal(csvData)}
-                className="text-blue-500 underline hover:text-blue-700"
+                className="text-[#10B981] underline hover:text-[#059669]"
               >
                 View
               </button>
@@ -844,64 +875,139 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
     <div id="modalBlur" className="bg-gradient-to-br from-[#f0f4f8] via-[#e8f0f7] to-[#dce8f5] text-gray-800 min-h-screen">
       <PageHeader title="Create Cue-Sheet" />
 
-      <div className="mt-6 flex justify-between items-center ml-6 mr-6 text-sm">
-        <div className="flex space-x-4">
+      <div className="mt-6 ml-6 mr-6">
+        {/* Top Action Bar - Always visible */}
+        <div className="flex justify-between items-center mb-6">
           <button
             onClick={() => setIsModalOpen(true)}
-            className={`py-2.5 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md ${disableButtons ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white hover:shadow-lg'
-              }`}
-            disabled={disableButtons}
+            className="py-2.5 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md bg-gradient-to-r from-[#10B981] to-[#14B8A6] hover:from-[#059669] hover:to-[#0d9488] text-white hover:shadow-lg"
           >
             Upload
           </button>
-
           <button
-            id="detectButton"
-            onClick={async () => {
-              const isDurationSent = await sendDurationToBackend(videoDurationInSecFE, videoDurationInSec);
-
-              if (isDurationSent) {
-                // Only trigger the functions if the backend call was successful
-                if (fileUploadedUsingHandleProcessAudio) {
-                  handleProcessAudio();
-                } else {
-                  handleProcessAudioS3();
-                }
-              } else {
-                setAlertMessage('Not enough minutes available');
-                setAlertType('error');
-                setAlertVisible(true);
-                setTimeout(() => setAlertVisible(false), 5000);
-              }
-            }}
-            className={`py-2.5 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md ${disableButtons
-              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              : 'bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white hover:shadow-lg'
-              }`}
-            disabled={disableButtons}
+            onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+            className="py-2.5 px-4 rounded-xl text-gray-700 hover:text-[#10B981] hover:bg-white/80 shadow-md transition-all flex items-center justify-center bg-white"
+            style={{ minWidth: '40px', height: '40px' }}
           >
-            Start Process
+            <FontAwesomeIcon icon={faSliders} size="lg" />
           </button>
-
-
-          {isS3Detection && detectionResultss3 && Object.keys(detectionResultss3).length > 0 && (
-            <button
-              onClick={() => downloadDetectedSongsAsZip(Object.values(detectionResultss3))}
-              className="py-2.5 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white hover:shadow-lg"
-            >
-              Download ZIP
-            </button>
-          )}
-
         </div>
 
-        <button
-          onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-          className="py-2.5 px-4 rounded-xl text-gray-700 hover:text-[#4CAF50] hover:bg-white/80 shadow-md transition-all flex items-center justify-center bg-white"
-          style={{ minWidth: '40px', height: '40px' }}
-        >
-          <FontAwesomeIcon icon={faSliders} size="lg" />
-        </button>
+        {/* Uploaded Files List - Show when files are uploaded */}
+        {uploadedFiles.length > 0 && (
+          <div className="bg-white border border-surface-200 rounded-lg shadow-sm">
+            <div className="border-b border-surface-200 px-6 py-4 bg-surface-50">
+              <h3 className="text-lg font-semibold text-surface-900">Uploaded Files ({uploadedFiles.length})</h3>
+            </div>
+            <div className="divide-y divide-surface-200">
+              {uploadedFiles.map((file, index) => (
+                <div key={file.id} className="p-6">
+                  <div className="flex items-center gap-4">
+                    {/* File Icon */}
+                    <div className="flex-shrink-0">
+                      <svg className="w-10 h-10 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                      </svg>
+                    </div>
+
+                    {/* File Info */}
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-success-100 text-success-800">
+                          Uploaded
+                        </span>
+                        {file.uploadType === 's3' && (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-secondary-100 text-secondary-800">
+                            S3
+                          </span>
+                        )}
+                      </div>
+                      <h3 className="text-base font-semibold text-surface-900 mb-1">
+                        {file.fileName}
+                      </h3>
+                      {file.duration && (
+                        <p className="text-sm text-surface-600">
+                          Duration: {Math.floor(file.duration / 60)} min {Math.floor(file.duration % 60)} sec
+                        </p>
+                      )}
+                      <p className="text-xs text-surface-500 mt-1">
+                        Uploaded at {new Date(file.uploadTime).toLocaleTimeString()}
+                      </p>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={async () => {
+                          // Set the current file as active for processing
+                          setFileName(file.fileName);
+                          setUserId(file.userId);
+                          setVideoDurationInSec(file.duration);
+                          setFileUploadedUsingHandleProcessAudio(file.uploadType === 'direct');
+
+                          const isDurationSent = await sendDurationToBackend(file.duration, file.duration);
+
+                          if (isDurationSent) {
+                            if (file.uploadType === 'direct') {
+                              handleProcessAudio();
+                            } else {
+                              handleProcessAudioS3();
+                            }
+                          } else {
+                            setAlertMessage('Not enough minutes available');
+                            setAlertType('error');
+                            setAlertVisible(true);
+                            setTimeout(() => setAlertVisible(false), 5000);
+                          }
+                        }}
+                        className={`py-2.5 px-6 rounded font-semibold text-sm transition-all ${
+                          disableButtons
+                            ? 'bg-surface-200 text-surface-500 cursor-not-allowed'
+                            : 'bg-primary-600 hover:bg-primary-700 text-white shadow-sm hover:shadow-md'
+                        }`}
+                        disabled={disableButtons}
+                      >
+                        Start Process
+                      </button>
+
+                      {/* Remove Button */}
+                      <button
+                        onClick={() => {
+                          setUploadedFiles(prev => prev.filter(f => f.id !== file.id));
+                          // If this was the current file, clear the state
+                          if (fileName === file.fileName) {
+                            setFileName('');
+                            setUserId('');
+                            setVideoDurationInSec(null);
+                            setFileUploadedUsingHandleProcessAudio(false);
+                          }
+                        }}
+                        className="text-surface-400 hover:text-error-600 transition-colors"
+                        title="Remove file"
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Download ZIP button for S3 detection */}
+            {isS3Detection && detectionResultss3 && Object.keys(detectionResultss3).length > 0 && (
+              <div className="border-t border-surface-200 px-6 py-4">
+                <button
+                  onClick={() => downloadDetectedSongsAsZip(Object.values(detectionResultss3))}
+                  className="py-2.5 px-6 rounded font-semibold text-sm bg-secondary-600 hover:bg-secondary-700 text-white shadow-sm hover:shadow-md transition-all"
+                >
+                  Download ZIP
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
 
@@ -928,7 +1034,7 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
         <div id="loadingContainer" className="loading-container mt-20 opacity-100 mx-6">
           <div className="loading-text text-lg text-center mb-4 text-gray-800 font-semibold">{loadingText}</div>
           <div className="progress-bar bg-gray-200 rounded-xl w-full h-4 shadow-inner">
-            <div className="progress-bar-fill bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] h-full rounded-xl" style={{ width: `${progress}%`, transition: 'width 1s ease' }}></div>
+            <div className="progress-bar-fill bg-gradient-to-r from-[#10B981] to-[#14B8A6] h-full rounded-xl" style={{ width: `${progress}%`, transition: 'width 1s ease' }}></div>
           </div>
         </div>
       ) : (
@@ -941,14 +1047,14 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
                   <CSVLink
                     data={csvData}
                     filename={csvFileName}
-                    className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] py-2.5 px-6 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg text-white font-semibold flex items-center space-x-2"
+                    className="bg-gradient-to-r from-[#10B981] to-[#14B8A6] hover:from-[#059669] hover:to-[#0d9488] py-2.5 px-6 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg text-white font-semibold flex items-center space-x-2"
                   >
                     <img src={eLogo} alt="Download CSV" className="h-5 w-5" />
                   </CSVLink>
 
                   <button
                     onClick={handleSave}
-                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-2.5 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
+                    className="bg-gradient-to-r from-[#10B981] to-[#14B8A6] hover:from-[#059669] hover:to-[#0d9488] text-white py-2.5 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
                   >
                     Save
                   </button>
@@ -971,29 +1077,69 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
       <Modal
         isOpen={isModalOpens3}
         onRequestClose={closeModal}
-        className="bg-white p-8 rounded-3xl max-w-6xl mx-auto border border-gray-200 shadow-2xl"
-        overlayClassName="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50"
+        className="bg-white rounded-lg max-w-7xl w-full mx-4 border border-surface-200 shadow-xl"
+        overlayClassName="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50 p-4"
       >
-        <div className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] -m-8 mb-6 p-6 rounded-t-3xl">
-          <h2 className="text-2xl font-bold text-white">Table Data</h2>
+        {/* Header */}
+        <div className="border-b border-surface-200 px-6 py-4 bg-surface-50 rounded-t-lg flex items-center justify-between">
+          <div>
+            <h2 className="text-xl font-semibold text-surface-900">Cue Sheet Data</h2>
+            <p className="text-sm text-surface-600 mt-1">View detected songs and metadata</p>
+          </div>
+          <button
+            onClick={closeModal}
+            className="text-surface-400 hover:text-surface-600 transition-colors"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
-        <div className="overflow-auto max-h-[32rem]">
-          <table className="min-w-full text-gray-800 border-collapse">
-            <thead className="bg-gradient-to-r from-gray-100 to-gray-200 sticky top-0">
+
+        {/* Table Container */}
+        <div className="overflow-auto" style={{ maxHeight: 'calc(90vh - 180px)' }}>
+          <table className="min-w-full border-collapse">
+            <thead className="bg-primary-600 text-white sticky top-0 z-10">
               <tr>
                 {Object.keys(viewedTableData[0] || {}).map((key, index) => (
-                  <th key={index} className="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-800">
+                  <th
+                    key={index}
+                    className="border-r border-primary-700 last:border-r-0 px-4 py-3 text-left font-semibold text-sm uppercase tracking-wide whitespace-nowrap"
+                  >
                     {key}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody className="bg-white">
               {viewedTableData.map((row, rowIndex) => (
-                <tr key={rowIndex} className="hover:bg-gray-50 transition-colors">
+                <tr
+                  key={rowIndex}
+                  className={`${
+                    rowIndex % 2 === 0 ? 'bg-white' : 'bg-surface-50'
+                  } hover:bg-secondary-50 transition-colors`}
+                >
                   {Object.values(row).map((value, colIndex) => (
-                    <td key={colIndex} className="border border-gray-300 px-4 py-2 text-sm">
-                      {value || 'N/A'}
+                    <td
+                      key={colIndex}
+                      className="border border-surface-200 px-4 py-3 text-sm text-surface-900 whitespace-nowrap"
+                    >
+                      {value && value !== '-' && value !== 'N/A' ? (
+                        String(value).startsWith('http') ? (
+                          <a
+                            href={value}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-secondary-600 hover:text-secondary-700 underline"
+                          >
+                            {value.length > 40 ? value.substring(0, 40) + '...' : value}
+                          </a>
+                        ) : (
+                          <span className="text-surface-900">{value}</span>
+                        )
+                      ) : (
+                        <span className="text-surface-400 italic">N/A</span>
+                      )}
                     </td>
                   ))}
                 </tr>
@@ -1001,12 +1147,19 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
             </tbody>
           </table>
         </div>
-        <button
-          onClick={closeModal}
-          className="mt-6 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-2.5 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
-        >
-          Close
-        </button>
+
+        {/* Footer */}
+        <div className="border-t border-surface-200 px-6 py-4 bg-surface-50 rounded-b-lg flex items-center justify-between">
+          <p className="text-sm text-surface-600">
+            Showing {viewedTableData.length} {viewedTableData.length === 1 ? 'record' : 'records'}
+          </p>
+          <button
+            onClick={closeModal}
+            className="border border-surface-300 hover:bg-white text-surface-700 py-2 px-6 rounded font-medium text-sm transition-colors"
+          >
+            Close
+          </button>
+        </div>
       </Modal>
 
 
@@ -1015,127 +1168,203 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
 
       {isSettingsOpen && (
         <div
-          className="fixed z-50 bg-gray-200 text-black shadow-md rounded-md"
+          className="fixed z-50 bg-white border border-surface-200 rounded-lg shadow-xl"
           style={{
             position: 'absolute',
-            top: 'calc(5rem + 40px)', // Adjust as needed
-            right: '2rem', // Adjust as needed
-            width: '300px',
-            padding: '20px',
+            top: 'calc(5rem + 40px)',
+            right: '2rem',
+            width: '400px',
           }}
         >
-          <h3 className="text-lg font-semibold mb-3">Your Keys</h3>
-          {!keys.accessKey || !keys.secretKey || !keys.bucket ? (
-            // If keys or bucket are not available
-            <div>
-              <p>Keys or bucket are not available.</p>
-              {isAddingKeys ? (
-                <div className="space-y-3">
-                  <input
-                    type="text"
-                    placeholder="Access Key"
-                    className="w-full p-2 border rounded-md"
-                    value={newAccessKey}
-                    onChange={(e) => setNewAccessKey(e.target.value)}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Secret Key"
-                    className="w-full p-2 border rounded-md"
-                    value={newSecretKey}
-                    onChange={(e) => setNewSecretKey(e.target.value)}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Bucket"
-                    className="w-full p-2 border rounded-md"
-                    value={newBucket}
-                    onChange={(e) => setNewBucket(e.target.value)}
-                  />
+          {/* Header */}
+          <div className="border-b border-surface-200 px-6 py-4 bg-surface-50">
+            <h3 className="text-lg font-semibold text-surface-900">AWS S3 Configuration</h3>
+            <p className="text-xs text-surface-600 mt-1">Manage your S3 bucket credentials</p>
+          </div>
+
+          {/* Body */}
+          <div className="px-6 py-5">
+            {!keys.accessKey || !keys.secretKey || !keys.bucket ? (
+              // If keys or bucket are not available
+              <div>
+                <div className="bg-warning-50 border border-warning-200 rounded-lg p-4 mb-4">
+                  <p className="text-sm text-warning-800">
+                    <strong>No credentials found.</strong> Please add your AWS S3 credentials to enable S3 file uploads.
+                  </p>
+                </div>
+                {isAddingKeys ? (
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-xs font-medium text-surface-700 mb-2 uppercase tracking-wide">
+                        Access Key <span className="text-error-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Enter AWS Access Key"
+                        className="w-full px-3 py-2.5 border border-surface-300 rounded text-surface-900 text-sm focus:outline-none focus:ring-1 focus:ring-secondary-500 focus:border-secondary-500 transition"
+                        value={newAccessKey}
+                        onChange={(e) => setNewAccessKey(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-surface-700 mb-2 uppercase tracking-wide">
+                        Secret Key <span className="text-error-500">*</span>
+                      </label>
+                      <input
+                        type="password"
+                        placeholder="Enter AWS Secret Key"
+                        className="w-full px-3 py-2.5 border border-surface-300 rounded text-surface-900 text-sm focus:outline-none focus:ring-1 focus:ring-secondary-500 focus:border-secondary-500 transition"
+                        value={newSecretKey}
+                        onChange={(e) => setNewSecretKey(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-surface-700 mb-2 uppercase tracking-wide">
+                        Bucket Name <span className="text-error-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Enter S3 Bucket Name"
+                        className="w-full px-3 py-2.5 border border-surface-300 rounded text-surface-900 text-sm focus:outline-none focus:ring-1 focus:ring-secondary-500 focus:border-secondary-500 transition"
+                        value={newBucket}
+                        onChange={(e) => setNewBucket(e.target.value)}
+                      />
+                    </div>
+                    <div className="flex gap-3 pt-2">
+                      <button
+                        onClick={() => setIsAddingKeys(false)}
+                        className="flex-1 border border-surface-300 hover:bg-surface-50 text-surface-700 py-2.5 px-4 rounded font-medium text-sm transition-colors"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={handleSubmitKeys}
+                        className="flex-1 bg-primary-600 hover:bg-primary-700 text-white py-2.5 px-4 rounded font-medium text-sm transition-colors uppercase tracking-wide"
+                      >
+                        Save Keys
+                      </button>
+                    </div>
+                  </div>
+                ) : (
                   <button
-                    onClick={handleSubmitKeys}
-                    className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-4 rounded-md w-full"
+                    onClick={() => setIsAddingKeys(true)}
+                    className="w-full bg-primary-600 hover:bg-primary-700 text-white py-2.5 px-4 rounded font-medium text-sm transition-colors uppercase tracking-wide"
                   >
-                    Submit
+                    Add Credentials
                   </button>
-                </div>
-              ) : (
-                <button
-                  onClick={() => setIsAddingKeys(true)}
-                  className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md mt-3 w-full"
-                >
-                  Add Keys
-                </button>
-              )}
-            </div>
-          ) : (
-            <div>
-              {isEditingKeys ? (
-                // Input fields for editing keys
-                <div className="space-y-3 text-xs">
-                  <input
-                    type="text"
-                    placeholder="New Access Key"
-                    className="w-full p-1 border rounded-md"
-                    value={newAccessKey}
-                    onChange={(e) => setNewAccessKey(e.target.value)}
-                  />
-                  <input
-                    type="text"
-                    placeholder="New Secret Key"
-                    className="w-full p-1 border rounded-md"
-                    value={newSecretKey}
-                    onChange={(e) => setNewSecretKey(e.target.value)}
-                  />
-                  <input
-                    type="text"
-                    placeholder="New Bucket Name"
-                    className="w-full p-1 border rounded-md"
-                    value={newBucket}
-                    onChange={(e) => setNewBucket(e.target.value)}
-                  />
-                  <button
-                    onClick={() => {
-                      handleEditKeys(); // Call the editKeys function
-                      setIsEditingKeys(false); // Hide the input fields after editing
-                    }}
-                    className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-4 rounded-md w-full"
-                  >
-                    Submit
-                  </button>
-                </div>
-              ) : (
-                // Display keys
-                <div className="space-y-3 text-xs">
-                  <div>
-                    <strong>Access Key:</strong> {keys.accessKey || 'Access Key not available'}
+                )}
+              </div>
+            ) : (
+              <div>
+                {isEditingKeys ? (
+                  // Input fields for editing keys
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-xs font-medium text-surface-700 mb-2 uppercase tracking-wide">
+                        Access Key <span className="text-error-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Enter new Access Key"
+                        className="w-full px-3 py-2.5 border border-surface-300 rounded text-surface-900 text-sm focus:outline-none focus:ring-1 focus:ring-secondary-500 focus:border-secondary-500 transition"
+                        value={newAccessKey}
+                        onChange={(e) => setNewAccessKey(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-surface-700 mb-2 uppercase tracking-wide">
+                        Secret Key <span className="text-error-500">*</span>
+                      </label>
+                      <input
+                        type="password"
+                        placeholder="Enter new Secret Key"
+                        className="w-full px-3 py-2.5 border border-surface-300 rounded text-surface-900 text-sm focus:outline-none focus:ring-1 focus:ring-secondary-500 focus:border-secondary-500 transition"
+                        value={newSecretKey}
+                        onChange={(e) => setNewSecretKey(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-surface-700 mb-2 uppercase tracking-wide">
+                        Bucket Name <span className="text-error-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Enter new Bucket Name"
+                        className="w-full px-3 py-2.5 border border-surface-300 rounded text-surface-900 text-sm focus:outline-none focus:ring-1 focus:ring-secondary-500 focus:border-secondary-500 transition"
+                        value={newBucket}
+                        onChange={(e) => setNewBucket(e.target.value)}
+                      />
+                    </div>
+                    <div className="flex gap-3 pt-2">
+                      <button
+                        onClick={() => setIsEditingKeys(false)}
+                        className="flex-1 border border-surface-300 hover:bg-surface-50 text-surface-700 py-2.5 px-4 rounded font-medium text-sm transition-colors"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={() => {
+                          handleEditKeys();
+                          setIsEditingKeys(false);
+                        }}
+                        className="flex-1 bg-primary-600 hover:bg-primary-700 text-white py-2.5 px-4 rounded font-medium text-sm transition-colors uppercase tracking-wide"
+                      >
+                        Update Keys
+                      </button>
+                    </div>
                   </div>
-                  <div>
-                    <strong>Secret Key:</strong> {keys.secretKey || 'Secret Key not available'}
+                ) : (
+                  // Display keys
+                  <div className="space-y-4">
+                    <div className="bg-surface-50 border border-surface-200 rounded-lg p-4">
+                      <div className="space-y-3">
+                        <div>
+                          <label className="block text-xs font-medium text-surface-600 mb-1 uppercase tracking-wide">
+                            Access Key
+                          </label>
+                          <p className="text-sm text-surface-900 font-mono break-all">
+                            {keys.accessKey || 'Not configured'}
+                          </p>
+                        </div>
+                        <div className="border-t border-surface-200 pt-3">
+                          <label className="block text-xs font-medium text-surface-600 mb-1 uppercase tracking-wide">
+                            Secret Key
+                          </label>
+                          <p className="text-sm text-surface-900 font-mono">
+                            {'•'.repeat(20)}
+                          </p>
+                        </div>
+                        <div className="border-t border-surface-200 pt-3">
+                          <label className="block text-xs font-medium text-surface-600 mb-1 uppercase tracking-wide">
+                            Bucket Name
+                          </label>
+                          <p className="text-sm text-surface-900 font-mono">
+                            {keys.bucket || 'Not configured'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setIsEditingKeys(true)}
+                      className="w-full border border-surface-300 hover:bg-surface-50 text-surface-700 py-2.5 px-4 rounded font-medium text-sm transition-colors"
+                    >
+                      Edit Credentials
+                    </button>
                   </div>
-                  <div>
-                    <strong>Bucket:</strong> {keys.bucket || 'Bucket not available'}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-          <div className="text-right mt-3">
-            {!isEditingKeys && (
-              <button
-                onClick={() => setIsEditingKeys(true)} // Show input fields for editing
-                className="bg-gray-300 hover:bg-gray-400 text-gray-700 py-1 px-4 rounded-md"
-              >
-                Edit
-              </button>
+                )}
+              </div>
             )}
+          </div>
+
+          {/* Footer */}
+          <div className="border-t border-surface-200 px-6 py-4 bg-surface-50">
             <button
               onClick={() => {
                 setIsSettingsOpen(!isSettingsOpen)
                 setIsAddingKeys(false);
                 setIsEditingKeys(false);
               }}
-              className="bg-gray-300 hover:bg-gray-400 text-gray-700 py-1 px-4 rounded-md ml-2"
+              className="w-full border border-surface-300 hover:bg-white text-surface-700 py-2 px-4 rounded font-medium text-sm transition-colors"
             >
               Close
             </button>
@@ -1146,15 +1375,30 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
 
 
       {isModalOpen && (
-        <div className="fixed z-50 inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center text-black">
-          <div className="bg-gray-200 w-1/2 p-5 rounded-md shadow-lg">
-            <div className="modal-header flex justify-between items-center border-b pb-3">
-              <h3 className="text-xl">{isS3Upload ? "Browse Folders" : "Upload Audio File"}</h3>
+        <div className="fixed z-50 inset-0 bg-black/40 flex justify-center items-center p-2 sm:p-4">
+          <div className="bg-white rounded-lg max-w-2xl w-full border border-surface-200 shadow-xl max-h-[95vh] overflow-y-auto">
+            {/* Modal Header */}
+            <div className="border-b border-surface-200 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between bg-surface-50 sticky top-0 z-10">
+              <h2 className="text-base sm:text-lg font-semibold text-surface-900">
+                {isS3Upload ? "Browse S3 Folders" : "Upload Audio File"}
+              </h2>
+              <button
+                onClick={() => {
+                  setIsS3Upload(false);
+                  setIsModalOpen(false);
+                }}
+                className="text-surface-400 hover:text-surface-600 transition-colors flex-shrink-0"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
-            <div className="modal-body py-5">
+
+            {/* Modal Body */}
+            <div className="p-4 sm:p-6">
               {isS3Upload ? (
-                // Render FolderExplorer instead of S3 Upload Form
-                <div className="ml-7"> {/* Adds a left margin */}
+                <div>
                   <FolderExplorer
                     accessKey={keys.accessKey}
                     secretKey={keys.secretKey}
@@ -1162,61 +1406,94 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
                     region="us-east-1"
                     onUUIDsGenerated={handleParentUUIDs}
                     onVidDur={handleVidDur}
+                    onUploadComplete={(fileCount, totalDuration) => {
+                      handleS3Upload(fileCount, totalDuration);
+                      setIsModalOpen(false);
+                      setIsS3Upload(false);
+                    }}
                   />
                 </div>
               ) : (
                 <form id="metadataForm" encType="multipart/form-data">
-                  <p className="flex flex-col text-gray-600 text-sm mb-4">
-                    <span className="flex items-center mb-2">
-                      <FontAwesomeIcon icon={faCircleInfo} className="mr-2" />
-                      <span className="font-bold">Format to be used for the file upload: TvChannelName_ProgramName_EpisodeNumber_OnAirDate_Movie/AlbumName.</span>
-                    </span>
-                    <span className='pl-6'>If any of the fields are not available, type "NA" in its place.</span>
-                  </p>
+                  {/* Info Box */}
+                  <div className="bg-secondary-50 border border-secondary-200 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
+                    <div className="flex items-start gap-2 sm:gap-3">
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5 text-secondary-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"/>
+                      </svg>
+                      <div className="text-xs sm:text-sm">
+                        <p className="font-semibold text-surface-900 mb-1">File Naming Format</p>
+                        <p className="text-surface-700 mb-2 break-all">
+                          TvChannelName_ProgramName_EpisodeNumber_OnAirDate_Movie/AlbumName
+                        </p>
+                        <p className="text-surface-600 text-xs">
+                          If any field is not available, use "NA" in its place.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
 
-                  <label className="block mb-3" htmlFor="file">Upload MP3 File:</label>
-
-                  <div className="flex items-center mb-3 justify-center relative">
+                  {/* File Upload Section */}
+                  <div className="mb-4 sm:mb-6">
+                    <label className="block text-xs font-medium text-surface-700 mb-2 uppercase tracking-wide">
+                      Audio File <span className="text-error-500">*</span>
+                    </label>
                     <input
-                      className="w-full p-1 border rounded-md"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-surface-300 rounded text-surface-900 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-secondary-500 focus:border-secondary-500 transition bg-white file:mr-2 sm:file:mr-4 file:py-1.5 sm:file:py-2 file:px-3 sm:file:px-4 file:rounded file:border-0 file:text-xs sm:file:text-sm file:font-medium file:bg-secondary-50 file:text-secondary-700 hover:file:bg-secondary-100"
                       type="file"
                       id="file"
                       name="file"
                       accept=".mp3"
                       required
                     />
-                    <span className="absolute mx-10 text-center">OR</span>
-                    <button
-                      className="bg-green-600 hover:bg-green-500 text-white py-1.5 px-4 rounded-md transition-all transform text-sm"
-                      onClick={() => setIsS3Upload(true)}
-                    >
-                      Upload using S3
-                    </button>
+                    <p className="text-xs text-surface-500 mt-1.5">Supported format: MP3</p>
                   </div>
-                  <div className="flex justify-start mt-3">
-                    {/* bulk upload and folder select */}
+
+                  {/* OR Divider */}
+                  <div className="relative mb-4 sm:mb-6">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-surface-300"></div>
+                    </div>
+                    <div className="relative flex justify-center text-xs sm:text-sm">
+                      <span className="px-3 sm:px-4 bg-white text-surface-500 font-medium">OR</span>
+                    </div>
+                  </div>
+
+                  {/* S3 Upload Button */}
+                  <button
+                    type="button"
+                    onClick={() => setIsS3Upload(true)}
+                    className="w-full mb-4 sm:mb-6 border-2 border-dashed border-surface-300 hover:border-secondary-400 bg-surface-50 hover:bg-secondary-50 py-3 sm:py-4 px-3 sm:px-4 rounded-lg transition-colors flex items-center justify-center gap-2 text-surface-700 hover:text-secondary-700"
+                  >
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                    </svg>
+                    <span className="font-medium text-xs sm:text-sm">Upload from S3 Bucket</span>
+                  </button>
+
+                  {/* Action Buttons */}
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsS3Upload(false);
+                        setIsModalOpen(false);
+                      }}
+                      className="w-full sm:flex-1 border border-surface-300 hover:bg-surface-50 text-surface-700 py-2.5 px-4 rounded font-medium text-sm transition-colors order-2 sm:order-1"
+                    >
+                      Cancel
+                    </button>
                     <button
                       type="button"
                       id="uploadButton"
-                      className="bg-green-600 hover:bg-green-500 text-white py-1.5 px-4 rounded-md transition-all transform text-sm"
                       onClick={handleFileUpload}
+                      className="w-full sm:flex-1 bg-primary-600 hover:bg-primary-700 text-white py-2.5 px-4 rounded font-medium text-sm transition-colors uppercase tracking-wide order-1 sm:order-2"
                     >
                       Upload File
                     </button>
                   </div>
                 </form>
               )}
-            </div>
-            <div className="modal-footer flex justify-end pt-3 border-t">
-              <button
-                onClick={() => {
-                  setIsS3Upload(false); // Reset S3Upload state when closing
-                  setIsModalOpen(false);
-                }}
-                className="bg-gray-300 hover:bg-gray-400 text-gray-700 py-1 px-4 rounded-md"
-              >
-                Close
-              </button>
             </div>
           </div>
         </div>

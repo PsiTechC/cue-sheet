@@ -290,7 +290,7 @@ const handleDeleteFolder = async (folderId) => {
         title={
           <>
             <span
-              className="text-gray-500 hover:text-[#4CAF50] cursor-pointer transition-colors"
+              className="text-gray-500 hover:text-[#10B981] cursor-pointer transition-colors"
               onClick={() => navigate('/dashboard/project')}
             >
               Projects
@@ -306,13 +306,13 @@ const handleDeleteFolder = async (folderId) => {
   <div className="flex gap-3">
     <button
       onClick={openModal}
-      className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white py-2.5 px-6 rounded-xl text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
+      className="bg-gradient-to-r from-[#10B981] to-[#14B8A6] hover:from-[#059669] hover:to-[#0d9488] text-white py-2.5 px-6 rounded-xl text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
     >
       Create Folder
     </button>
     <button
       onClick={openSheetModal}
-      className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-2.5 px-6 rounded-xl text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
+      className="bg-gradient-to-r from-[#10B981] to-[#14B8A6] hover:from-[#059669] hover:to-[#0d9488] text-white py-2.5 px-6 rounded-xl text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
     >
       Assign Sheets
     </button>
@@ -322,7 +322,7 @@ const handleDeleteFolder = async (folderId) => {
     placeholder="Search..."
     value={searchQuery}
     onChange={(e) => setSearchQuery(e.target.value)}
-    className="ml-2 px-4 py-2 w-48 rounded-xl bg-white text-gray-800 border border-gray-200 focus:border-[#4CAF50] focus:outline-none focus:ring-2 focus:ring-[#4CAF50]/30 text-sm shadow-sm"
+    className="ml-2 px-4 py-2 w-48 rounded-xl bg-white text-gray-800 border border-gray-200 focus:border-[#10B981] focus:outline-none focus:ring-2 focus:ring-[#10B981]/30 text-sm shadow-sm"
   />
 </div>
 
@@ -334,14 +334,14 @@ const handleDeleteFolder = async (folderId) => {
           filteredFolders.map((folder, index) => (
             <div
               key={index}
-              className="group bg-white p-6 rounded-2xl shadow-md border border-gray-100 hover:border-[#4CAF50] transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-xl relative overflow-hidden"
+              className="group bg-white p-6 rounded-2xl shadow-md border border-gray-100 hover:border-[#10B981] transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-xl relative overflow-hidden"
               onClick={() => handleDoubleClick(folder.folderName)}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-[#4CAF50]/0 to-[#66BB6A]/0 group-hover:from-[#4CAF50]/5 group-hover:to-[#66BB6A]/5 transition-all duration-300 rounded-2xl"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-[#10B981]/0 to-[#14B8A6]/0 group-hover:from-[#10B981]/5 group-hover:to-[#14B8A6]/5 transition-all duration-300 rounded-2xl"></div>
 
               <div className="relative z-10 flex flex-col h-full">
                 <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#4CAF50] to-[#66BB6A] rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#10B981] to-[#14B8A6] rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
                     <FontAwesomeIcon icon={faEllipsisV} className="text-white text-lg" />
                   </div>
                   <div
@@ -356,7 +356,7 @@ const handleDeleteFolder = async (folderId) => {
                 </div>
 
                 <div className="flex-grow">
-                  <h3 className="text-lg font-bold text-gray-800 mb-2 truncate group-hover:text-[#4CAF50] transition-colors">
+                  <h3 className="text-lg font-bold text-gray-800 mb-2 truncate group-hover:text-[#10B981] transition-colors">
                     {folder.folderName}
                   </h3>
                   <p className="text-sm text-gray-500 font-medium">
@@ -364,7 +364,7 @@ const handleDeleteFolder = async (folderId) => {
                   </p>
                 </div>
 
-                <div className="mt-4 h-1.5 w-0 bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] group-hover:w-full transition-all duration-500 rounded-full"></div>
+                <div className="mt-4 h-1.5 w-0 bg-gradient-to-r from-[#10B981] to-[#14B8A6] group-hover:w-full transition-all duration-500 rounded-full"></div>
               </div>
 
               {showDropdown === index && (
@@ -411,9 +411,9 @@ const handleDeleteFolder = async (folderId) => {
         <h3 className="text-2xl font-bold text-gray-800 mb-6">Assigned Sheets</h3>
         {filteredAssignedSheets.length > 0 ? (
           filteredAssignedSheets.map((sheet, index) => (
-            <div key={index} className="mb-3 p-4 bg-white rounded-xl shadow-sm border border-gray-100 hover:border-[#4CAF50] transition-all flex justify-between items-center">
+            <div key={index} className="mb-3 p-4 bg-white rounded-xl shadow-sm border border-gray-100 hover:border-[#10B981] transition-all flex justify-between items-center">
               <div className="flex items-center space-x-3 w-1/3">
-                <span className="w-8 h-8 bg-gradient-to-br from-[#4CAF50] to-[#66BB6A] rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                <span className="w-8 h-8 bg-gradient-to-br from-[#10B981] to-[#14B8A6] rounded-lg flex items-center justify-center text-white font-bold text-sm">
                   {index + 1}
                 </span>
                 <h3 className="font-semibold text-gray-800">
@@ -428,13 +428,17 @@ const handleDeleteFolder = async (folderId) => {
               <div className="w-1/3 flex justify-end space-x-2">
                 <button
                   onClick={() => handleViewTable(sheet.tableData)}
-                  className="text-blue-600 hover:text-blue-700 font-medium text-sm hover:underline"
+                  className="bg-gradient-to-r from-[#2196F3] to-[#42A5F5] hover:from-[#1976D2] hover:to-[#2196F3] text-white py-2 px-4 rounded-lg text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg flex items-center space-x-2"
                 >
-                  View
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  <span>View</span>
                 </button>
 
                 <CSVLink data={sheet.tableData} filename={`${sheet.tableData[0]['Program Name'] || 'unknown'}_cue-sheet.csv`}>
-                  <button className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white py-2 px-4 rounded-lg text-sm font-semibold shadow-sm hover:shadow-md transition-all">
+                  <button className="bg-gradient-to-r from-[#10B981] to-[#14B8A6] hover:from-[#059669] hover:to-[#0d9488] text-white py-2 px-4 rounded-lg text-sm font-semibold shadow-md hover:shadow-lg transition-all duration-200">
                     Download CSV
                   </button>
                 </CSVLink>
@@ -460,7 +464,7 @@ const handleDeleteFolder = async (folderId) => {
           type="text"
           value={newFolderName}
           onChange={(e) => setNewFolderName(e.target.value)}
-          className="w-full p-3 rounded-xl bg-gray-50 text-gray-800 border border-gray-200 focus:border-[#4CAF50] focus:outline-none focus:ring-2 focus:ring-[#4CAF50]/30 mb-6"
+          className="w-full p-3 rounded-xl bg-gray-50 text-gray-800 border border-gray-200 focus:border-[#10B981] focus:outline-none focus:ring-2 focus:ring-[#10B981]/30 mb-6"
           placeholder="Enter folder name..."
         />
         <div className="flex justify-end gap-3">
@@ -472,7 +476,7 @@ const handleDeleteFolder = async (folderId) => {
           </button>
           <button
             onClick={handleCreateFolder}
-            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white text-sm font-semibold transition-all shadow-md hover:shadow-lg"
+            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#10B981] to-[#14B8A6] hover:from-[#059669] hover:to-[#0d9488] text-white text-sm font-semibold transition-all shadow-md hover:shadow-lg"
           >
             Create
           </button>
@@ -499,7 +503,7 @@ const handleDeleteFolder = async (folderId) => {
                   type="checkbox"
                   checked={selectedSheets.includes(sheet._id)}
                   onChange={() => handleSheetSelection(sheet._id)}
-                  className="w-5 h-5 text-[#4CAF50] rounded focus:ring-[#4CAF50] cursor-pointer"
+                  className="w-5 h-5 text-[#10B981] rounded focus:ring-[#10B981] cursor-pointer"
                 />
               </li>
             ))}
@@ -516,7 +520,7 @@ const handleDeleteFolder = async (folderId) => {
           </button>
           <button
             onClick={handleSubmitSheets}
-            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-sm font-semibold transition-all shadow-md hover:shadow-lg"
+            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#10B981] to-[#14B8A6] hover:from-[#059669] hover:to-[#0d9488] text-white text-sm font-semibold transition-all shadow-md hover:shadow-lg"
           >
             Add Sheets
           </button>
@@ -528,45 +532,111 @@ const handleDeleteFolder = async (folderId) => {
       <Modal
         isOpen={viewedTableData !== null}
         onRequestClose={closeModalView}
-        className="bg-white p-6 rounded-3xl max-w-6xl mx-auto border border-gray-200 shadow-2xl"
-        overlayClassName="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50"
+        className="bg-white rounded-lg max-w-7xl w-full mx-4 border border-surface-200 shadow-xl"
+        overlayClassName="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50 p-4"
       >
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Table Data</h2>
+        {/* Header */}
+        <div className="border-b border-surface-200 px-6 py-4 bg-surface-50 rounded-t-lg flex items-center justify-between">
+          <div>
+            <h2 className="text-xl font-semibold text-surface-900">Cue Sheet Data</h2>
+            <p className="text-sm text-surface-600 mt-1">View folder sheet details</p>
+          </div>
+          <button
+            onClick={closeModalView}
+            className="text-surface-400 hover:text-surface-600 transition-colors"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
         {viewedTableData && viewedTableData.length > 0 ? (
-          <div className="overflow-auto max-h-[500px] rounded-xl border border-gray-200">
-            <table className="min-w-full text-gray-800 border-collapse">
-              <thead className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] sticky top-0">
-                <tr>
-                  {Object.keys(viewedTableData[0]).map((key, index) => (
-                    <th key={index} className="border-b border-white/20 px-4 py-3 text-white font-semibold text-left">
-                      {key}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="bg-white">
-                {viewedTableData.map((row, rowIndex) => (
-                  <tr key={rowIndex} className="hover:bg-gray-50 transition-colors">
-                    {Object.values(row).map((value, colIndex) => (
-                      <td key={colIndex} className="border-b border-gray-100 px-4 py-3 text-sm">
-                        {value || 'N/A'}
-                      </td>
+          <>
+            {/* Table Container */}
+            <div className="overflow-auto" style={{ maxHeight: 'calc(90vh - 180px)' }}>
+              <table className="min-w-full border-collapse">
+                <thead className="bg-primary-600 text-white sticky top-0 z-10">
+                  <tr>
+                    {Object.keys(viewedTableData[0]).map((key, index) => (
+                      <th
+                        key={index}
+                        className="border-r border-primary-700 last:border-r-0 px-4 py-3 text-left font-semibold text-sm uppercase tracking-wide whitespace-nowrap"
+                      >
+                        {key}
+                      </th>
                     ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <p className="text-gray-500 text-center py-8">No data available to display.</p>
-        )}
+                </thead>
+                <tbody className="bg-white">
+                  {viewedTableData.map((row, rowIndex) => (
+                    <tr
+                      key={rowIndex}
+                      className={`${
+                        rowIndex % 2 === 0 ? 'bg-white' : 'bg-surface-50'
+                      } hover:bg-secondary-50 transition-colors`}
+                    >
+                      {Object.values(row).map((value, colIndex) => (
+                        <td
+                          key={colIndex}
+                          className="border border-surface-200 px-4 py-3 text-sm text-surface-900 whitespace-nowrap"
+                        >
+                          {value && value !== '-' && value !== 'N/A' ? (
+                            String(value).startsWith('http') ? (
+                              <a
+                                href={value}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-secondary-600 hover:text-secondary-700 underline"
+                              >
+                                {value.length > 40 ? value.substring(0, 40) + '...' : value}
+                              </a>
+                            ) : (
+                              <span className="text-surface-900">{value}</span>
+                            )
+                          ) : (
+                            <span className="text-surface-400 italic">N/A</span>
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
-        <button
-          onClick={closeModalView}
-          className="mt-6 px-6 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold transition-all"
-        >
-          Close
-        </button>
+            {/* Footer */}
+            <div className="border-t border-surface-200 px-6 py-4 bg-surface-50 rounded-b-lg flex items-center justify-between">
+              <p className="text-sm text-surface-600">
+                Showing {viewedTableData.length} {viewedTableData.length === 1 ? 'record' : 'records'}
+              </p>
+              <button
+                onClick={closeModalView}
+                className="border border-surface-300 hover:bg-white text-surface-700 py-2 px-6 rounded font-medium text-sm transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="p-12 text-center">
+              <svg className="w-16 h-16 mx-auto text-surface-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+              </svg>
+              <p className="text-surface-500 text-lg font-medium">No data available</p>
+              <p className="text-surface-400 text-sm mt-2">There are no records to display</p>
+            </div>
+            <div className="border-t border-surface-200 px-6 py-4 bg-surface-50 rounded-b-lg">
+              <button
+                onClick={closeModalView}
+                className="w-full border border-surface-300 hover:bg-white text-surface-700 py-2 px-6 rounded font-medium text-sm transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </>
+        )}
       </Modal>
 
 
@@ -582,7 +652,7 @@ const handleDeleteFolder = async (folderId) => {
     type="text"
     value={newFolderNameForRename}
     onChange={(e) => setNewFolderNameForRename(e.target.value)}
-    className="w-full p-3 rounded-xl bg-gray-50 text-gray-800 border border-gray-200 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 mb-6"
+    className="w-full p-3 rounded-xl bg-gray-50 text-gray-800 border border-gray-200 focus:border-[#10B981] focus:outline-none focus:ring-2 focus:ring-[#10B981]/30 mb-6"
     placeholder="Enter new folder name..."
   />
   <div className="flex justify-end gap-3">
@@ -594,7 +664,7 @@ const handleDeleteFolder = async (folderId) => {
     </button>
     <button
       onClick={handleRenameFolder}
-      className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-sm font-semibold transition-all shadow-md hover:shadow-lg"
+      className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#10B981] to-[#14B8A6] hover:from-[#059669] hover:to-[#0d9488] text-white text-sm font-semibold transition-all shadow-md hover:shadow-lg"
     >
       Rename
     </button>

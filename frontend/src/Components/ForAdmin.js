@@ -361,7 +361,7 @@ const ForAdmin = () => {
               <div className="text-center mt-4">
                 <button
                   type="button"
-                  className="bg-blue-500 text-white px-4 py-2 rounded"
+                  className="bg-[#10B981] text-white px-4 py-2 rounded"
                   onClick={openDatePickerModal}
                 >
                   Select Date and Time
@@ -551,7 +551,7 @@ const ForAdmin = () => {
 
             <div className="mt-6 text-center">
               <button
-                className="bg-blue-500 text-white px-4 py-2 rounded flex items-center justify-center gap-2"
+                className="bg-[#10B981] text-white px-4 py-2 rounded flex items-center justify-center gap-2"
                 onClick={() => setShowAddPlanInputs(true)}
               >
                 Add Plan

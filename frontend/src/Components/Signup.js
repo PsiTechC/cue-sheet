@@ -134,16 +134,15 @@ const Signup = () => {
                     placeholder="Enter OTP"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-[#10B981] transition"
                     required
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-3 bg-blue-600 text-white text-lg font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-400 transition"
+                  className="w-full py-3 bg-[#10B981] text-white text-lg font-semibold rounded-lg hover:bg-[#059669] focus:outline-none focus:ring-2 focus:ring-[#10B981]/30 transition-all shadow-md hover:shadow-lg"
                 >
                   {loading ? <span className="loginloader"></span> : 'Verify OTP'}
-
                 </button>
               </form>
             </>
@@ -158,7 +157,7 @@ const Signup = () => {
                     placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-[#10B981] transition"
                     required
                   />
                 </div>
@@ -168,7 +167,7 @@ const Signup = () => {
                     placeholder="Choose a password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-[#10B981] transition"
                     required
                   />
                 </div>
@@ -178,19 +177,19 @@ const Signup = () => {
                     placeholder="Confirm password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-[#10B981] transition"
                     required
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-3 bg-blue-600 text-white text-lg font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-400 transition"
+                  className="w-full py-3 bg-[#10B981] text-white text-lg font-semibold rounded-lg hover:bg-[#059669] focus:outline-none focus:ring-2 focus:ring-[#10B981]/30 transition-all shadow-md hover:shadow-lg"
                 >
                   {loading ? <span className="loginloader"></span> : 'Sign Up'}
                 </button>
                 <p className="text-center mb-6 text-lg">
                   Already have an account?{' '}
-                  <Link to="/login" className="text-blue-600 hover:underline">
+                  <Link to="/login" className="text-[#10B981] hover:underline">
                     Log In
                   </Link>
                 </p>

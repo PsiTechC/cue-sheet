@@ -133,7 +133,7 @@
 //       ))}
 //       <button
 //         onClick={addCustomProperty}
-//         className="mt-4 bg-blue-500 text-white px-4 py-1 rounded cursor-pointer"
+//         className="mt-4 bg-[#10B981] text-white px-4 py-1 rounded cursor-pointer"
 //       >
 //         + Add property
 //       </button>
@@ -368,7 +368,7 @@ const MetadataCreation = () => {
       ))}
       <button
         onClick={addCustomProperty}
-        className="mt-4 bg-blue-500 text-white px-4 py-1 rounded cursor-pointer"
+        className="mt-4 bg-[#10B981] text-white px-4 py-1 rounded cursor-pointer"
       >
         + Add property
       </button>

@@ -86,7 +86,7 @@ const HeroSection = () => {
     <ParallaxProvider>
       <div className="relative">
         {/* Main Section */}
-        <section className="bg-white py-16 px-8 sticky top-0 z-10">
+        <section className="bg-gradient-to-br from-[#f0f4f8] via-[#e8f0f7] to-[#dce8f5] py-16 px-8 sticky top-0 z-10">
           <div className="max-w-screen-lg mx-auto">
             <div
               className="text-left"
@@ -117,7 +117,7 @@ const HeroSection = () => {
               >
                 Start Creating
                 <div
-                  className="ml-4 h-10 w-10 flex items-center justify-center rounded-full bg-blue-600 text-white group-hover:bg-transparent group-hover:text-blue-600 transition-all duration-300"
+                  className="ml-4 h-10 w-10 flex items-center justify-center rounded-full bg-[#10B981] text-white group-hover:bg-transparent group-hover:text-[#10B981] transition-all duration-300"
                   style={{
                     fontSize: "1rem", // Adjust font size if needed
                     lineHeight: "5",
@@ -127,7 +127,7 @@ const HeroSection = () => {
                 </div>
 
                 <div
-                  className="absolute inset-0 bg-blue-600 z-0 transition-all duration-300 ease-in-out transform scale-x-0 group-hover:scale-x-100 origin-left"
+                  className="absolute inset-0 bg-[#10B981] z-0 transition-all duration-300 ease-in-out transform scale-x-0 group-hover:scale-x-100 origin-left"
                 ></div>
                 <span
                   className="absolute inset-0 z-10 flex items-center justify-center text-transparent group-hover:text-white transition-all duration-300 ease-in-out"

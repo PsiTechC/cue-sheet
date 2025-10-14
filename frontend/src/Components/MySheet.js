@@ -105,7 +105,7 @@ const MySheets = () => {
               placeholder="Search sheets..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="p-2.5 w-64 rounded-xl bg-white text-gray-800 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent shadow-sm"
+              className="p-2.5 w-64 rounded-xl bg-white text-gray-800 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#10B981] focus:border-transparent shadow-sm"
             />
           )
         }
@@ -113,7 +113,7 @@ const MySheets = () => {
         {isMobile && (
           <FontAwesomeIcon
             icon={faSearch}
-            className="search-icon text-gray-600 hover:text-[#4CAF50] text-xl cursor-pointer transition-colors"
+            className="search-icon text-gray-600 hover:text-[#10B981] text-xl cursor-pointer transition-colors"
             onClick={(e) => {
               e.stopPropagation();
               setIsSearchActive(!isSearchActive);
@@ -130,71 +130,86 @@ const MySheets = () => {
             placeholder="Search sheets..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="p-2.5 rounded-xl bg-white text-gray-800 border border-gray-200 text-sm w-full focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent shadow-sm"
+            className="p-2.5 rounded-xl bg-white text-gray-800 border border-gray-200 text-sm w-full focus:outline-none focus:ring-2 focus:ring-[#10B981] focus:border-transparent shadow-sm"
           />
         </div>
       )}
 
-      <div className="p-4 md:p-6 bg-white/50 backdrop-blur-sm mx-4 md:mx-6 rounded-2xl mt-4 md:mt-6">
+      <div className="p-3 sm:p-4 md:p-6 bg-white/50 backdrop-blur-sm mx-3 sm:mx-4 md:mx-6 rounded-xl sm:rounded-2xl mt-3 sm:mt-4 md:mt-6">
         {loading ? (
-          <div className="space-y-3">
-            {Array.from({ length: 16 }).map((_, index) => (
+          <div className="space-y-2 sm:space-y-3">
+            {Array.from({ length: 8 }).map((_, index) => (
               <div
                 key={index}
-                className="p-3 md:p-4 bg-white rounded-xl shadow-sm border border-gray-100 animate-pulse"
+                className="p-3 sm:p-3 md:p-4 bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-100 animate-pulse"
               >
-                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
-                  <div className="flex items-center space-x-3 min-w-0 flex-1">
-                    <LoadingPlaceholder width={32} height={32} />
-                    <LoadingPlaceholder width="100%" height={22} />
+                <div className="flex items-center justify-between gap-2 sm:gap-3">
+                  <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
+                    <LoadingPlaceholder width={28} height={28} />
+                    <div className="flex-1 min-w-0">
+                      <LoadingPlaceholder width="80%" height={18} />
+                      <div className="mt-1">
+                        <LoadingPlaceholder width="50%" height={14} />
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex justify-end">
-                    <LoadingPlaceholder width={120} height={38} />
-                  </div>
+                  <LoadingPlaceholder width={90} height={36} />
                 </div>
               </div>
             ))}
           </div>
         ) : filteredTables.length > 0 ? (
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {filteredTables.map((table, index) => (
-              <div key={index} className="p-3 md:p-4 bg-white rounded-xl shadow-sm border border-gray-100 hover:border-[#4CAF50] transition-all">
-                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3">
+              <div key={index} className="p-3 sm:p-3 md:p-4 bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-100 hover:border-[#10B981] transition-all">
+                <div className="flex items-center justify-between gap-2 sm:gap-3">
                   {/* Left section - Number and Title */}
-                  <div className="flex items-center space-x-3 min-w-0 flex-1">
-                    <span className="w-8 h-8 bg-gradient-to-br from-[#4CAF50] to-[#66BB6A] rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                  <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
+                    <span className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-[#10B981] to-[#14B8A6] rounded-lg flex items-center justify-center text-white font-bold text-xs sm:text-sm flex-shrink-0">
                       {index + 1}
                     </span>
                     <div className="min-w-0 flex-1">
                       <h3
-                        className="font-semibold text-gray-800 text-sm md:text-base truncate"
+                        className="font-semibold text-gray-800 text-xs sm:text-sm md:text-base truncate"
                         title={table.tableData[0]?.["Program Name"] || "N/A"}
                       >
                         {table.tableData[0]?.["Program Name"] || "N/A"}
                       </h3>
-                      <p className="text-xs text-gray-500 mt-1">
-                        {new Date(table.savedAt).toLocaleString()}
+                      <p className="text-xs text-gray-500 mt-0.5 sm:mt-1 truncate">
+                        {new Date(table.savedAt).toLocaleString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                          year: '2-digit',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
                       </p>
                     </div>
                   </div>
 
-                  {/* Right section - Buttons */}
-                  <div className="flex space-x-2 md:space-x-3 flex-shrink-0 self-end md:self-center">
-                    {!isMobile && (
-                      <button
-                        onClick={() => handleViewTable(table.tableData)}
-                        className="text-blue-500 hover:text-blue-700 font-medium transition-colors text-sm whitespace-nowrap"
-                      >
-                        View
-                      </button>
-                    )}
+                  {/* Right section - Action Buttons */}
+                  <div className="flex-shrink-0 flex items-center gap-2">
+                    {/* View Button - Icon only on mobile, full button on larger screens */}
+                    <button
+                      onClick={() => handleViewTable(table.tableData)}
+                      className="bg-gradient-to-r from-[#2196F3] to-[#42A5F5] hover:from-[#1976D2] hover:to-[#2196F3] text-white py-2 px-3 sm:px-4 rounded-lg text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg flex items-center space-x-0 sm:space-x-2 whitespace-nowrap"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                      <span className="hidden sm:inline">View</span>
+                    </button>
+
+                    {/* Download Button */}
                     <CSVLink
                       data={table.tableData}
                       filename={`${table.tableData[0]["Program Name"] || "unknown"}_cue-sheet.csv`}
                     >
-                      <button className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] hover:from-[#45a049] hover:to-[#5cb860] text-white py-2 px-3 md:px-4 rounded-lg text-xs md:text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg flex items-center space-x-2 whitespace-nowrap">
-                        <img src={eLogo} alt="Download Icon" className="h-3 w-3 md:h-4 md:w-4" />
-                        <span>Download</span>
+                      <button className="bg-gradient-to-r from-[#10B981] to-[#14B8A6] hover:from-[#059669] hover:to-[#0d9488] text-white py-2 px-3 sm:px-4 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg flex items-center space-x-1.5 sm:space-x-2 whitespace-nowrap">
+                        <img src={eLogo} alt="Download Icon" className="h-3 w-3 sm:h-4 sm:w-4" />
+                        <span className="hidden xs:inline sm:inline">Download</span>
+                        <span className="inline xs:hidden sm:hidden">DL</span>
                       </button>
                     </CSVLink>
                   </div>
@@ -203,8 +218,13 @@ const MySheets = () => {
             ))}
           </div>
         ) : (
-          <div className="flex items-center justify-center py-20">
-            <p className="text-gray-500 text-base md:text-lg">No sheets saved yet.</p>
+          <div className="flex items-center justify-center py-12 sm:py-16 md:py-20">
+            <div className="text-center">
+              <svg className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-gray-300 mb-3 sm:mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              <p className="text-gray-500 text-sm sm:text-base md:text-lg">No sheets saved yet.</p>
+            </div>
           </div>
         )}
       </div>
@@ -215,16 +235,35 @@ const MySheets = () => {
         <Modal
           isOpen={isModalOpen}
           onRequestClose={closeModal}
-          className="bg-white p-6 rounded-3xl max-w-6xl mx-auto border border-gray-200 shadow-2xl"
-          overlayClassName="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50"
+          className="bg-white rounded-lg max-w-7xl w-full mx-4 border border-surface-200 shadow-xl"
+          overlayClassName="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50 p-4"
         >
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">Table Data</h2>
-          <div className="overflow-auto max-h-[500px] rounded-xl border border-gray-200">
-            <table className="min-w-full text-gray-800 border-collapse">
-              <thead className="bg-gradient-to-r from-[#4CAF50] to-[#66BB6A] sticky top-0">
+          {/* Header */}
+          <div className="border-b border-surface-200 px-6 py-4 bg-surface-50 rounded-t-lg flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-semibold text-surface-900">Cue Sheet Data</h2>
+              <p className="text-sm text-surface-600 mt-1">View saved sheet details</p>
+            </div>
+            <button
+              onClick={closeModal}
+              className="text-surface-400 hover:text-surface-600 transition-colors"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Table Container */}
+          <div className="overflow-auto" style={{ maxHeight: 'calc(90vh - 180px)' }}>
+            <table className="min-w-full border-collapse">
+              <thead className="bg-primary-600 text-white sticky top-0 z-10">
                 <tr>
                   {Object.keys(viewedTableData[0]).map((key, index) => (
-                    <th key={index} className="border-b border-white/20 px-4 py-3 text-white font-semibold text-left">
+                    <th
+                      key={index}
+                      className="border-r border-primary-700 last:border-r-0 px-4 py-3 text-left font-semibold text-sm uppercase tracking-wide whitespace-nowrap"
+                    >
                       {key}
                     </th>
                   ))}
@@ -232,10 +271,33 @@ const MySheets = () => {
               </thead>
               <tbody className="bg-white">
                 {viewedTableData.map((row, rowIndex) => (
-                  <tr key={rowIndex} className="hover:bg-gray-50 transition-colors">
+                  <tr
+                    key={rowIndex}
+                    className={`${
+                      rowIndex % 2 === 0 ? 'bg-white' : 'bg-surface-50'
+                    } hover:bg-secondary-50 transition-colors`}
+                  >
                     {Object.values(row).map((value, colIndex) => (
-                      <td key={colIndex} className="border-b border-gray-100 px-4 py-3 text-sm">
-                        {value || 'N/A'}
+                      <td
+                        key={colIndex}
+                        className="border border-surface-200 px-4 py-3 text-sm text-surface-900 whitespace-nowrap"
+                      >
+                        {value && value !== '-' && value !== 'N/A' ? (
+                          String(value).startsWith('http') ? (
+                            <a
+                              href={value}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-secondary-600 hover:text-secondary-700 underline"
+                            >
+                              {value.length > 40 ? value.substring(0, 40) + '...' : value}
+                            </a>
+                          ) : (
+                            <span className="text-surface-900">{value}</span>
+                          )
+                        ) : (
+                          <span className="text-surface-400 italic">N/A</span>
+                        )}
                       </td>
                     ))}
                   </tr>
@@ -244,12 +306,18 @@ const MySheets = () => {
             </table>
           </div>
 
-          <button
-            onClick={closeModal}
-            className="mt-6 px-6 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold transition-all"
-          >
-            Close
-          </button>
+          {/* Footer */}
+          <div className="border-t border-surface-200 px-6 py-4 bg-surface-50 rounded-b-lg flex items-center justify-between">
+            <p className="text-sm text-surface-600">
+              Showing {viewedTableData.length} {viewedTableData.length === 1 ? 'record' : 'records'}
+            </p>
+            <button
+              onClick={closeModal}
+              className="border border-surface-300 hover:bg-white text-surface-700 py-2 px-6 rounded font-medium text-sm transition-colors"
+            >
+              Close
+            </button>
+          </div>
         </Modal>
       )}
     </div>
