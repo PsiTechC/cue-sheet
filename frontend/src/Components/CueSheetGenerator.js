@@ -555,32 +555,46 @@ const CueSheetGenerator = () => {
     return new Date(timeInSeconds * 1000).toISOString().substr(11, 8);
   };
 
-  const mergeDetectedSongs = (songs) => {
-    const mergedSongs = [];
 
-    songs.forEach((song) => {
-      // Skip merging songs with the title "Maybe contain music"
-      if (song.title === "May contain music") {
-        mergedSongs.push({ ...song });
-        return;
-      }
+const mergeDetectedSongs = (songs, gapTolerance = 1.0) => {
+  if (!Array.isArray(songs) || songs.length === 0) return [];
 
-      const existingSong = mergedSongs.find(
-        (mergedSong) =>
-          mergedSong.title === song.title
-      );
+  // Ensure we process in chronological order
+  const ordered = [...songs].sort(
+    (a, b) => (a.start_time ?? 0) - (b.start_time ?? 0)
+  );
 
-      if (existingSong) {
-        // Update the TC Out for the existing song
-        existingSong.end_time = Math.max(existingSong.end_time, song.end_time);
-      } else {
-        // Add the new song entry
-        mergedSongs.push({ ...song });
-      }
-    });
+  const merged = [];
 
-    return mergedSongs;
-  };
+  for (const s of ordered) {
+    const song = { ...s };
+
+    // Never merge these — each occurrence gets its own row
+    if (song.title === "May contain music") {
+      merged.push(song);
+      continue;
+    }
+
+    const last = merged[merged.length - 1];
+
+    // Merge only if the previous *merged* item is the same title
+    // and the new chunk starts within a tiny gap of the previous end.
+    if (
+      last &&
+      last.title === song.title &&
+      (song.start_time ?? 0) <= (last.end_time ?? 0) + gapTolerance
+    ) {
+      // Extend the current block
+      last.end_time = Math.max(last.end_time ?? 0, song.end_time ?? song.start_time ?? 0);
+    } else {
+      // Start a new block (either first item, or interrupted by another song)
+      merged.push(song);
+    }
+  }
+
+  return merged;
+};
+
 
 
   const mergedSongs = mergeDetectedSongs(detectedSongs);
