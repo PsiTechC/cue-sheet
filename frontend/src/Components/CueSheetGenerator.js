@@ -872,7 +872,7 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
   };
 
   return (
-    <div id="modalBlur" className="bg-gradient-to-br from-[#f0f4f8] via-[#e8f0f7] to-[#dce8f5] text-gray-800 min-h-screen">
+    <div id="modalBlur" className="bg-gray-50 dark:bg-[#1e1e1e] text-gray-800 dark:text-gray-200 min-h-screen transition-colors duration-300">
       <PageHeader title="Create Cue-Sheet" />
 
       <div className="mt-6 ml-6 mr-6">
@@ -886,7 +886,7 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
           </button>
           <button
             onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-            className="py-2.5 px-4 rounded-xl text-gray-700 hover:text-[#10B981] hover:bg-white/80 shadow-md transition-all flex items-center justify-center bg-white"
+            className="py-2.5 px-4 rounded-xl text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/80 dark:hover:bg-gray-700 shadow-md transition-all flex items-center justify-center bg-white dark:bg-gray-800"
             style={{ minWidth: '40px', height: '40px' }}
           >
             <FontAwesomeIcon icon={faSliders} size="lg" />
@@ -895,11 +895,11 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
 
         {/* Uploaded Files List - Show when files are uploaded */}
         {uploadedFiles.length > 0 && (
-          <div className="bg-white border border-surface-200 rounded-lg shadow-sm">
-            <div className="border-b border-surface-200 px-6 py-4 bg-surface-50">
-              <h3 className="text-lg font-semibold text-surface-900">Uploaded Files ({uploadedFiles.length})</h3>
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+            <div className="border-b border-gray-200 dark:border-gray-700 px-6 py-4 bg-gray-50 dark:bg-gray-900">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Uploaded Files ({uploadedFiles.length})</h3>
             </div>
-            <div className="divide-y divide-surface-200">
+            <div className="divide-y divide-gray-200 dark:divide-gray-700">
               {uploadedFiles.map((file, index) => (
                 <div key={file.id} className="p-6">
                   <div className="flex items-center gap-4">
@@ -913,24 +913,24 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
                     {/* File Info */}
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-success-100 text-success-800">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-success-100 dark:bg-success-900/30 text-success-800 dark:text-success-400">
                           Uploaded
                         </span>
                         {file.uploadType === 's3' && (
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-secondary-100 text-secondary-800">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-400">
                             S3
                           </span>
                         )}
                       </div>
-                      <h3 className="text-base font-semibold text-surface-900 mb-1">
+                      <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">
                         {file.fileName}
                       </h3>
                       {file.duration && (
-                        <p className="text-sm text-surface-600">
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
                           Duration: {Math.floor(file.duration / 60)} min {Math.floor(file.duration % 60)} sec
                         </p>
                       )}
-                      <p className="text-xs text-surface-500 mt-1">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                         Uploaded at {new Date(file.uploadTime).toLocaleTimeString()}
                       </p>
                     </div>
@@ -1032,8 +1032,8 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
 
       {processingMessageVisible ? (
         <div id="loadingContainer" className="loading-container mt-20 opacity-100 mx-6">
-          <div className="loading-text text-lg text-center mb-4 text-gray-800 font-semibold">{loadingText}</div>
-          <div className="progress-bar bg-gray-200 rounded-xl w-full h-4 shadow-inner">
+          <div className="loading-text text-lg text-center mb-4 text-gray-800 dark:text-gray-100 font-semibold transition-colors duration-300">{loadingText}</div>
+          <div className="progress-bar bg-gray-200 dark:bg-gray-700 rounded-xl w-full h-4 shadow-inner transition-colors duration-300">
             <div className="progress-bar-fill bg-gradient-to-r from-[#10B981] to-[#14B8A6] h-full rounded-xl" style={{ width: `${progress}%`, transition: 'width 1s ease' }}></div>
           </div>
         </div>
@@ -1375,11 +1375,11 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
 
 
       {isModalOpen && (
-        <div className="fixed z-50 inset-0 bg-black/40 flex justify-center items-center p-2 sm:p-4">
-          <div className="bg-white rounded-lg max-w-2xl w-full border border-surface-200 shadow-xl max-h-[95vh] overflow-y-auto">
+        <div className="fixed z-50 inset-0 bg-black/40 dark:bg-black/60 flex justify-center items-center p-2 sm:p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg max-w-2xl w-full border border-gray-200 dark:border-gray-700 shadow-xl max-h-[95vh] overflow-y-auto transition-colors duration-300">
             {/* Modal Header */}
-            <div className="border-b border-surface-200 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between bg-surface-50 sticky top-0 z-10">
-              <h2 className="text-base sm:text-lg font-semibold text-surface-900">
+            <div className="border-b border-gray-200 dark:border-gray-700 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between bg-gray-50 dark:bg-gray-900 sticky top-0 z-10 transition-colors duration-300">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">
                 {isS3Upload ? "Browse S3 Folders" : "Upload Audio File"}
               </h2>
               <button
@@ -1387,7 +1387,7 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
                   setIsS3Upload(false);
                   setIsModalOpen(false);
                 }}
-                className="text-surface-400 hover:text-surface-600 transition-colors flex-shrink-0"
+                className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors flex-shrink-0"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1416,17 +1416,17 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
               ) : (
                 <form id="metadataForm" encType="multipart/form-data">
                   {/* Info Box */}
-                  <div className="bg-secondary-50 border border-secondary-200 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
+                  <div className="bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800/50 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
                     <div className="flex items-start gap-2 sm:gap-3">
-                      <svg className="w-4 h-4 sm:w-5 sm:h-5 text-secondary-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5 text-primary-600 dark:text-primary-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"/>
                       </svg>
                       <div className="text-xs sm:text-sm">
-                        <p className="font-semibold text-surface-900 mb-1">File Naming Format</p>
-                        <p className="text-surface-700 mb-2 break-all">
+                        <p className="font-semibold text-gray-900 dark:text-gray-100 mb-1">File Naming Format</p>
+                        <p className="text-gray-700 dark:text-gray-300 mb-2 break-all">
                           TvChannelName_ProgramName_EpisodeNumber_OnAirDate_Movie/AlbumName
                         </p>
-                        <p className="text-surface-600 text-xs">
+                        <p className="text-gray-600 dark:text-gray-400 text-xs">
                           If any field is not available, use "NA" in its place.
                         </p>
                       </div>
@@ -1435,27 +1435,27 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
 
                   {/* File Upload Section */}
                   <div className="mb-4 sm:mb-6">
-                    <label className="block text-xs font-medium text-surface-700 mb-2 uppercase tracking-wide">
-                      Audio File <span className="text-error-500">*</span>
+                    <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
+                      Audio File <span className="text-red-500">*</span>
                     </label>
                     <input
-                      className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-surface-300 rounded text-surface-900 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-secondary-500 focus:border-secondary-500 transition bg-white file:mr-2 sm:file:mr-4 file:py-1.5 sm:file:py-2 file:px-3 sm:file:px-4 file:rounded file:border-0 file:text-xs sm:file:text-sm file:font-medium file:bg-secondary-50 file:text-secondary-700 hover:file:bg-secondary-100"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 dark:border-gray-600 rounded text-gray-900 dark:text-gray-100 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500 transition bg-white dark:bg-[#2d2d30] file:mr-2 sm:file:mr-4 file:py-1.5 sm:file:py-2 file:px-3 sm:file:px-4 file:rounded file:border-0 file:text-xs sm:file:text-sm file:font-medium file:bg-primary-50 dark:file:bg-primary-900/30 file:text-primary-700 dark:file:text-primary-300 hover:file:bg-primary-100 dark:hover:file:bg-primary-800/40"
                       type="file"
                       id="file"
                       name="file"
                       accept=".mp3"
                       required
                     />
-                    <p className="text-xs text-surface-500 mt-1.5">Supported format: MP3</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1.5">Supported format: MP3</p>
                   </div>
 
                   {/* OR Divider */}
                   <div className="relative mb-4 sm:mb-6">
                     <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-surface-300"></div>
+                      <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
                     </div>
                     <div className="relative flex justify-center text-xs sm:text-sm">
-                      <span className="px-3 sm:px-4 bg-white text-surface-500 font-medium">OR</span>
+                      <span className="px-3 sm:px-4 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium">OR</span>
                     </div>
                   </div>
 
@@ -1463,7 +1463,7 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
                   <button
                     type="button"
                     onClick={() => setIsS3Upload(true)}
-                    className="w-full mb-4 sm:mb-6 border-2 border-dashed border-surface-300 hover:border-secondary-400 bg-surface-50 hover:bg-secondary-50 py-3 sm:py-4 px-3 sm:px-4 rounded-lg transition-colors flex items-center justify-center gap-2 text-surface-700 hover:text-secondary-700"
+                    className="w-full mb-4 sm:mb-6 border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-primary-400 dark:hover:border-primary-500 bg-gray-50 dark:bg-gray-900 hover:bg-primary-50 dark:hover:bg-primary-900/20 py-3 sm:py-4 px-3 sm:px-4 rounded-lg transition-colors flex items-center justify-center gap-2 text-gray-700 dark:text-gray-300 hover:text-primary-700 dark:hover:text-primary-400"
                   >
                     <svg className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
@@ -1479,7 +1479,7 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
                         setIsS3Upload(false);
                         setIsModalOpen(false);
                       }}
-                      className="w-full sm:flex-1 border border-surface-300 hover:bg-surface-50 text-surface-700 py-2.5 px-4 rounded font-medium text-sm transition-colors order-2 sm:order-1"
+                      className="w-full sm:flex-1 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 py-2.5 px-4 rounded font-medium text-sm transition-colors order-2 sm:order-1"
                     >
                       Cancel
                     </button>

@@ -86,15 +86,15 @@ const HeroSection = () => {
     <ParallaxProvider>
       <div className="relative">
         {/* Main Section */}
-        <section className="bg-gradient-to-br from-[#f0f4f8] via-[#e8f0f7] to-[#dce8f5] py-16 px-8 sticky top-0 z-10">
+        <section className="bg-gray-50 py-16 px-8 sticky top-0 z-10">
           <div className="max-w-screen-lg mx-auto">
             <div
               className="text-left"
               style={{ fontFamily: "Helvetica Neue, Arial, sans-serif" }}
             >
-              <h1 className="text-5xl sm:text-6xl lg:text-8xl font-light mb-8 leading-tight">
+              <h1 className="text-5xl sm:text-6xl lg:text-8xl font-light mb-8 leading-tight text-gray-900">
                 Explore,<br />
-                Limitless possibilities. <br /> Smash deadlines. <br /> <p className="gradient-text">With MEDai.</p> 
+                Limitless possibilities. <br /> Smash deadlines. <br /> <p className="gradient-text">With MEDai.</p>
               </h1>
               {/* Typing text only on large screens */}
               <p

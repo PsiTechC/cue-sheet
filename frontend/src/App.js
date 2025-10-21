@@ -8,6 +8,7 @@ import Login from './Components/Login';
 import Dashboard from './Components/Dashboard';
 import Footer from './Components/Footer';
 import { CueSheetProvider } from './Hooks/CueSheetContext';
+import { ThemeProvider } from './Hooks/ThemeContext';
 import ForAdmin from './Components/ForAdmin';
 
 const ProtectedRoute = ({ children }) => {
@@ -80,11 +81,13 @@ function AppContent() {
 
 function App() {
   return (
-    <CueSheetProvider>
-      <Router>
-        <AppContent />
-      </Router>
-    </CueSheetProvider>
+    <ThemeProvider>
+      <CueSheetProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </CueSheetProvider>
+    </ThemeProvider>
   );
 }
 

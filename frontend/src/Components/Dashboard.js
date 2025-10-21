@@ -70,14 +70,14 @@ const Dashboard = () => {
   //   }
   // });
 
-  
+
   return (
-    <div className="flex h-screen bg-gradient-to-br from-surface-50 via-surface-100 to-surface-200">
+    <div className="flex h-screen bg-gray-50 dark:bg-[#1e1e1e] transition-colors duration-300">
       {/* Conditionally render the toggle button */}
       {!isSidebarOpen && (
         <button
           onClick={toggleSidebar}
-          className="md:hidden p-4 text-surface-700 hover:text-secondary-700 z-50 fixed top-2 left-1 bg-white rounded-lg shadow-material-2 hover:shadow-material-3 transition-all"
+          className="md:hidden p-4 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 z-50 fixed top-2 left-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-all border border-gray-200 dark:border-gray-700"
         >
           <FontAwesomeIcon icon={faBars} size="1x" />
         </button>
@@ -86,12 +86,12 @@ const Dashboard = () => {
       <div
         className={`transition-all duration-300 ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } md:translate-x-0 md:w-64 bg-white border-r border-surface-200 h-full fixed z-40 shadow-material-3`}
+        } md:translate-x-0 md:w-64 bg-white dark:bg-[#252526] border-r border-gray-200 dark:border-gray-800 h-full fixed z-40 shadow-lg`}
       >
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       </div>
 
-      <div className="flex-grow md:ml-64 bg-gradient-to-br from-surface-50 via-surface-100 to-surface-200 overflow-y-auto">
+      <div className="flex-grow md:ml-64 bg-gray-50 dark:bg-[#1e1e1e] overflow-y-auto transition-colors duration-300">
         <Routes>
           <Route index element={<Project />} />
           <Route path="project" element={<Project />} />

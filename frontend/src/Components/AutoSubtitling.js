@@ -95,23 +95,23 @@ const AutoSubtitling = () => {
   };
 
   return (
-    <div className="min-h-screen bg-surface-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-[#1e1e1e] transition-colors duration-300">
       <PageHeader title="Auto Subtitling" />
       <div className="max-w-6xl mx-auto p-6 md:p-8">
         {/* Main Content Card */}
-        <div className="bg-white border border-surface-200 rounded-lg shadow-sm">
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
           {/* Header */}
-          <div className="border-b border-surface-200 px-6 py-4 bg-surface-50">
-            <h2 className="text-lg font-semibold text-surface-900">Audio Transcription</h2>
-            <p className="text-sm text-surface-600 mt-1">Upload an audio file to generate automatic subtitles</p>
+          <div className="border-b border-gray-200 dark:border-gray-700 px-6 py-4 bg-gray-50 dark:bg-gray-900">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Audio Transcription</h2>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Upload an audio file to generate automatic subtitles</p>
           </div>
 
           {/* Action Buttons */}
-          <div className="p-6 border-b border-surface-200">
+          <div className="p-6 border-b border-gray-200 dark:border-gray-700">
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="bg-secondary-600 hover:bg-secondary-700 text-white py-2.5 px-6 rounded font-medium text-sm transition-colors uppercase tracking-wide flex items-center justify-center gap-2"
+                className="bg-primary-600 hover:bg-primary-700 text-white py-2.5 px-6 rounded font-medium text-sm transition-colors uppercase tracking-wide flex items-center justify-center gap-2"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />

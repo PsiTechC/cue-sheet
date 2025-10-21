@@ -36,14 +36,14 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
   return (
     <>
       <div
-        className={`h-screen bg-white text-gray-800 w-64 flex flex-col fixed top-0 left-0 z-40 transform ${
+        className={`h-screen bg-white dark:bg-[#252526] text-gray-800 dark:text-gray-200 w-64 flex flex-col fixed top-0 left-0 z-40 transform ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } transition-transform duration-300 md:relative md:translate-x-0 shadow-lg`}
-        style={{ borderRight: '1px solid #e5e7eb', fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
+        } transition-all duration-300 md:relative md:translate-x-0 shadow-lg border-r border-gray-200 dark:border-gray-800`}
+        style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}
       >
-        <div className="p-[22px] flex justify-between items-center border-b border-gray-200 bg-gradient-to-r from-[#f0f4f8] to-[#e8f0f7]">
-          <h1 className="text-xl font-semibold text-gray-800">Dashboard</h1>
-          <button onClick={toggleSidebar} className="md:hidden text-gray-600 hover:text-gray-800 transition-colors">
+        <div className="p-[22px] flex justify-between items-center border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-[#2d2d30]">
+          <h1 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Dashboard</h1>
+          <button onClick={toggleSidebar} className="md:hidden text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors">
             <FontAwesomeIcon icon={faXmark} size="1x" />
           </button>
         </div>
@@ -57,8 +57,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                 className={({ isActive }) =>
                   `p-3 rounded-xl flex items-center transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#10B981] to-[#14B8A6] text-white font-semibold shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#10B981]'
+                      ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold shadow-md'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-primary-600 dark:hover:text-primary-400'
                   }`
                 }
               >
@@ -73,8 +73,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                 className={({ isActive }) =>
                   `p-3 rounded-xl flex items-center transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#10B981] to-[#14B8A6] text-white font-semibold shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#10B981]'
+                      ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold shadow-md'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-primary-600 dark:hover:text-primary-400'
                   }`
                 }
               >
@@ -89,8 +89,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                 className={({ isActive }) =>
                   `p-3 rounded-xl flex items-center transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#10B981] to-[#14B8A6] text-white font-semibold shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#10B981]'
+                      ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold shadow-md'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-primary-600 dark:hover:text-primary-400'
                   }`
                 }
               >
@@ -105,8 +105,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                 className={({ isActive }) =>
                   `p-3 rounded-xl flex items-center transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#10B981] to-[#14B8A6] text-white font-semibold shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#10B981]'
+                      ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold shadow-md'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-primary-600 dark:hover:text-primary-400'
                   }`
                 }
               >
@@ -121,8 +121,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                 className={({ isActive }) =>
                   `p-3 rounded-xl flex items-center transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#10B981] to-[#14B8A6] text-white font-semibold shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#10B981]'
+                      ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold shadow-md'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-primary-600 dark:hover:text-primary-400'
                   }`
                 }
               >
@@ -137,8 +137,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                 className={({ isActive }) =>
                   `p-3 rounded-xl flex items-center transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#10B981] to-[#14B8A6] text-white font-semibold shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#10B981]'
+                      ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold shadow-md'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-primary-600 dark:hover:text-primary-400'
                   }`
                 }
               >
@@ -153,8 +153,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                 className={({ isActive }) =>
                   `p-3 rounded-xl flex items-center transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#10B981] to-[#14B8A6] text-white font-semibold shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#10B981]'
+                      ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold shadow-md'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-primary-600 dark:hover:text-primary-400'
                   }`
                 }
               >
@@ -169,8 +169,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                 className={({ isActive }) =>
                   `p-3 rounded-xl flex items-center transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#10B981] to-[#14B8A6] text-white font-semibold shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#10B981]'
+                      ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold shadow-md'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-primary-600 dark:hover:text-primary-400'
                   }`
                 }
               >
@@ -185,8 +185,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                 className={({ isActive }) =>
                   `p-3 rounded-xl flex items-center transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#10B981] to-[#14B8A6] text-white font-semibold shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#10B981]'
+                      ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold shadow-md'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-primary-600 dark:hover:text-primary-400'
                   }`
                 }
               >
@@ -201,8 +201,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                 className={({ isActive }) =>
                   `p-3 rounded-xl flex items-center transition-all duration-200 ${
                     isActive
-                      ? 'bg-gradient-to-r from-[#10B981] to-[#14B8A6] text-white font-semibold shadow-md'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-[#10B981]'
+                      ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold shadow-md'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-primary-600 dark:hover:text-primary-400'
                   }`
                 }
               >
@@ -213,12 +213,12 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
           </ul>
         </nav>
 
-        <div className="p-5 border-t border-gray-200 bg-gradient-to-r from-[#f0f4f8] to-[#e8f0f7]">
+        <div className="p-5 border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-[#2d2d30]">
           <ul>
             <li>
               <button
                 onClick={handleLogout}
-                className="flex items-center w-full p-3 rounded-xl text-gray-600 hover:bg-red-50 hover:text-red-600 transition-all duration-200 font-medium"
+                className="flex items-center w-full p-3 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-all duration-200 font-medium"
               >
                 <FontAwesomeIcon icon={faArrowRightFromBracket} className="mr-3" />
                 Log Out
@@ -230,7 +230,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
 
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-30 md:hidden"
+          className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm z-30 md:hidden"
           onClick={toggleSidebar}
         ></div>
       )}

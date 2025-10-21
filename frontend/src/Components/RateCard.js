@@ -207,11 +207,11 @@ const RateCard = () => {
   }
 
   return (
-    <div className="bg-white">
+    <div className="bg-white dark:bg-gray-800 transition-colors duration-300">
       {/* Header Section */}
-      <div className="border-b border-surface-200 px-6 md:px-8 py-5 bg-surface-50">
-        <h2 className="text-xl font-semibold text-surface-900">Pricing Plans</h2>
-        <p className="text-sm text-surface-600 mt-1">Select a plan based on your usage requirements</p>
+      <div className="border-b border-gray-200 dark:border-gray-700 px-6 md:px-8 py-5 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Pricing Plans</h2>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Select a plan based on your usage requirements</p>
       </div>
 
       {/* Plans Grid */}
@@ -232,26 +232,26 @@ const RateCard = () => {
                   minutes: avgMinutes,
                   rate: slab.ratePerMinute
                 })}
-                className="border border-surface-300 hover:border-secondary-400 bg-white p-6 rounded transition-all duration-150 hover:shadow-lg group cursor-pointer"
+                className="border border-gray-300 dark:border-gray-600 hover:border-primary-400 dark:hover:border-primary-500 bg-white dark:bg-gray-700 p-6 rounded transition-all duration-150 hover:shadow-lg group cursor-pointer"
               >
                 <div className="mb-4">
-                  <h3 className="font-semibold text-base text-surface-800 mb-1">{slab.name}</h3>
-                  <div className="h-0.5 w-12 bg-secondary-500 mt-2"></div>
+                  <h3 className="font-semibold text-base text-gray-800 dark:text-gray-100 mb-1">{slab.name}</h3>
+                  <div className="h-0.5 w-12 bg-primary-500 mt-2"></div>
                 </div>
 
                 <div className="mb-4">
                   <div className="flex items-baseline gap-1">
-                    <span className="text-3xl font-bold text-surface-900">₹{slab.ratePerMinute}</span>
-                    <span className="text-sm text-surface-500">/minute</span>
+                    <span className="text-3xl font-bold text-gray-900 dark:text-gray-100">₹{slab.ratePerMinute}</span>
+                    <span className="text-sm text-gray-500 dark:text-gray-400">/minute</span>
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-surface-200">
-                  <div className="flex items-center gap-2 text-sm text-surface-600 mb-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-secondary-500"></span>
+                <div className="pt-3 border-t border-gray-200 dark:border-gray-600">
+                  <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 mb-3">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary-500"></span>
                     <span>{slab.totalMin} minutes</span>
                   </div>
-                  <button className="w-full bg-secondary-50 hover:bg-secondary-100 text-secondary-700 py-2 px-4 rounded text-sm font-medium transition-colors">
+                  <button className="w-full bg-primary-50 dark:bg-primary-900/30 hover:bg-primary-100 dark:hover:bg-primary-800/40 text-primary-700 dark:text-primary-300 py-2 px-4 rounded text-sm font-medium transition-colors">
                     Select Plan
                   </button>
                 </div>
@@ -261,16 +261,16 @@ const RateCard = () => {
         </div>
 
         {/* Custom Plan Section */}
-        <div className="border-t border-surface-200 pt-8">
+        <div className="border-t border-gray-200 dark:border-gray-700 pt-8">
           <div className="mb-5">
-            <h3 className="font-semibold text-lg text-surface-900 mb-1">Custom Plan</h3>
-            <p className="text-sm text-surface-600">Calculate pricing for your specific requirements</p>
+            <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100 mb-1">Custom Plan</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Calculate pricing for your specific requirements</p>
           </div>
 
-          <div className="bg-surface-50 p-6 rounded border border-surface-200">
+          <div className="bg-gray-50 dark:bg-gray-900 p-6 rounded border border-gray-200 dark:border-gray-700 transition-colors duration-300">
             <div className="grid md:grid-cols-2 gap-4 mb-6">
               <div>
-                <label className="block text-xs font-medium text-surface-700 mb-2 uppercase tracking-wide">Minutes Required</label>
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">Minutes Required</label>
                 <input
                   type="number"
                   value={customMinutes}
@@ -279,44 +279,44 @@ const RateCard = () => {
                     setCustomMinutes(value === "" ? "" : Math.max(1, Number(value)));
                   }}
                   placeholder="Enter minutes"
-                  className="w-full px-4 py-2.5 border border-surface-300 rounded text-surface-900 text-sm focus:outline-none focus:ring-1 focus:ring-secondary-500 focus:border-secondary-500 transition bg-white"
+                  className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500 transition bg-white dark:bg-[#2d2d30]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-surface-700 mb-2 uppercase tracking-wide">Rate Per Minute</label>
-                <div className="px-4 py-2.5 border border-surface-300 bg-surface-100 rounded text-surface-900 text-sm font-semibold">
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">Rate Per Minute</label>
+                <div className="px-4 py-2.5 border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 rounded text-gray-900 dark:text-gray-100 text-sm font-semibold">
                   ₹{customRate || '0'}
                 </div>
               </div>
             </div>
 
             {totalAmount !== null && (
-              <div className="bg-white border border-surface-200 rounded p-5">
+              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded p-5 transition-colors duration-300">
                 <table className="w-full text-sm">
-                  <tbody className="divide-y divide-surface-200">
+                  <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                     <tr>
-                      <td className="py-2.5 text-surface-600">Base Amount</td>
-                      <td className="py-2.5 text-right font-medium text-surface-900">₹{totalAmount.toFixed(2)}</td>
+                      <td className="py-2.5 text-gray-600 dark:text-gray-400">Base Amount</td>
+                      <td className="py-2.5 text-right font-medium text-gray-900 dark:text-gray-100">₹{totalAmount.toFixed(2)}</td>
                     </tr>
                     <tr>
-                      <td className="py-2.5 text-surface-600">GST (18%)</td>
-                      <td className="py-2.5 text-right font-medium text-surface-900">₹{((totalAmount * 0.18)).toFixed(2)}</td>
+                      <td className="py-2.5 text-gray-600 dark:text-gray-400">GST (18%)</td>
+                      <td className="py-2.5 text-right font-medium text-gray-900 dark:text-gray-100">₹{((totalAmount * 0.18)).toFixed(2)}</td>
                     </tr>
                     <tr>
-                      <td className="py-2.5 text-surface-600">Total Minutes</td>
-                      <td className="py-2.5 text-right font-medium text-surface-900">{customMinutes} minutes</td>
+                      <td className="py-2.5 text-gray-600 dark:text-gray-400">Total Minutes</td>
+                      <td className="py-2.5 text-right font-medium text-gray-900 dark:text-gray-100">{customMinutes} minutes</td>
                     </tr>
-                    <tr className="border-t-2 border-surface-300">
-                      <td className="py-3 font-semibold text-surface-900">Total Payable</td>
-                      <td className="py-3 text-right text-xl font-bold text-surface-900">₹{Math.round((totalAmount + totalAmount * 0.18)).toFixed(2)}</td>
+                    <tr className="border-t-2 border-gray-300 dark:border-gray-600">
+                      <td className="py-3 font-semibold text-gray-900 dark:text-gray-100">Total Payable</td>
+                      <td className="py-3 text-right text-xl font-bold text-gray-900 dark:text-gray-100">₹{Math.round((totalAmount + totalAmount * 0.18)).toFixed(2)}</td>
                     </tr>
                   </tbody>
                 </table>
 
                 <button
                   onClick={handleCustomPlanPayment}
-                  className="w-full mt-5 bg-secondary-600 hover:bg-secondary-700 text-white py-2.5 px-5 rounded font-medium text-sm transition-colors duration-150 uppercase tracking-wide"
+                  className="w-full mt-5 bg-primary-600 hover:bg-primary-700 text-white py-2.5 px-5 rounded font-medium text-sm transition-colors duration-150 uppercase tracking-wide"
                 >
                   Proceed to Payment
                 </button>

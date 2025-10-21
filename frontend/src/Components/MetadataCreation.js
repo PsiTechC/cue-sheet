@@ -382,7 +382,7 @@ const MetadataCreation = () => {
   );
 
   return (
-<div className="text-gray-800 min-h-screen bg-gradient-to-br from-[#f0f4f8] via-[#e8f0f7] to-[#dce8f5]" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
+<div className="text-gray-800 dark:text-gray-200 min-h-screen bg-gray-50 dark:bg-[#1e1e1e] transition-colors duration-300" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
   <PageHeader title="Metadata Creation" />
   <div className="p-[22px]">
     <p className="text-center text-gray-400 text-lg mt-20">Access Restricted by Admin</p>

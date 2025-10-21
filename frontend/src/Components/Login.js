@@ -123,16 +123,16 @@ const Login = () => {
       <div className="flex flex-col justify-center items-center w-full md:w-1/2 text-white p-6 md:pl-20 pb-10 z-10 text-center md:text-left">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">Empower Your Journey</h1>
         <p className="text-lg md:text-xl font-light text-center">
-          Enter your credentials to access your projects, tasks, and all the tools you need to succeed. Let’s get back to work and keep your projects running smoothly!
+          Enter your credentials to access your projects, tasks, and all the tools you need to succeed. Let's get back to work and keep your projects running smoothly!
         </p>
       </div>
 
       <div className="flex w-full md:w-1/2 h-full justify-center items-center p-6 z-10">
-        <div className="bg-white shadow-material-3 rounded-2xl p-8 max-w-md w-full" style={{ height: 'auto' }}>
+        <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full" style={{ height: 'auto', fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
           {!isForgotPassword ? (
             <>
-              <h1 className="text-3xl md:text-4xl font-light mb-4 text-center md:text-left text-surface-900">Welcome back</h1>
-              <h1 className="text-3xl md:text-4xl font-normal mb-12 text-center md:text-left text-surface-800">Log In to your account</h1>
+              <h1 className="text-3xl md:text-4xl font-light mb-4 text-center md:text-left">Welcome back</h1>
+              <h1 className="text-3xl md:text-4xl font-normal mb-12 text-center md:text-left">Log In to your account</h1>
               <form onSubmit={handleLogin} className="space-y-4">
                 <div>
                   <input
@@ -140,7 +140,7 @@ const Login = () => {
                     placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 border border-surface-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-secondary-500 transition bg-surface-50 text-surface-900"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                     required
                   />
                 </div>
@@ -150,14 +150,14 @@ const Login = () => {
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 border border-surface-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-secondary-500 transition bg-surface-50 text-surface-900"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                     required
                   />
                 </div>
                 <p className="text-right text-sm">
                   <Link
                     to="#"
-                    className="text-secondary-600 hover:text-secondary-700 hover:underline font-medium"
+                    className="text-blue-600 hover:underline"
                     onClick={(e) => {
                       e.preventDefault();
                       handleForgotPassword();
@@ -168,14 +168,14 @@ const Login = () => {
                 </p>
                 <button
                   type="submit"
-                  className="w-full py-3 bg-secondary-600 text-white text-lg font-semibold rounded-lg hover:bg-secondary-700 focus:outline-none focus:ring-4 focus:ring-secondary-300 shadow-material-2 hover:shadow-material-3 transition-all flex justify-center items-center"
+                  className="w-full py-3 bg-blue-600 text-white text-lg font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-400 transition flex justify-center items-center"
                 >
                   {loading ? <span className="loginloader"></span> : 'Log In'}
                 </button>
 
-                <p className="text-center mb-6 text-lg text-surface-700">
+                <p className="text-center mb-6 text-lg">
                   Don't have an account?{' '}
-                  <Link to="/signup" className="text-secondary-600 hover:text-secondary-700 hover:underline font-medium">
+                  <Link to="/signup" className="text-blue-600 hover:underline">
                     Sign Up
                   </Link>
                 </p>
@@ -183,7 +183,7 @@ const Login = () => {
             </>
           ) : (
             <>
-              <h1 className="text-3xl md:text-4xl font-normal mb-12 text-center md:text-left text-surface-900">Reset your password</h1>
+              <h1 className="text-3xl md:text-4xl font-normal mb-12 text-center md:text-left">Reset your password</h1>
               <form onSubmit={handleResetPassword} className="space-y-4">
                 <div>
                   <input
@@ -191,7 +191,7 @@ const Login = () => {
                     placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 border border-surface-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-secondary-500 transition bg-surface-50 text-surface-900"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                     required
                   />
                 </div>
@@ -201,7 +201,7 @@ const Login = () => {
                     placeholder="Enter the OTP"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
-                    className="w-full px-4 py-3 border border-surface-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-secondary-500 transition bg-surface-50 text-surface-900"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                     required
                   />
                 </div>
@@ -211,13 +211,13 @@ const Login = () => {
                     placeholder="Enter your new password"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    className="w-full px-4 py-3 border border-surface-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-secondary-500 transition bg-surface-50 text-surface-900"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                     required
                   />
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-3 bg-secondary-600 text-white text-lg font-semibold rounded-lg hover:bg-secondary-700 focus:outline-none focus:ring-4 focus:ring-secondary-300 shadow-material-2 hover:shadow-material-3 transition-all"
+                  className="w-full py-3 bg-blue-600 text-white text-lg font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-400 transition"
                 >
                   Reset Password
                 </button>
@@ -232,5 +232,3 @@ const Login = () => {
 };
 
 export default Login;
-
-

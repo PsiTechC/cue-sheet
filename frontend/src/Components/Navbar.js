@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';  
-import icon from '../Assets/cue-icon.png'; 
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import icon from '../Assets/cue-icon.png';
 import loginBg from '../Assets/login-bg.webp';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -37,42 +38,43 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-[#121212] py-2 px-6 flex justify-between items-center sticky top-0 z-50">
+    <nav className="bg-white dark:bg-[#1e1e1e] border-b border-gray-200 dark:border-gray-800 py-2 px-6 flex justify-between items-center sticky top-0 z-50 transition-colors duration-300">
       <div className="flex items-center space-x-1">
       <img src={icon} alt="icon" className="h-10" />
-        <span className="text-white text-lg font-semibold" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
+        <span className="text-gray-900 dark:text-white text-lg font-semibold" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
           MEDai
         </span>
       </div>
-      <div className="flex items-center space-x-6 relative">
+      <div className="flex items-center space-x-4 relative">
         {!isAuthenticated ? (
           <button
             onClick={handleGetStartedClick}
-            className="bg-green-500 text-black py-2 px-4 rounded-lg font-semibold text-sm hover:bg-green-600"
+            className="bg-primary-500 text-white py-2 px-4 rounded-lg font-semibold text-sm hover:bg-primary-600 transition-colors"
           >
             Get Started
           </button>
         ) : (
           <>
+            <ThemeToggle />
             <button
               onClick={() => setDropdownVisible(!dropdownVisible)}
-              className="bg-gray-800 text-white py-2 px-3 rounded-full focus:outline-none hover:bg-gray-700"
+              className="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-white py-2 px-3 rounded-full focus:outline-none hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
             >
-              <FontAwesomeIcon icon={faUser} />  
+              <FontAwesomeIcon icon={faUser} />
             </button>
 
-            
+
             {dropdownVisible && (
-              <div className="absolute top-full mt-2 right-0 w-48 bg-white rounded-lg shadow-lg z-50">
+              <div className="absolute top-full mt-2 right-0 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg dark:shadow-2xl z-50 border border-gray-200 dark:border-gray-700">
                 <div
-                  className="px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer rounded-lg "
-                  onClick={handleDashboardClick}  
+                  className="px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded-lg transition-colors"
+                  onClick={handleDashboardClick}
                 >
                   Dashboard
                 </div>
                 <div
-                  className="px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer rounded-lg"
-                  onClick={handleLogout} 
+                  className="px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded-lg transition-colors"
+                  onClick={handleLogout}
                 >
                   Log Out
                 </div>

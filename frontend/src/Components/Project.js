@@ -201,16 +201,16 @@ const Project = () => {
     : [];
 
   return (
-    <div className='text-gray-800 min-h-screen bg-gradient-to-br from-[#f0f4f8] via-[#e8f0f7] to-[#dce8f5]' style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
+    <div className='text-gray-800 dark:text-gray-200 min-h-screen bg-gray-50 dark:bg-[#1e1e1e] transition-colors duration-300' style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
 
       <PageHeader title="Projects">
-        <div className="text-xs font-medium text-gray-600 bg-gray-100 px-2 md:px-3 py-1 md:py-1.5 rounded-full whitespace-nowrap">
+        <div className="text-xs font-medium text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 md:px-3 py-1 md:py-1.5 rounded-full whitespace-nowrap">
           {workspaces.length} {workspaces.length === 1 ? 'Project' : 'Projects'}
         </div>
       </PageHeader>
 
       {/* Action Bar */}
-      <div className="p-4 md:p-6 flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 bg-white/50 backdrop-blur-sm">
+      <div className="p-4 md:p-6 flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm">
         <button
           className="bg-gradient-to-r from-[#10B981] to-[#14B8A6] hover:from-[#059669] hover:to-[#0d9488] text-white py-3 md:py-2.5 px-6 rounded-xl text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2 transform hover:scale-105 w-full sm:w-auto"
           onClick={openModal}
@@ -226,7 +226,7 @@ const Project = () => {
             placeholder="Search projects..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 pr-4 py-3 md:py-2 w-full sm:w-64 rounded-xl bg-white text-gray-800 border border-gray-200 focus:border-[#10B981] focus:outline-none focus:ring-2 focus:ring-[#10B981]/30 text-sm transition-all shadow-sm"
+            className="pl-10 pr-4 py-3 md:py-2 w-full sm:w-64 rounded-xl bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30 text-sm transition-all shadow-sm"
           />
         </div>
       </div>
@@ -238,7 +238,7 @@ const Project = () => {
           Array.from({ length: 8 }).map((_, index) => (
             <div
               key={index}
-              className="bg-white p-6 rounded-2xl shadow-md border border-gray-100 animate-pulse"
+              className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700 animate-pulse"
             >
               <LoadingPlaceholder width="100%" height="60px" />
             </div>
@@ -248,7 +248,7 @@ const Project = () => {
           filteredWorkspaces.map((workspace, index) => (
             <div
               key={index}
-              className="group bg-white p-4 md:p-6 rounded-2xl shadow-md border border-gray-100 hover:border-[#10B981] transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-xl relative overflow-hidden min-h-[140px] md:min-h-[160px]"
+              className="group bg-white dark:bg-gray-800 p-4 md:p-6 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-500 transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-xl relative overflow-hidden min-h-[140px] md:min-h-[160px]"
               onClick={() => handleWorkspaceOpen(workspace.workspaceName)}
             >
               {/* Gradient overlay on hover */}
@@ -262,21 +262,21 @@ const Project = () => {
                     </div>
                   </div>
                   <div
-                    className="dropdown-button p-2 hover:bg-gray-100 rounded-lg transition-colors touch-manipulation"
+                    className="dropdown-button p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors touch-manipulation"
                     onClick={(e) => {
                       e.stopPropagation();
                       toggleDropdown(index);
                     }}
                   >
-                    <FontAwesomeIcon icon={faEllipsisV} className="text-gray-400 hover:text-gray-700 cursor-pointer text-base md:text-lg" />
+                    <FontAwesomeIcon icon={faEllipsisV} className="text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 cursor-pointer text-base md:text-lg" />
                   </div>
                 </div>
 
                 <div className="flex-grow">
-                  <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-1 md:mb-2 truncate group-hover:text-[#10B981] transition-colors">
+                  <h3 className="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-200 mb-1 md:mb-2 truncate group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                     {workspace.workspaceName}
                   </h3>
-                  <p className="text-xs md:text-sm text-gray-500 font-medium">
+                  <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 font-medium">
                     Click to open
                   </p>
                 </div>
@@ -286,9 +286,9 @@ const Project = () => {
               </div>
 
               {showDropdown === index && (
-                <div className="dropdown-menu absolute right-2 top-16 bg-white border border-gray-200 shadow-xl rounded-xl z-20 overflow-hidden min-w-[160px]">
+                <div className="dropdown-menu absolute right-2 top-16 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-xl rounded-xl z-20 overflow-hidden min-w-[160px]">
                   <button
-                    className="w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors text-left flex items-center gap-2 font-medium"
+                    className="w-full px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-left flex items-center gap-2 font-medium"
                     onClick={(e) => {
                       e.stopPropagation();
                       setSelectedWorkspaceId(workspace._id);
@@ -299,9 +299,9 @@ const Project = () => {
                   >
                     Rename
                   </button>
-                  <div className="border-t border-gray-100"></div>
+                  <div className="border-t border-gray-100 dark:border-gray-700"></div>
                   <button
-                    className="w-full px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors text-left flex items-center gap-2 font-medium"
+                    className="w-full px-4 py-3 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors text-left flex items-center gap-2 font-medium"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleDelete(workspace._id);
@@ -317,11 +317,11 @@ const Project = () => {
         ) : (
           // No data message - centered and styled
           <div className="col-span-full flex flex-col items-center justify-center py-16">
-            <div className="w-24 h-24 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-4 shadow-inner">
-              <FontAwesomeIcon icon={faFolder} className="text-5xl text-gray-400" />
+            <div className="w-24 h-24 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 rounded-full flex items-center justify-center mb-4 shadow-inner">
+              <FontAwesomeIcon icon={faFolder} className="text-5xl text-gray-400 dark:text-gray-500" />
             </div>
-            <p className="text-gray-700 text-xl font-semibold">No projects found</p>
-            <p className="text-gray-500 text-sm mt-2">Create your first project to get started</p>
+            <p className="text-gray-700 dark:text-gray-300 text-xl font-semibold">No projects found</p>
+            <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">Create your first project to get started</p>
           </div>
         )}
       </div>
@@ -332,23 +332,23 @@ const Project = () => {
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
-        className="bg-white p-6 md:p-8 rounded-3xl max-w-md mx-4 md:mx-auto border border-gray-200 shadow-2xl"
-        overlayClassName="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50 px-4"
+        className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-3xl max-w-md mx-4 md:mx-auto border border-gray-200 dark:border-gray-700 shadow-2xl transition-colors duration-300"
+        overlayClassName="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-md flex justify-center items-center z-50 px-4"
       >
         <div className="flex items-center gap-3 mb-4 md:mb-6">
-          <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-[#10B981] to-[#14B8A6] rounded-2xl flex items-center justify-center shadow-lg">
+          <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl flex items-center justify-center shadow-lg">
             <FontAwesomeIcon icon={faPlus} className="text-white text-base md:text-lg" />
           </div>
-          <h2 className="text-xl md:text-2xl font-bold text-gray-800">Create New Project</h2>
+          <h2 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-100">Create New Project</h2>
         </div>
 
         <form onSubmit={handleSubmit}>
-          <label className="text-gray-700 block mb-2 text-sm font-semibold">Project Name</label>
+          <label className="text-gray-700 dark:text-gray-300 block mb-2 text-sm font-semibold">Project Name</label>
           <input
             type="text"
             value={workspaceName}
             onChange={(e) => setWorkspaceName(e.target.value)}
-            className="w-full p-3 mb-4 md:mb-6 rounded-xl bg-gray-50 text-gray-800 border border-gray-200 focus:border-[#10B981] focus:outline-none focus:ring-2 focus:ring-[#10B981]/30 transition-all text-base"
+            className="w-full p-3 mb-4 md:mb-6 rounded-xl bg-gray-50 dark:bg-[#2d2d30] text-gray-800 dark:text-gray-100 border border-gray-200 dark:border-gray-600 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30 transition-all text-base"
             placeholder="Enter project name..."
             required
           />
@@ -356,14 +356,14 @@ const Project = () => {
           <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
             <button
               type="button"
-              className="px-6 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold transition-all order-2 sm:order-1"
+              className="px-6 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-sm font-semibold transition-all order-2 sm:order-1"
               onClick={closeModal}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#10B981] to-[#14B8A6] hover:from-[#059669] hover:to-[#0d9488] text-white text-sm font-semibold transition-all shadow-md hover:shadow-lg order-1 sm:order-2"
+              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white text-sm font-semibold transition-all shadow-md hover:shadow-lg order-1 sm:order-2"
             >
               Create Project
             </button>
@@ -376,18 +376,18 @@ const Project = () => {
       <Modal
         isOpen={renameModalOpen}
         onRequestClose={() => setRenameModalOpen(false)}
-        className="bg-white p-6 md:p-8 rounded-3xl max-w-md mx-4 md:mx-auto border border-gray-200 shadow-2xl"
-        overlayClassName="fixed inset-0 bg-black/40 backdrop-blur-md flex justify-center items-center z-50 px-4"
+        className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-3xl max-w-md mx-4 md:mx-auto border border-gray-200 dark:border-gray-700 shadow-2xl transition-colors duration-300"
+        overlayClassName="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-md flex justify-center items-center z-50 px-4"
       >
-        <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">Rename Project</h2>
+        <h2 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4 md:mb-6">Rename Project</h2>
 
         <form onSubmit={(e) => { e.preventDefault(); handleRename(); }}>
-          <label className="text-gray-700 block mb-2 text-sm font-semibold">New Project Name</label>
+          <label className="text-gray-700 dark:text-gray-300 block mb-2 text-sm font-semibold">New Project Name</label>
           <input
             type="text"
             value={newWorkspaceName}
             onChange={(e) => setNewWorkspaceName(e.target.value)}
-            className="w-full p-3 mb-4 md:mb-6 rounded-xl bg-gray-50 text-gray-800 border border-gray-200 focus:border-[#10B981] focus:outline-none focus:ring-2 focus:ring-[#10B981]/30 transition-all text-base"
+            className="w-full p-3 mb-4 md:mb-6 rounded-xl bg-gray-50 dark:bg-[#2d2d30] text-gray-800 dark:text-gray-100 border border-gray-200 dark:border-gray-600 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30 transition-all text-base"
             placeholder="Enter new project name..."
             required
           />
@@ -395,14 +395,14 @@ const Project = () => {
           <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
             <button
               type="button"
-              className="px-6 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold transition-all order-2 sm:order-1"
+              className="px-6 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-sm font-semibold transition-all order-2 sm:order-1"
               onClick={() => setRenameModalOpen(false)}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#10B981] to-[#14B8A6] hover:from-[#059669] hover:to-[#0d9488] text-white text-sm font-semibold transition-all shadow-md hover:shadow-lg order-1 sm:order-2"
+              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white text-sm font-semibold transition-all shadow-md hover:shadow-lg order-1 sm:order-2"
             >
               Save Changes
             </button>
