@@ -592,32 +592,47 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
     return new Date(timeInSeconds * 1000).toISOString().substr(11, 8);
   };
 
-  const mergeDetectedSongs = (songs) => {
-    const mergedSongs = [];
 
-    songs.forEach((song) => {
-      // Skip merging songs with the title "Maybe contain music"
-      if (song.title === "May contain music") {
-        mergedSongs.push({ ...song });
-        return;
-      }
 
-      const existingSong = mergedSongs.find(
-        (mergedSong) =>
-          mergedSong.title === song.title
-      );
+const mergeDetectedSongs = (songs, gapTolerance = 1.0) => {
+  if (!Array.isArray(songs) || songs.length === 0) return [];
 
-      if (existingSong) {
-        // Update the TC Out for the existing song
-        existingSong.end_time = Math.max(existingSong.end_time, song.end_time);
-      } else {
-        // Add the new song entry
-        mergedSongs.push({ ...song });
-      }
-    });
+  // Ensure we process in chronological order
+  const ordered = [...songs].sort(
+    (a, b) => (a.start_time ?? 0) - (b.start_time ?? 0)
+  );
 
-    return mergedSongs;
-  };
+  const merged = [];
+
+  for (const s of ordered) {
+    const song = { ...s };
+
+    // Never merge these — each occurrence gets its own row
+    if (song.title === "May contain music") {
+      merged.push(song);
+      continue;
+    }
+
+    const last = merged[merged.length - 1];
+
+    // Merge only if the previous *merged* item is the same title
+    // and the new chunk starts within a tiny gap of the previous end.
+    if (
+      last &&
+      last.title === song.title &&
+      (song.start_time ?? 0) <= (last.end_time ?? 0) + gapTolerance
+    ) {
+      // Extend the current block
+      last.end_time = Math.max(last.end_time ?? 0, song.end_time ?? song.start_time ?? 0);
+    } else {
+      // Start a new block (either first item, or interrupted by another song)
+      merged.push(song);
+    }
+  }
+
+  return merged;
+};
+
 
 
   const mergedSongs = mergeDetectedSongs(detectedSongs);
@@ -839,25 +854,32 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
 
   const handleSave = async () => {
     try {
-      const tableData = detectedSongs.map((song) => ({
+      // Use the contiguous merge for saving (same logic as your table/CSV)
+      const mergedForSave = mergeDetectedSongs(detectedSongs);
+  
+      const tableData = mergedForSave.map((song) => ({
         'TV Channel': formData.tvChannel || '',
         'Program Name': formData.programName || '',
         'Episode Number': formData.episodeNumber || '',
         'On-Air Date': formData.onAirDate || '',
-        'Track Title': song.title,
-        'Artist 1': song.artist1,
-        'Copyright Link': shortenedUrls[song.title],
+        'Track Title': song.title === 'May contain music' ? 'May contain music' : song.title,
+        // keep the original column name you were sending; fall back to `artist`
+        'Artist 1': song.artist1 || song.artist || '-',
+        // prefer any shortened link you might have; fall back to song_link
+        'Copyright Link': shortenedUrls[song.title] || song.song_link || '-',
         'Video File Name': fileName,
-        'Video Duration': song.videoDuration,
-        'TC In': new Date(song.start_time * 1000).toISOString().substr(11, 8),
-        'TC Out': new Date(song.end_time * 1000).toISOString().substr(11, 8),
-        'Movie / Album Name': formData.movieAlbum || ''
+        'Video Duration': `${videoDuration}sec`,
+        'TC In': formatTime(song.start_time),
+        'TC Out': formatTime(song.end_time),
+        'Movie / Album Name': formData.movieAlbum || '',
       }));
-
-      const response = await axios.post(`${API_BASE_URL}/save-table`, { tableData }, {
-        withCredentials: true,
-      });
-
+  
+      await axios.post(
+        `${API_BASE_URL}/save-table`,
+        { tableData },
+        { withCredentials: true }
+      );
+  
       setAlertMessage('Table saved successfully!');
       setAlertType('success');
       setAlertVisible(true);
@@ -870,6 +892,7 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
       setTimeout(() => setAlertVisible(false), 5000);
     }
   };
+  
 
   return (
     <div id="modalBlur" className="bg-gray-50 dark:bg-[#1e1e1e] text-gray-800 dark:text-gray-200 min-h-screen transition-colors duration-300">
@@ -1443,7 +1466,7 @@ Example: ZeeTV_KumkumBhagya_123_2024-01-15_MovieName.mp3`);
                       type="file"
                       id="file"
                       name="file"
-                      accept=".mp3"
+                      accept=".mp3,.mp4"
                       required
                     />
                     <p className="text-xs text-gray-500 dark:text-gray-400 mt-1.5">Supported format: MP3</p>
