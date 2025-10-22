@@ -39,3 +39,18 @@ build/
 # Ignore any uploaded media or datasets
 public/FMS/
 ShazamAPI-main/eps/
+instrument-detection/uploads/
+instrument-detection/venv/
+
+# Model files
+*.h5
+*.pkl
+*.pt
+*.pth
+*.ckpt
+*.pb
+*.onnx
+*.tflite
+*.model
+*.weights
+*.safetensors

@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Bash(mv:*)",
+      "Bash(find:*)",
+      "Bash(pkill:*)",
+      "Bash(kill:*)",
+      "Bash(python app.py:*)",
+      "Bash(python3:*)",
+      "Bash(source venv/bin/activate)",
+      "Bash(curl:*)",
+      "Bash(lsof:*)",
+      "Bash(xargs:*)",
+      "Read(//tmp/**)",
+      "Bash(awk:*)",
+      "Bash(for dir in /mnt/267271217270F6C1/cue-sheet/instrument-detection/uploads/results/*/)",
+      "Bash(ls:*)",
+      "Bash(done)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
