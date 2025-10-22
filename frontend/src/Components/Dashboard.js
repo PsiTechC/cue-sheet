@@ -15,6 +15,7 @@ import AIVoiceover from './AIVoiceover'
 import Metamorphosis from './Metamorphosis'
 import GenreIdentification from './GenreIdentification'
 import AutoDubbing from './AutoDubbing'
+import InstrumentDetection from './InstrumentDetection'
 
 
 
@@ -99,6 +100,7 @@ const Dashboard = () => {
           <Route path="project/:workspaceName/:folderName" element={<SubFolder />} />
           <Route path="mysheet" element={<MySheet />} />
           <Route path="CueSheetGenerator" element={<CueSheetGenerator />} />
+          <Route path="instrumentdetection" element={<InstrumentDetection />} />
           <Route path="metadatacreation" element={<MetadataCreation/>} />
           <Route path="autosubtitling" element={<AutoSubtitling/>} />
           <Route path="aivoiceover" element={<AIVoiceover/>} />

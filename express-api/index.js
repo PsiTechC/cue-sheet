@@ -18,6 +18,7 @@ const { checkLowBalanceEvery10Minutes } = require('./routes/checkLowBalance');
 const paymentRoutes = require('./routes/paymentRoutes');
 const plansRoutes = require('./routes/plans');
 const FetchServices = require('./routes/fetchServices');
+const instrumentDetectionRoutes = require('./routes/instrumentDetection');
 const helmet = require('helmet');
 const cookieParser = require("cookie-parser");
 
@@ -80,6 +81,7 @@ app.use('/api/payment', paymentRoutes);
 app.use('/api/add', plansRoutes);
 
 app.use('/api/keys', keyRoutes);
+app.use('/api/instrument-detection', instrumentDetectionRoutes);
 app.get('/', (req, res)=>{
   res.send('new deployed')
 })

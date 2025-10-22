@@ -13,7 +13,8 @@ import {
   faFolderTree,
   faIcons,
   faBlog,
-  faObjectUngroup
+  faObjectUngroup,
+  faMusic
 } from '@fortawesome/free-solid-svg-icons';  
 
 
@@ -96,6 +97,22 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
               >
                 <FontAwesomeIcon icon={faTable} className="mr-3" />
                 Create Cue-Sheet
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/dashboard/instrumentdetection"
+                onClick={handleMenuClick}
+                className={({ isActive }) =>
+                  `p-3 rounded-xl flex items-center transition-all duration-200 ${
+                    isActive
+                      ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold shadow-md'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-primary-600 dark:hover:text-primary-400'
+                  }`
+                }
+              >
+                <FontAwesomeIcon icon={faMusic} className="mr-3" />
+                Instrument Detection
               </NavLink>
             </li>
             <li>
