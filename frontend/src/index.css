@@ -88,3 +88,32 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Audio/Video Analysis Platform Animations */
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  animation: gradient 3s ease infinite;
+}
+
+/* Waveform pulse animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scaleY(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
