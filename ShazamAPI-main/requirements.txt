@@ -9,3 +9,4 @@ uuid
 schedule
 pydub
 requests
+yt-dlp
