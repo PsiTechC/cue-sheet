@@ -556,6 +556,7 @@ const CueSheetGenerator = () => {
   };
 
 
+
 const mergeDetectedSongs = (songs, gapTolerance = 1.0) => {
   if (!Array.isArray(songs) || songs.length === 0) return [];
 
@@ -854,6 +855,7 @@ const mergeDetectedSongs = (songs, gapTolerance = 1.0) => {
       setTimeout(() => setAlertVisible(false), 5000);
     }
   };
+  
 
   return (
     <div id="modalBlur" className="bg-[#171717]  text-gray-300 min-h-screen">
